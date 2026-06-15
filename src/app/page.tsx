@@ -66,16 +66,15 @@ function MarginColumn() {
   return (
     <aside className="hidden lg:block">
       <div className="sticky top-8 pt-2">
-        {/* 04 · margin — section number, with breathing room above and below */}
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-soft mb-5">
-          <span className="text-ink-mute">04 ·</span> margin
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
+          ↳ margin
         </p>
         {/* The notes — subtle, lighter weight, intentional marginalia */}
-        <ul className="space-y-3.5">
+        <ul className="space-y-3">
           {marginNotes.map((n) => (
             <li
               key={n.id}
-              className={`font-serif text-[14.5px] leading-[1.4] opacity-75 ${
+              className={`font-serif text-[14px] leading-[1.4] opacity-75 ${
                 n.kind === "warn"
                   ? "text-rust"
                   : n.kind === "todo"
@@ -96,21 +95,21 @@ function MarginColumn() {
           ))}
         </ul>
 
-        {/* Generous vertical breathing room between sections */}
-        <hr className="my-10 border-rule-soft" />
+        {/* Reduced vertical breathing room between sections — keeps
+            reach in view alongside the rest of the page. */}
+        <hr className="my-6 border-rule-soft" />
 
-        {/* 05 · reach — proper section number, like 04 above */}
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-soft mb-5 mt-1">
-          <span className="text-ink-mute">05 ·</span> reach
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3 mt-1">
+          ↳ reach
         </p>
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           {contact.map((c) => (
             <li key={c.kind}>
               <a
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel={c.href.startsWith("http") ? "noreferrer" : undefined}
-                className="font-serif text-[15.5px] text-ink-soft hover:text-ink link-underline"
+                className="font-serif text-[16.5px] text-ink hover:text-graphite link-underline"
               >
                 {c.label}
               </a>
@@ -132,6 +131,7 @@ export default function Page() {
         </span>
       </div>
 
+      <div className="relative">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-x-14">
         {/* ====== LEFT — the page proper ====== */}
         <div className="min-w-0">
@@ -410,8 +410,101 @@ export default function Page() {
           </div>
         </div>
 
+        {/* ====== MIDDLE — hand-drawn illustration absolutely positioned
+            in the gap between the bio and the right margin. Doesn't
+            affect the layout of the supporting work below. Only visible
+            on wide viewports where there's room. */}
+        <div
+          className="hidden xl:block absolute pointer-events-none"
+          style={{ left: "calc(50% + 60px)", top: "60px" }}
+        >
+          <svg
+            viewBox="0 0 200 200"
+            width={200}
+            height={200}
+            className="text-ink opacity-80"
+            role="img"
+            aria-label="Hand-drawn 3D coordinate frame with a curve through it"
+          >
+            {/* the 3D coordinate frame — three axes meeting at the origin */}
+            <path
+              d="M 100 130
+                 L 100 24
+                 M 100 130
+                 L 178 168
+                 M 100 130
+                 L 22 168"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.3}
+              strokeLinecap="round"
+            />
+            {/* small arrowheads at the ends of the axes */}
+            <path d="M 100 24 L 96 32 M 100 24 L 104 32" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
+            <path d="M 178 168 L 170 165 M 178 168 L 174 175" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
+            <path d="M 22 168 L 28 165 M 22 168 L 26 159" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
+            {/* axis labels */}
+            <text x="98" y="18" fontFamily="var(--font-hand), 'Caveat', cursive" fontSize="18" fontStyle="italic" fill="currentColor">y</text>
+            <text x="184" y="170" fontFamily="var(--font-hand), 'Caveat', cursive" fontSize="18" fontStyle="italic" fill="currentColor">x</text>
+            <text x="6" y="174" fontFamily="var(--font-hand), 'Caveat', cursive" fontSize="18" fontStyle="italic" fill="currentColor">z</text>
+            {/* a hand-drawn curve threading through the space */}
+            <path
+              d="M 36 142
+                 C 50 116 70 96 90 80
+                 C 108 66 130 60 144 70
+                 C 158 80 162 100 158 122
+                 C 152 142 138 152 124 152"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.3}
+              strokeLinecap="round"
+            />
+            {/* a few dots on the curve, like data points */}
+            <circle cx="40" cy="138" r="2.2" fill="currentColor" />
+            <circle cx="78" cy="92" r="2.2" fill="currentColor" />
+            <circle cx="124" cy="62" r="2.2" fill="currentColor" />
+            <circle cx="160" cy="100" r="2.2" fill="currentColor" />
+            <circle cx="140" cy="148" r="2.2" fill="currentColor" />
+            {/* a small annotation arrow with a hand-written label */}
+            <path
+              d="M 124 80
+                 C 138 70 152 60 166 50"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1}
+              strokeLinecap="round"
+            />
+            <text
+              x="172"
+              y="48"
+              fontFamily="var(--font-hand), 'Caveat', cursive"
+              fontSize="16"
+              fill="currentColor"
+              fontStyle="italic"
+            >
+              f(x)?
+            </text>
+            {/* origin marker — a small dot where the three axes meet */}
+            <circle cx="100" cy="130" r="2" fill="currentColor" />
+            {/* a faint ellipse at the base of the frame, suggesting
+                a ground plane — gives the frame a 3D feel */}
+            <ellipse
+              cx="100"
+              cy="170"
+              rx="78"
+              ry="10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1}
+              opacity={0.4}
+              strokeDasharray="0"
+            />
+          </svg>
+        </div>
+
         {/* ====== RIGHT — sticky margin ====== */}
         <MarginColumn />
+      </div>
       </div>
     </main>
   );
