@@ -18,6 +18,8 @@ export const bio = [
   { em: "what does this look like if i stop reaching for a framework?" },
 ];
 
+// Contact channels — used in the right margin "↳ reach" block
+// and as the closed-list of social profiles the page points to.
 export const contact = [
   { kind: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/sribatsha-dash-bb3327241/" },
   { kind: "x",        label: "x / srivtx", href: "https://x.com/srivtx" },
