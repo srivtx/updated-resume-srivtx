@@ -35,6 +35,10 @@ export const marginNotes: { id: string; text: string; kind: "todo" | "note" | "w
   { id: "n5", kind: "note", text: "lockr settled in 3 sec, $0.001 fee. upwork: 14 days, 20%." },
   { id: "n6", kind: "note", text: "comptime > runtime. visibility > convenience. (recurring thesis.)" },
   { id: "n7", kind: "lesson", text: "things i've broken: mycelium's seed derivation, the lockr PDA, two ledgers. each one took an afternoon to find." },
+  { id: "n8", kind: "note", text: "the bench right now: macbook pro m3, two monitors, a lego sorter for hardware parts. that's the whole lab." },
+  { id: "n9", kind: "todo", text: "write the LSP server postmortem. the analyzer was wrong for 3 weeks before i caught it." },
+  { id: "n10", kind: "note", text: "ambient: tycho, burial, nils frahm. only when the work is moving." },
+  { id: "n11", kind: "warn", text: "if a feature needs a tutorial, it's probably the wrong feature." },
 ];
 
 // The feature. One. The page is built around this.

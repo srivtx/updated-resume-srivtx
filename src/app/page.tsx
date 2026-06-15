@@ -159,8 +159,34 @@ export default function Page() {
             </p>
           </header>
 
+          {/* A page break — like a fresh page in the lab journal.
+              Fills the gap between the bio and the feature with a
+              hand-drawn horizontal rule + a small dated annotation.
+              Same drawing language as the rest of the page. */}
+          <div className="mt-12 sm:mt-14 mb-2">
+            <div className="flex items-center gap-3">
+              <svg
+                viewBox="0 0 200 6"
+                className="flex-1 h-1.5 text-ink-mute"
+                aria-hidden
+              >
+                <path
+                  d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={0.8}
+                  strokeLinecap="round"
+                  strokeDasharray="0"
+                />
+              </svg>
+              <span className="font-mono text-[9px] uppercase tracking-broad text-ink-faint">
+                ↳ on the bench · mon 15 jun
+              </span>
+            </div>
+          </div>
+
           {/* THE FEATURE — nnn, full width, the loudest thing */}
-          <section className="mt-16 sm:mt-20">
+          <section className="mt-6 sm:mt-8">
             <article className="relative bg-paper-soft border border-rule p-6 sm:p-8 pr-20">
               <Doodle name="nnn" />
               <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
