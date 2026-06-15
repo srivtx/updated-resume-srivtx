@@ -320,19 +320,61 @@ export default function Page() {
                 </p>
               </div>
               <div className="text-right">
-                {/* a hand-drawn sigil — a small wobbly sigil mark */}
-                <svg viewBox="0 0 80 80" width={56} height={56} className="text-ink-soft ml-auto" aria-hidden>
+                {/* a hand-drawn cursive signature — srivtx, written in one
+                    flowing motion. Three connected strokes: the name, an
+                    underline flourish, and a small dot punctuation. */}
+                <svg
+                  viewBox="0 0 200 70"
+                  width={200}
+                  height={70}
+                  className="text-ink ml-auto"
+                  aria-label="srivtx — hand-written signature"
+                  role="img"
+                >
+                  {/* the name — srivtx as one connected cursive stroke.
+                      Loops at s, dips at r-i, loops at v, tails at t-x. */}
                   <path
-                    d="M 14 62 C 18 36 36 18 60 22 C 64 22 64 28 60 30 C 50 32 44 40 44 50 C 44 58 50 64 60 64"
+                    d="M 22 42
+                       C 18 42 14 38 16 32
+                       C 18 26 26 26 30 32
+                       C 32 36 30 42 26 44
+                       C 30 42 34 40 38 38
+                       C 42 36 46 34 50 32
+                       C 52 30 50 28 48 30
+                       C 46 34 46 40 48 44
+                       C 50 46 54 44 56 40
+                       C 58 36 60 32 64 30
+                       C 70 28 78 30 82 36
+                       C 84 40 82 44 78 46
+                       C 82 44 86 42 90 40
+                       C 100 36 112 36 122 38
+                       C 134 40 146 44 156 48
+                       C 162 50 168 50 174 48
+                       C 178 46 182 42 184 38
+                       C 184 36 182 36 180 38
+                       C 176 44 174 50 174 56"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.6}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* underline flourish — a long horizontal sweep under
+                      the name, with a slight overshoot at each end. */}
+                  <path
+                    d="M 16 58
+                       C 40 56 70 54 100 54
+                       C 130 54 160 56 180 60"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={1.4}
                     strokeLinecap="round"
                   />
-                  <circle cx={20} cy={62} r={1.6} fill="currentColor" />
+                  {/* a small period after the signature, like a real one */}
+                  <circle cx={190} cy={58} r={1.6} fill="currentColor" />
                 </svg>
-                <p className="mt-1 font-hand text-[14px] text-ink-faint italic">
-                  ↳ srivtx
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
+                  srivtx · mon 15 jun 26
                 </p>
               </div>
             </div>
