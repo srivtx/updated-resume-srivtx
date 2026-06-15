@@ -59,19 +59,23 @@ function SupportingCard({ c }: { c: SupportingCardData }) {
 }
 
 // The sticky margin column. Scrawled notes on top, reach at the bottom.
+// Two clean, well-spaced sections numbered like a real book.
+// Subtle, intentional, generous breathing room.
 
 function MarginColumn() {
   return (
     <aside className="hidden lg:block">
-      <div className="sticky top-6 pt-2">
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-          ↳ margin
+      <div className="sticky top-8 pt-2">
+        {/* 04 · margin — section number, with breathing room above and below */}
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-soft mb-5">
+          <span className="text-ink-mute">04 ·</span> margin
         </p>
-        <ul className="space-y-3">
+        {/* The notes — subtle, lighter weight, intentional marginalia */}
+        <ul className="space-y-3.5">
           {marginNotes.map((n) => (
             <li
               key={n.id}
-              className={`font-serif text-[15px] leading-[1.3] ${
+              className={`font-serif text-[14.5px] leading-[1.4] opacity-75 ${
                 n.kind === "warn"
                   ? "text-rust"
                   : n.kind === "todo"
@@ -92,19 +96,21 @@ function MarginColumn() {
           ))}
         </ul>
 
-        <hr className="my-7 border-rule-soft" />
+        {/* Generous vertical breathing room between sections */}
+        <hr className="my-10 border-rule-soft" />
 
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-          ↳ reach
+        {/* 05 · reach — proper section number, like 04 above */}
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-soft mb-5 mt-1">
+          <span className="text-ink-mute">05 ·</span> reach
         </p>
-        <ul className="space-y-1.5">
+        <ul className="space-y-2">
           {contact.map((c) => (
             <li key={c.kind}>
               <a
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel={c.href.startsWith("http") ? "noreferrer" : undefined}
-                className="font-serif text-[17px] text-ink-soft hover:text-ink link-underline"
+                className="font-serif text-[15.5px] text-ink-soft hover:text-ink link-underline"
               >
                 {c.label}
               </a>
@@ -118,21 +124,21 @@ function MarginColumn() {
 
 export default function Page() {
   return (
-    <main className="relative mx-auto max-w-page px-4 sm:px-8 lg:px-12 pt-8 sm:pt-10 pb-20">
-      <div className="flex items-baseline justify-between font-serif text-[20px] text-ink-soft mb-6">
+    <main className="relative mx-auto max-w-page px-6 sm:px-10 lg:px-16 pt-10 sm:pt-14 pb-24">
+      <div className="flex items-baseline justify-between font-serif text-[20px] text-ink-soft mb-10">
         <span>{meta.date}</span>
         <span className="font-mono text-[11px] text-ink-mute tabular-nums">
           <LiveTime /> · in your window
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-x-10">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-x-14">
         {/* ====== LEFT — the page proper ====== */}
         <div className="min-w-0">
 
           {/* HERO */}
           <header>
-            <h1 className="font-serif font-normal text-ink leading-[0.95] tracking-tight">
+            <h1 className="font-serif font-normal text-ink leading-[0.95] tracking-[-0.02em]">
               <span className="block text-[clamp(64px,12vw,128px)]">
                 Sribatsha
               </span>
@@ -141,14 +147,14 @@ export default function Page() {
               </span>
             </h1>
 
-            <p className="mt-5 font-serif text-[24px] sm:text-[28px] text-ink-soft leading-[1.2] max-w-[34ch]">
+            <p className="mt-7 font-serif text-[22px] sm:text-[26px] text-ink-soft leading-[1.3] max-w-[36ch]">
               Today:{" "}
               <span className="pencil-double-underline">
                 Building nnn in the mornings. Lockr support tickets in the evenings. Sleep is a hypothesis, not a fact.
               </span>
             </p>
 
-            <p className="mt-8 font-serif text-[16.5px] leading-[1.75] text-ink-soft text-pretty max-w-body dropcap">
+            <p className="mt-10 font-serif text-[17px] leading-[1.8] text-ink-soft text-pretty max-w-[65ch] dropcap">
               {bio.map((seg, i) =>
                 typeof seg === "string" ? (
                   <span key={i}>{seg}</span>
@@ -163,7 +169,7 @@ export default function Page() {
               Fills the gap between the bio and the feature with a
               hand-drawn horizontal rule + a small dated annotation.
               Same drawing language as the rest of the page. */}
-          <div className="mt-12 sm:mt-14 mb-2">
+          <div className="mt-16 sm:mt-20 mb-2">
             <div className="flex items-center gap-3">
               <svg
                 viewBox="0 0 200 6"
@@ -186,7 +192,7 @@ export default function Page() {
           </div>
 
           {/* THE FEATURE — nnn, full width, the loudest thing */}
-          <section className="mt-6 sm:mt-8">
+          <section className="mt-10 sm:mt-12">
             <article className="relative bg-paper-soft border border-rule p-6 sm:p-8 pr-20">
               <Doodle name="nnn" />
               <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
@@ -238,7 +244,7 @@ export default function Page() {
           </section>
 
           {/* SUPPORTING WORK — one coherent 2-col grid. Same visual system. */}
-          <section className="mt-14 sm:mt-16">
+          <section className="mt-20 sm:mt-24">
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
               ↳ more on the bench
             </p>
@@ -257,7 +263,7 @@ export default function Page() {
           </section>
 
           {/* UPSTREAM — the things that got merged into other people's codebases */}
-          <section className="mt-14">
+          <section className="mt-20 sm:mt-24">
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
               ↳ merged upstream
             </p>
@@ -294,7 +300,7 @@ export default function Page() {
           </section>
 
           {/* PRACTICE — one handwritten line */}
-          <section className="mt-8">
+          <section className="mt-12 sm:mt-14">
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-1.5">
               ↳ practice
             </p>
@@ -304,7 +310,7 @@ export default function Page() {
           </section>
 
           {/* JOB + SCHOOL */}
-          <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+          <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-1">
                 ↳ the job
@@ -332,7 +338,7 @@ export default function Page() {
           </section>
 
           {/* FOOTER — a real closing gesture. Hand-drawn date + sigil. */}
-          <div className="mt-20 pt-6 border-t border-rule">
+          <div className="mt-24 pt-8 border-t border-rule">
             <div className="flex items-baseline justify-between gap-4 flex-wrap">
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
