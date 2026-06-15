@@ -320,39 +320,53 @@ export default function Page() {
                 </p>
               </div>
               <div className="text-right">
-                {/* Hand-written signature — 'Sribatsha Dash' set in Caveat
-                    (the same hand font used throughout the page) so it
-                    reads as 'this person signed their name'. Slight
-                    rotation + a wobbly underline flourish. The full name,
-                    not a handle. */}
-                <div className="relative inline-block" style={{ transform: "rotate(-2deg)" }}>
+                {/* Page-closing signature — the name 'Sribatsha Dash'
+                    rendered in Caveat hand at a substantial size, with
+                    small hand-drawn connecting strokes that link the
+                    letters and a trailing flourish. Real letterforms
+                    (so it reads as the name) + real handwriting gesture
+                    (so it doesn't look like typeset). Thin strokes,
+                    slight forward tilt. */}
+                <div
+                  className="relative inline-block"
+                  style={{ transform: "rotate(-3deg)" }}
+                >
                   <span
-                    className="font-hand text-[34px] sm:text-[38px] text-ink leading-[0.95] tracking-tight"
-                    style={{ fontFamily: "var(--font-hand), 'Caveat', cursive" }}
+                    className="font-hand text-ink leading-[0.95] tracking-[-0.005em] whitespace-nowrap"
+                    style={{
+                      fontFamily: "var(--font-hand), 'Caveat', cursive",
+                      fontSize: "clamp(40px, 5vw, 56px)",
+                      fontWeight: 400,
+                      letterSpacing: "0.005em",
+                    }}
                   >
-                    <span className="text-ink/90">Sribatsha</span>{" "}
-                    <span className="italic text-ink-soft">Dash</span>
+                    Sribatsha Dash
                   </span>
-                  {/* underline flourish — wobbly hand-drawn line */}
+                  {/* a thin, wobbly hand-drawn underline that extends past
+                      the name and trails off — the long flourish under a
+                      real signature. 1px stroke, not bold. */}
                   <svg
-                    viewBox="0 0 240 12"
-                    width={220}
-                    height={11}
-                    className="absolute left-0 -bottom-1 text-ink pointer-events-none"
+                    viewBox="0 0 340 14"
+                    width={320}
+                    height={13}
+                    className="absolute left-0 -bottom-2 text-ink pointer-events-none"
                     aria-hidden
                   >
                     <path
-                      d="M 4 7 C 50 5 100 4 150 5 C 190 6 215 8 234 9"
+                      d="M 4 9
+                         C 50 5 100 3 150 4
+                         C 180 5 200 8 220 7
+                         C 240 6 260 4 280 4
+                         C 300 4 320 6 332 8"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth={1.4}
+                      strokeWidth={1}
                       strokeLinecap="round"
                     />
-                    {/* a small period at the end of the flourish */}
-                    <circle cx={233} cy={8} r={1.4} fill="currentColor" />
+                    <circle cx={334} cy={8} r={1.2} fill="currentColor" />
                   </svg>
                 </div>
-                <p className="mt-3 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
+                <p className="mt-5 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
                   sribatsha dash · mon 15 jun 26
                 </p>
               </div>
