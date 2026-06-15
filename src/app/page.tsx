@@ -233,7 +233,7 @@ export default function Page() {
           {/* UPSTREAM — the things that got merged into other people's codebases */}
           <section className="mt-14">
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
-              ↳ upstream · a stranger decided the patch was worth merging
+              ↳ merged upstream
             </p>
             <ul className="space-y-0">
               {upstream.map((u) => (
@@ -305,12 +305,37 @@ export default function Page() {
             </div>
           </section>
 
-          {/* FOOTER — the page signature. Contact lives in the right margin. */}
-          <div className="mt-16 pt-6 border-t border-rule">
-            <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
-              hand-built · next.js · caveat · instrument serif · inter · jb mono
-            </p>
-            <p className="mt-2 font-hand text-[20px] text-ink-soft">— srivtx</p>
+          {/* FOOTER — a real closing gesture. Hand-drawn date + sigil. */}
+          <div className="mt-20 pt-6 border-t border-rule">
+            <div className="flex items-baseline justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
+                  ↳ signed
+                </p>
+                <p className="mt-1 font-hand text-[20px] text-ink-soft">
+                  sribatsha dash, bhubaneswar
+                </p>
+                <p className="mt-0.5 font-hand text-[15px] text-ink-faint italic">
+                  hand-built · <span className="not-italic font-mono text-[10px] tracking-wide2 uppercase">next.js</span> · caveat · instrument serif · inter · jb mono
+                </p>
+              </div>
+              <div className="text-right">
+                {/* a hand-drawn sigil — a small wobbly sigil mark */}
+                <svg viewBox="0 0 80 80" width={56} height={56} className="text-ink-soft ml-auto" aria-hidden>
+                  <path
+                    d="M 14 62 C 18 36 36 18 60 22 C 64 22 64 28 60 30 C 50 32 44 40 44 50 C 44 58 50 64 60 64"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.4}
+                    strokeLinecap="round"
+                  />
+                  <circle cx={20} cy={62} r={1.6} fill="currentColor" />
+                </svg>
+                <p className="mt-1 font-hand text-[14px] text-ink-faint italic">
+                  ↳ srivtx
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

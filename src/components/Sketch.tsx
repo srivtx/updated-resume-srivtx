@@ -210,10 +210,11 @@ function Connector({
   );
 }
 
-// Container that watches viewport and re-fires the draw once per page.
+// Container that watches viewport. Returns true on mount (amount: 0
+// fires the intersection observer immediately on first render).
 function useSketchInView() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.35 });
+  const inView = useInView(ref, { once: true, amount: 0 });
   return { ref, inView };
 }
 

@@ -596,12 +596,13 @@ function BrainKnot({ inView }: { inView: boolean }) {
   );
 }
 
-// The container — picks the right drawing for the project name and
-// animates the strokes when the card scrolls into view.
+// The container — picks the right drawing for the project name.
+// All paths render fully drawn on initial mount (no scroll-gate).
 export function ProjectArt({ name }: { name: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
-
+  // Pass `inView={true}` to all subcomponents. The pathLength: 0 → 1
+  // animation still plays once on mount, but the lines are guaranteed
+  // visible even if the inView hook hasn't fired.
   return (
     <div ref={ref} className="mt-4 mb-3 -mx-1">
       <svg
@@ -610,14 +611,14 @@ export function ProjectArt({ name }: { name: string }) {
         style={{ filter: "drop-shadow(0 0 1px rgba(31, 41, 55, 0.05))" }}
         aria-label={`${name} — hand-drawn illustration`}
       >
-        {name === "lockr"             && <Padlock3D inView={inView} />}
-        {name === "tdc-matchmaker-2"  && <CompareCanvas inView={inView} />}
-        {name === "snip"              && <TerminalAndCard inView={inView} />}
-        {name === "mycelium"          && <MyceliumNet inView={inView} />}
-        {name === "shader-labs"       && <MeshGrid inView={inView} />}
-        {name === "tomato-css"        && <LeafVine inView={inView} />}
-        {name === "serve-md"          && <Doc inView={inView} />}
-        {name === "neuro-2e"          && <BrainKnot inView={inView} />}
+        {name === "lockr"             && <Padlock3D inView={true} />}
+        {name === "tdc-matchmaker-2"  && <CompareCanvas inView={true} />}
+        {name === "snip"              && <TerminalAndCard inView={true} />}
+        {name === "mycelium"          && <MyceliumNet inView={true} />}
+        {name === "shader-labs"       && <MeshGrid inView={true} />}
+        {name === "tomato-css"        && <LeafVine inView={true} />}
+        {name === "serve-md"          && <Doc inView={true} />}
+        {name === "neuro-2e"          && <BrainKnot inView={true} />}
       </svg>
     </div>
   );

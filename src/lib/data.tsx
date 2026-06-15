@@ -37,7 +37,7 @@ export const marginNotes: { id: string; text: string; kind: "todo" | "note" | "w
 
 // The feature. One. The page is built around this.
 export const feature = {
-  kicker: "what i'm building now",
+  kicker: "the project",
   name: "nnn",
   one: "A team of agents, on the laptop.",
   body: [
