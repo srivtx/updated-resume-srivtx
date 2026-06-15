@@ -5,7 +5,7 @@
 // with the same pathLength animation as the bigger diagrams.
 
 "use client";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 
 function rng(seed: number) {

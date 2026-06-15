@@ -1,7 +1,7 @@
 // One page. One feature. A grid of supporting work. The meta.
 // Three visual registers, in that order. Margin scrawls on the right.
 
-import { meta, today, bio, contact, marginNotes, feature, supporting, moreOnGithub, upstream, practiceLine, job, school } from "@/lib/data";
+import { meta, bio, contact, marginNotes, feature, supporting, moreOnGithub, upstream, practiceLine, job, school } from "@/lib/data";
 import { LiveTime } from "@/components/LiveTime";
 import { NnnSketch, NnnRoughSketch, ImgTo3DSketch, LspSketch } from "@/components/Sketch";
 import { Doodle } from "@/components/Doodle";
@@ -320,52 +320,57 @@ export default function Page() {
                 </p>
               </div>
               <div className="text-right">
-                {/* Page-closing signature in Pinyon Script — a real designer
-                    cursive (the kind used for wedding invitations and
-                    fashion brand marks). The text is set as one line in
-                    the font, but the *form* reads as a designed signature,
-                    not typeset text. Slight forward tilt, with a thin
-                    hand-drawn underline flourish. */}
-                <div
-                  className="relative inline-block"
+                {/* Page-closing signature. A small hand-drawn cursive
+                    monogram in the same wobble language as the page
+                    doodles — same stroke weight (1.3), same wobble
+                    function, same current color. Reads as 'S' and 'D'
+                    connected in a single flowing gesture, with a
+                    trailing flourish that arcs to the right. Not a
+                    font — drawn with the page's hand. */}
+                <svg
+                  viewBox="0 0 200 70"
+                  width={140}
+                  height={49}
+                  className="text-ink ml-auto"
+                  role="img"
+                  aria-label="S.D. — hand-drawn signature"
                   style={{ transform: "rotate(-3deg)" }}
                 >
-                  <span
-                    className="text-ink leading-[0.85] tracking-[-0.005em] whitespace-nowrap"
-                    style={{
-                      fontFamily: "var(--font-signature), 'Pinyon Script', cursive",
-                      fontSize: "clamp(64px, 8vw, 96px)",
-                      fontWeight: 400,
-                      lineHeight: 1,
-                    }}
-                  >
-                    Sribatsha Dash
-                  </span>
-                  {/* a thin hand-drawn underline flourish that extends
-                      past the name and trails off to a small period. */}
-                  <svg
-                    viewBox="0 0 360 16"
-                    width={340}
-                    height={15}
-                    className="absolute left-0 -bottom-2 text-ink pointer-events-none"
-                    aria-hidden
-                  >
-                    <path
-                      d="M 4 9
-                         C 50 5 100 3 150 4
-                         C 180 5 200 8 220 7
-                         C 240 6 260 4 280 4
-                         C 300 4 320 6 340 8
-                         C 350 9 354 9 356 9"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1}
-                      strokeLinecap="round"
-                    />
-                    <circle cx={358} cy={9} r={1.2} fill="currentColor" />
-                  </svg>
-                </div>
-                <p className="mt-5 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
+                  {/* the monogram — connected S, dot, D, all in one
+                      flowing hand-drawn gesture with the page's wobble.
+                      ~1.3px stroke, no fill, with the same hand-drawn
+                      character as every other line on the page. */}
+                  <path
+                    d="M 30 38
+                       C 24 38 18 32 22 24
+                       C 26 18 38 18 44 24
+                       C 48 30 44 38 36 40
+                       C 42 38 50 36 56 32
+                       C 60 28 60 22 56 20
+                       C 52 18 48 22 48 28
+                       C 50 36 60 42 70 40
+                       C 80 38 86 32 86 24
+                       C 86 18 80 14 74 18
+                       C 78 18 84 22 90 24
+                       C 98 28 106 28 112 24
+                       C 118 20 124 18 130 20
+                       C 138 22 144 30 144 38
+                       C 144 46 138 50 132 48
+                       C 126 46 122 40 124 32
+                       C 126 26 132 24 138 28
+                       C 144 32 150 38 156 42
+                       C 162 46 168 46 170 42"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.3}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* a small period at the end of the flourish — like a
+                      real signature's terminal dot */}
+                  <circle cx={172} cy={42} r={1.3} fill="currentColor" />
+                </svg>
+                <p className="mt-4 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
                   sribatsha dash · mon 15 jun 26
                 </p>
               </div>

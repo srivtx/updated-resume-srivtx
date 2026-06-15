@@ -157,13 +157,13 @@ function TerminalCursor({ x, y, seed = 1, size = 22 }: { x: number; y: number; s
 function Cube3D({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
   const s = size;
   // front face corners
-  const fl = [x - s * 0.4, y - s * 0.2];
-  const fr = [x + s * 0.05, y - s * 0.2];
-  const fbr = [x + s * 0.05, y + s * 0.3];
-  const fbl = [x - s * 0.4, y + s * 0.3];
+  const fl: [number, number] = [x - s * 0.4, y - s * 0.2];
+  const fr: [number, number] = [x + s * 0.05, y - s * 0.2];
+  const fbr: [number, number] = [x + s * 0.05, y + s * 0.3];
+  const fbl: [number, number] = [x - s * 0.4, y + s * 0.3];
   // back face offset up-right
-  const bl = [x - s * 0.2, y - s * 0.45];
-  const br = [x + s * 0.25, y - s * 0.45];
+  const bl: [number, number] = [x - s * 0.2, y - s * 0.45];
+  const br: [number, number] = [x + s * 0.25, y - s * 0.45];
   return (
     <g>
       <path d={wob(fl, fr, seed, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
@@ -289,40 +289,13 @@ function Doc({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: numbe
   );
 }
 
-// A small star / asterisk — 4 lines crossing.
-function Asterisk({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
-  const s = size;
-  return (
-    <g>
-      <path d={wob([x, y - s * 0.4], [x, y + s * 0.4], seed, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
-      <path d={wob([x - s * 0.4, y], [x + s * 0.4, y], seed + 1, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
-      <path d={wob([x - s * 0.28, y - s * 0.28], [x + s * 0.28, y + s * 0.28], seed + 2, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
-      <path d={wob([x - s * 0.28, y + s * 0.28], [x + s * 0.28, y - s * 0.28], seed + 3, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
-    </g>
-  );
-}
-
-// A knot — two loops crossed. For neuro-2e.
+// A small knot — two loops crossed. For neuro-2e.
 function Knot({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
   const r = size * 0.3;
   return (
     <g>
       <Loop cx={x - r * 0.4} cy={y - r * 0.3} r={r} seed={seed} tilt={0.4} />
       <Loop cx={x + r * 0.4} cy={y + r * 0.3} r={r} seed={seed + 7} tilt={0.4} />
-    </g>
-  );
-}
-
-// A small circle with a check — for "shipped" projects. Or a wave.
-function Wave({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
-  const s = size;
-  // a sine-like wave
-  return (
-    <g>
-      <path d={wob([x - s * 0.4, y], [x - s * 0.2, y - s * 0.25], seed, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
-      <path d={wob([x - s * 0.2, y - s * 0.25], [x, y + s * 0.25], seed + 1, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
-      <path d={wob([x, y + s * 0.25], [x + s * 0.2, y - s * 0.25], seed + 2, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
-      <path d={wob([x + s * 0.2, y - s * 0.25], [x + s * 0.4, y], seed + 3, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
     </g>
   );
 }
