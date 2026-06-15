@@ -51,7 +51,6 @@ function SupportingCard({ c }: { c: SupportingCardData }) {
       <p className="mt-3 font-serif text-[13.5px] leading-[1.65] text-ink-soft text-pretty">
         {c.body}
       </p>
-      {/* Hand-drawn 3D/2D illustration — only on cards that don't have a diagram. */}
       {!hasDiagram && <ProjectArt name={c.name} />}
       {c.sketch === "img-to-3d" && <ImgTo3DSketch />}
       {c.sketch === "lsp-server" && <LspSketch />}
@@ -65,7 +64,7 @@ function MarginColumn() {
   return (
     <aside className="hidden lg:block">
       <div className="sticky top-6 pt-2">
-        <p className="font-hand text-[15px] text-ink-mute mb-3">
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
           ↳ margin
         </p>
         <ul className="space-y-4">
@@ -95,15 +94,17 @@ function MarginColumn() {
 
         <hr className="my-7 border-rule-soft" />
 
-        <p className="font-hand text-[15px] text-ink-mute mb-2">↳ reach</p>
-        <ul className="font-mono text-[10.5px] leading-[1.8] text-ink-soft space-y-1">
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
+          ↳ reach
+        </p>
+        <ul className="space-y-1.5">
           {contact.map((c) => (
             <li key={c.kind}>
               <a
                 href={c.href}
-                target={c.kind === "email" ? undefined : "_blank"}
-                rel={c.kind === "email" ? undefined : "noreferrer"}
-                className="hover:text-ink"
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noreferrer" : undefined}
+                className="font-hand text-[17px] text-ink-soft hover:text-ink link-underline"
               >
                 {c.label}
               </a>
