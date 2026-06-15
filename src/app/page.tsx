@@ -64,14 +64,14 @@ function MarginColumn() {
   return (
     <aside className="hidden lg:block">
       <div className="sticky top-6 pt-2">
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
           ↳ margin
         </p>
-        <ul className="space-y-2.5">
+        <ul className="space-y-3">
           {marginNotes.map((n) => (
             <li
               key={n.id}
-              className={`font-serif text-[14.5px] leading-[1.3] ${
+              className={`font-serif text-[15px] leading-[1.3] ${
                 n.kind === "warn"
                   ? "text-rust"
                   : n.kind === "todo"
@@ -92,9 +92,9 @@ function MarginColumn() {
           ))}
         </ul>
 
-        <hr className="my-5 border-rule-soft" />
+        <hr className="my-7 border-rule-soft" />
 
-        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
+        <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
           ↳ reach
         </p>
         <ul className="space-y-1.5">
