@@ -39,10 +39,10 @@ const config: Config = {
         //  - serif: the body of a "typed" lab entry, formal but warm
         //  - sans: UI text, very small
         //  - mono: terminal / code / IDs
-        hand:  ['var(--font-hand)', "Caveat", "Patrick Hand", "Bradley Hand", cursive],
-        serif: ['var(--font-serif)', "Charter", "Georgia", serif],
-        sans:  ['var(--font-sans)', "Inter", system-ui, sans-serif],
-        mono:  ['var(--font-mono)', "JetBrains Mono", ui-monospace, monospace],
+        hand:  ['var(--font-hand)', "Caveat", "Patrick Hand", "Bradley Hand", "cursive"],
+        serif: ['var(--font-serif)', "Charter", "Georgia", "serif"],
+        sans:  ['var(--font-sans)', "Inter", "system-ui", "sans-serif"],
+        mono:  ['var(--font-mono)', "JetBrains Mono", "ui-monospace", "monospace"],
       },
       letterSpacing: {
         tightest: "-0.045em",
