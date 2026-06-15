@@ -320,35 +320,33 @@ export default function Page() {
                 </p>
               </div>
               <div className="text-right">
-                {/* Page-closing signature — the name 'Sribatsha Dash'
-                    rendered in Caveat hand at a substantial size, with
-                    small hand-drawn connecting strokes that link the
-                    letters and a trailing flourish. Real letterforms
-                    (so it reads as the name) + real handwriting gesture
-                    (so it doesn't look like typeset). Thin strokes,
-                    slight forward tilt. */}
+                {/* Page-closing signature in Pinyon Script — a real designer
+                    cursive (the kind used for wedding invitations and
+                    fashion brand marks). The text is set as one line in
+                    the font, but the *form* reads as a designed signature,
+                    not typeset text. Slight forward tilt, with a thin
+                    hand-drawn underline flourish. */}
                 <div
                   className="relative inline-block"
                   style={{ transform: "rotate(-3deg)" }}
                 >
                   <span
-                    className="font-hand text-ink leading-[0.95] tracking-[-0.005em] whitespace-nowrap"
+                    className="text-ink leading-[0.85] tracking-[-0.005em] whitespace-nowrap"
                     style={{
-                      fontFamily: "var(--font-hand), 'Caveat', cursive",
-                      fontSize: "clamp(40px, 5vw, 56px)",
+                      fontFamily: "var(--font-signature), 'Pinyon Script', cursive",
+                      fontSize: "clamp(64px, 8vw, 96px)",
                       fontWeight: 400,
-                      letterSpacing: "0.005em",
+                      lineHeight: 1,
                     }}
                   >
                     Sribatsha Dash
                   </span>
-                  {/* a thin, wobbly hand-drawn underline that extends past
-                      the name and trails off — the long flourish under a
-                      real signature. 1px stroke, not bold. */}
+                  {/* a thin hand-drawn underline flourish that extends
+                      past the name and trails off to a small period. */}
                   <svg
-                    viewBox="0 0 340 14"
-                    width={320}
-                    height={13}
+                    viewBox="0 0 360 16"
+                    width={340}
+                    height={15}
                     className="absolute left-0 -bottom-2 text-ink pointer-events-none"
                     aria-hidden
                   >
@@ -357,13 +355,14 @@ export default function Page() {
                          C 50 5 100 3 150 4
                          C 180 5 200 8 220 7
                          C 240 6 260 4 280 4
-                         C 300 4 320 6 332 8"
+                         C 300 4 320 6 340 8
+                         C 350 9 354 9 356 9"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={1}
                       strokeLinecap="round"
                     />
-                    <circle cx={334} cy={8} r={1.2} fill="currentColor" />
+                    <circle cx={358} cy={9} r={1.2} fill="currentColor" />
                   </svg>
                 </div>
                 <p className="mt-5 font-mono text-[10px] uppercase tracking-broad text-ink-faint">

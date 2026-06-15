@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif, Caveat, Allura } from "next/font/google";
+import { Inter, JetBrains_Mono, Instrument_Serif, Caveat, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 
 const sans = Inter({
@@ -34,11 +34,11 @@ const hand = Caveat({
   display: "swap",
 });
 
-// A real signature font. Allura is a calligraphic signature style — the
-// kind you'd see on a notarized document or a CEO's signature. Used
-// ONLY for the page-closing signature in the footer. No uppercase, no
-// small-caps — it's letterforms designed to be read as a flowing name.
-const signature = Allura({
+// A real signature font. Pinyon Script is a designer-style cursive
+// (think wedding invitations, fashion brand marks) — the kind of
+// "logotype as a signature" that designers create. Used ONLY for the
+// page-closing signature in the footer. NOT handwriting — drawing.
+const signature = Pinyon_Script({
   subsets: ["latin"],
   variable: "--font-signature",
   weight: ["400"],
