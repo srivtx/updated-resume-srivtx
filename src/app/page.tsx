@@ -320,61 +320,40 @@ export default function Page() {
                 </p>
               </div>
               <div className="text-right">
-                {/* a hand-drawn cursive signature — srivtx, written in one
-                    flowing motion. Three connected strokes: the name, an
-                    underline flourish, and a small dot punctuation. */}
-                <svg
-                  viewBox="0 0 200 70"
-                  width={200}
-                  height={70}
-                  className="text-ink ml-auto"
-                  aria-label="srivtx — hand-written signature"
-                  role="img"
-                >
-                  {/* the name — srivtx as one connected cursive stroke.
-                      Loops at s, dips at r-i, loops at v, tails at t-x. */}
-                  <path
-                    d="M 22 42
-                       C 18 42 14 38 16 32
-                       C 18 26 26 26 30 32
-                       C 32 36 30 42 26 44
-                       C 30 42 34 40 38 38
-                       C 42 36 46 34 50 32
-                       C 52 30 50 28 48 30
-                       C 46 34 46 40 48 44
-                       C 50 46 54 44 56 40
-                       C 58 36 60 32 64 30
-                       C 70 28 78 30 82 36
-                       C 84 40 82 44 78 46
-                       C 82 44 86 42 90 40
-                       C 100 36 112 36 122 38
-                       C 134 40 146 44 156 48
-                       C 162 50 168 50 174 48
-                       C 178 46 182 42 184 38
-                       C 184 36 182 36 180 38
-                       C 176 44 174 50 174 56"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.6}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  {/* underline flourish — a long horizontal sweep under
-                      the name, with a slight overshoot at each end. */}
-                  <path
-                    d="M 16 58
-                       C 40 56 70 54 100 54
-                       C 130 54 160 56 180 60"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.4}
-                    strokeLinecap="round"
-                  />
-                  {/* a small period after the signature, like a real one */}
-                  <circle cx={190} cy={58} r={1.6} fill="currentColor" />
-                </svg>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
-                  srivtx · mon 15 jun 26
+                {/* Hand-written signature — 'Sribatsha Dash' set in Caveat
+                    (the same hand font used throughout the page) so it
+                    reads as 'this person signed their name'. Slight
+                    rotation + a wobbly underline flourish. The full name,
+                    not a handle. */}
+                <div className="relative inline-block" style={{ transform: "rotate(-2deg)" }}>
+                  <span
+                    className="font-hand text-[34px] sm:text-[38px] text-ink leading-[0.95] tracking-tight"
+                    style={{ fontFamily: "var(--font-hand), 'Caveat', cursive" }}
+                  >
+                    <span className="text-ink/90">Sribatsha</span>{" "}
+                    <span className="italic text-ink-soft">Dash</span>
+                  </span>
+                  {/* underline flourish — wobbly hand-drawn line */}
+                  <svg
+                    viewBox="0 0 240 12"
+                    width={220}
+                    height={11}
+                    className="absolute left-0 -bottom-1 text-ink pointer-events-none"
+                    aria-hidden
+                  >
+                    <path
+                      d="M 4 7 C 50 5 100 4 150 5 C 190 6 215 8 234 9"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.4}
+                      strokeLinecap="round"
+                    />
+                    {/* a small period at the end of the flourish */}
+                    <circle cx={233} cy={8} r={1.4} fill="currentColor" />
+                  </svg>
+                </div>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
+                  sribatsha dash · mon 15 jun 26
                 </p>
               </div>
             </div>
