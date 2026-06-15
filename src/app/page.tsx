@@ -35,7 +35,7 @@ function SupportingCard({ c }: { c: SupportingCardData }) {
         ↳ {c.kicker}
       </p>
       {isFeatured && (
-        <p className="font-hand text-[15px] text-sepia -mt-1 mb-2 italic">
+        <p className="font-serif text-[15px] text-sepia -mt-1 mb-2 italic">
           live · in the world
         </p>
       )}
@@ -71,7 +71,7 @@ function MarginColumn() {
           {marginNotes.map((n) => (
             <li
               key={n.id}
-              className={`font-hand text-[17px] leading-[1.3] ${
+              className={`font-serif text-[17px] leading-[1.3] ${
                 n.kind === "warn"
                   ? "text-rust"
                   : n.kind === "todo"
@@ -104,7 +104,7 @@ function MarginColumn() {
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel={c.href.startsWith("http") ? "noreferrer" : undefined}
-                className="font-hand text-[17px] text-ink-soft hover:text-ink link-underline"
+                className="font-serif text-[17px] text-ink-soft hover:text-ink link-underline"
               >
                 {c.label}
               </a>
@@ -119,7 +119,7 @@ function MarginColumn() {
 export default function Page() {
   return (
     <main className="relative mx-auto max-w-page px-4 sm:px-8 lg:px-12 pt-8 sm:pt-10 pb-20">
-      <div className="flex items-baseline justify-between font-hand text-[20px] text-ink-soft mb-6">
+      <div className="flex items-baseline justify-between font-serif text-[20px] text-ink-soft mb-6">
         <span>{meta.date}</span>
         <span className="font-mono text-[11px] text-ink-mute tabular-nums">
           <LiveTime /> · in your window
@@ -132,7 +132,7 @@ export default function Page() {
 
           {/* HERO */}
           <header>
-            <h1 className="font-hand font-normal text-ink leading-[0.95] tracking-tight">
+            <h1 className="font-serif font-normal text-ink leading-[0.95] tracking-tight">
               <span className="block text-[clamp(64px,12vw,128px)]">
                 Sribatsha
               </span>
@@ -141,7 +141,7 @@ export default function Page() {
               </span>
             </h1>
 
-            <p className="mt-5 font-hand text-[24px] sm:text-[28px] text-ink-soft leading-[1.2] max-w-[34ch]">
+            <p className="mt-5 font-serif text-[24px] sm:text-[28px] text-ink-soft leading-[1.2] max-w-[34ch]">
               Today:{" "}
               <span className="pencil-double-underline">
                 Building nnn in the mornings. Lockr support tickets in the evenings. Sleep is a hypothesis, not a fact.
@@ -192,13 +192,13 @@ export default function Page() {
                     ↳ on disk
                   </p>
                   <NnnRoughSketch />
-                  <p className="mt-4 font-hand text-[17px] text-ink-soft leading-snug">
+                  <p className="mt-4 font-serif text-[17px] text-ink-soft leading-snug">
                     the agents share a scratch directory. they pass files, not messages. read the readme on github for what each one actually does.
                   </p>
                 </aside>
               </div>
 
-              <p className="mt-6 font-hand text-[18px]">
+              <p className="mt-6 font-serif text-[18px]">
                 <a
                   href={feature.href}
                   target="_blank"
@@ -221,7 +221,7 @@ export default function Page() {
                 <SupportingCard key={c.name} c={c} />
               ))}
             </div>
-            <p className="mt-6 font-hand text-[19px] text-ink-soft">
+            <p className="mt-6 font-serif text-[19px] text-ink-soft">
               + a dozen more repos on{" "}
               <a href={moreOnGithub} target="_blank" rel="noreferrer" className="link-underline">
                 github / srivtx
@@ -251,7 +251,7 @@ export default function Page() {
                       {u.name}
                       <span className="text-ink-faint">.</span>
                     </a>
-                    <span className="ml-2 font-hand text-[17px] text-ink-soft">
+                    <span className="ml-2 font-serif text-[17px] text-ink-soft">
                       {u.what}
                     </span>
                     <p className="mt-1 font-serif text-[13.5px] text-ink-soft leading-[1.55] max-w-[60ch]">
@@ -272,7 +272,7 @@ export default function Page() {
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-1.5">
               ↳ practice
             </p>
-            <p className="font-hand text-[20px] text-ink leading-[1.3]">
+            <p className="font-serif text-[20px] text-ink leading-[1.3]">
               {practiceLine}
             </p>
           </section>
@@ -312,10 +312,10 @@ export default function Page() {
                 <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
                   ↳ signed
                 </p>
-                <p className="mt-1 font-hand text-[20px] text-ink-soft">
+                <p className="mt-1 font-serif text-[20px] text-ink-soft">
                   sribatsha dash, bhubaneswar
                 </p>
-                <p className="mt-0.5 font-hand text-[15px] text-ink-faint italic">
+                <p className="mt-0.5 font-serif text-[15px] text-ink-faint italic">
                   hand-built · <span className="not-italic font-mono text-[10px] tracking-wide2 uppercase">next.js</span> · caveat · instrument serif · inter · jb mono
                 </p>
               </div>
