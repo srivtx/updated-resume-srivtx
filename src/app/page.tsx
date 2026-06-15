@@ -138,14 +138,97 @@ export default function Page() {
 
           {/* HERO */}
           <header>
-            <h1 className="font-serif font-normal text-ink leading-[0.95] tracking-[-0.02em]">
-              <span className="block text-[clamp(64px,12vw,128px)]">
-                Sribatsha
-              </span>
-              <span className="block text-[clamp(64px,12vw,128px)] italic text-ink-soft pl-[0.18em]">
-                Dash<span className="text-ink-faint">.</span>
-              </span>
-            </h1>
+            <div className="flex items-end justify-between gap-4">
+              <h1 className="font-serif font-normal text-ink leading-[0.95] tracking-[-0.02em] flex-1 min-w-0">
+                <span className="block text-[clamp(56px,11vw,112px)]">
+                  Sribatsha
+                </span>
+                <span className="block text-[clamp(56px,11vw,112px)] italic text-ink-soft pl-[0.18em]">
+                  Dash<span className="text-ink-faint">.</span>
+                </span>
+              </h1>
+              {/* A small hand-drawn mark to the right of the name. A
+                  wobbly sine wave on a hand-drawn axis with a tiny
+                  "y = sin(x)" label, drawn in the page's wobble language.
+                  Pure math, matches the desktop 3D drawing's vibe.
+                  Visible only on screens smaller than xl where the
+                  desktop 3D frame is hidden. */}
+              <svg
+                viewBox="0 0 100 80"
+                width={88}
+                height={70}
+                className="xl:hidden text-ink opacity-70 shrink-0 self-end mb-2"
+                role="img"
+                aria-label="Hand-drawn sine wave — y = sin(x)"
+              >
+                {/* x axis — horizontal, with small arrow on the right */}
+                <path
+                  d="M 8 50 L 90 50"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.2}
+                  strokeLinecap="round"
+                />
+                <path d="M 90 50 L 86 46 M 90 50 L 86 54" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+                {/* y axis — vertical, with small arrow on the top */}
+                <path
+                  d="M 16 70 L 16 8"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.2}
+                  strokeLinecap="round"
+                />
+                <path d="M 16 8 L 12 12 M 16 8 L 20 12" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+                {/* the sine wave itself — one full period */}
+                <path
+                  d="M 16 50
+                     C 24 50 28 22 36 22
+                     C 44 22 48 50 56 50
+                     C 64 50 68 78 76 78
+                     C 84 78 88 50 92 50"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.4}
+                  strokeLinecap="round"
+                />
+                {/* a few data points on the wave */}
+                <circle cx="36" cy="22" r="1.6" fill="currentColor" />
+                <circle cx="56" cy="50" r="1.6" fill="currentColor" />
+                <circle cx="76" cy="78" r="1.6" fill="currentColor" />
+                {/* a small handwritten label */}
+                <text
+                  x="36"
+                  y="14"
+                  fontFamily="var(--font-hand), 'Caveat', cursive"
+                  fontSize="11"
+                  fontStyle="italic"
+                  fill="currentColor"
+                >
+                  y = sin(x)
+                </text>
+                {/* axis tick labels */}
+                <text
+                  x="92"
+                  y="62"
+                  fontFamily="var(--font-hand), 'Caveat', cursive"
+                  fontSize="10"
+                  fontStyle="italic"
+                  fill="currentColor"
+                >
+                  x
+                </text>
+                <text
+                  x="6"
+                  y="14"
+                  fontFamily="var(--font-hand), 'Caveat', cursive"
+                  fontSize="10"
+                  fontStyle="italic"
+                  fill="currentColor"
+                >
+                  y
+                </text>
+              </svg>
+            </div>
 
             <p className="mt-7 font-serif text-[22px] sm:text-[26px] text-ink-soft leading-[1.3] max-w-[36ch]">
               Today:{" "}
@@ -335,6 +418,30 @@ export default function Page() {
                 {school.detail}
               </p>
             </div>
+          </section>
+
+          {/* REACH (mobile) — a compact horizontal contact strip, only
+              visible on small viewports. The desktop right column hides
+              the reach on mobile, so this is the only way to find the
+              contact info on a phone. Same ↳ reach kicker style. */}
+          <section className="mt-12 lg:hidden">
+            <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
+              ↳ reach
+            </p>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 font-serif text-[15px] text-ink">
+              {contact.map((c) => (
+                <li key={c.kind}>
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noreferrer" : undefined}
+                    className="link-underline hover:text-graphite"
+                  >
+                    {c.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </section>
 
           {/* FOOTER — a real closing gesture. Hand-drawn date + sigil. */}
