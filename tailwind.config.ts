@@ -42,7 +42,8 @@ const config: Config = {
         hand:  ['var(--font-hand)', "Caveat", "Patrick Hand", "Bradley Hand", "cursive"],
         serif: ['var(--font-serif)', "Charter", "Georgia", "serif"],
         sans:  ['var(--font-sans)', "Inter", "system-ui", "sans-serif"],
-        mono:  ['var(--font-mono)', "JetBrains Mono", "ui-monospace", "monospace"],
+        mono:    ['var(--font-mono)', "JetBrains Mono", "ui-monospace", "monospace"],
+        display: ['var(--font-display)', "Saira", "sans-serif"],
       },
       letterSpacing: {
         tightest: "-0.045em",

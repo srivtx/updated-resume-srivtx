@@ -25,8 +25,12 @@
   color-scheme: light;
 }
 
-html, body {
+html {
   background: var(--paper);
+}
+
+body {
+  background: transparent;
   color: var(--ink);
   font-feature-settings: "ss01", "ss02", "kern", "liga";
   text-rendering: optimizeLegibility;
@@ -34,34 +38,28 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* The page IS graph paper. A real 24px grid drawn as a CSS background.
-   Slightly heavier on the major lines (96px), lighter on the minor (24px).
-   This is structural, not decoration. */
+/* The page keeps a faint graph-paper grid. The chaos field sits above it. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
     linear-gradient(to right, var(--grid-faint) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-faint) 1px, transparent 1px);
   background-size:
-    96px 96px,
-    96px 96px,
     24px 24px,
     24px 24px;
   background-position: 0 0;
-  opacity: 0.55;
+  opacity: 0.38;
 }
 
 /* Faint horizontal "ruled line" baseline that sits underneath the body
    text, like a notebook line the writing rests on. */
 main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 @layer utilities {
@@ -138,6 +136,7 @@ main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h
 }
 
 html { scroll-behavior: smooth; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

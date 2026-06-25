@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif, Caveat } from "next/font/google";
+import { Inter, JetBrains_Mono, Instrument_Serif, Caveat, Saira } from "next/font/google";
 import "./globals.css";
 
 const sans = Inter({
@@ -24,9 +24,6 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-// The hand — this is the voice of the page. Caveat is a clean handwriting
-// font that reads at small sizes, has the right amount of slant, and doesn't
-// try to be a calligraphic display face.
 const hand = Caveat({
   subsets: ["latin"],
   variable: "--font-hand",
@@ -34,13 +31,21 @@ const hand = Caveat({
   display: "swap",
 });
 
-// (signature is drawn as an SVG path in the same hand-drawn language
-// as the rest of the page — doodles, project art, diagrams. No font
-// needed for the signature.)
+// The name — bold sans-serif, Mitchell-style authority.
+// Saira at 800 weight = the closest free match to Nimbus Sans Extended.
+const display = Saira({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "700", "800"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Sribatsha Dash — lab journal",
   description: "engineer, polymath, builds on the bench. ex-goquant.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -49,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${serif.variable} ${mono.variable} ${hand.variable}`}
+      className={`${sans.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${display.variable}`}
     >
       <body className="font-serif text-ink">{children}</body>
     </html>
