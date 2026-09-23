@@ -114,13 +114,16 @@ export default function Page() {
         {/* ====== PAGE BREAK ====== */}
         <div className="mt-24 sm:mt-32 mb-12">
           <div className="flex items-center gap-4">
-            <svg viewBox="0 0 200 6" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
+            {/* preserveAspectRatio="none" lets the squiggle stretch the full
+                flex width — otherwise the 200-unit path stays 200px wide and
+                the rule visibly stops short of the label on both sides. */}
+            <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
               <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
             </svg>
             <span className="font-mono text-[9px] uppercase tracking-broad text-ink-faint">
               ↳ on the bench · {meta.date.toLowerCase()}
             </span>
-            <svg viewBox="0 0 200 6" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
+            <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
               <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
             </svg>
           </div>
