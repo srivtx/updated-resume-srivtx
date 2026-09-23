@@ -27,7 +27,7 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Sribatsha Dash — srivtx",
   description:
-    "fullstack developer · ml engineer · builds deriva, deepforge & customs. ex-goquant.",
+    "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
   icons: {
     icon: "/favicon.svg",
   },

@@ -1,8 +1,10 @@
 "use client";
 
-// Experience accordion — collapsible role cards. The chevron rotates,
-// bullets slide in. One card open by default.
+// Experience timeline — LinkedIn-style rows: logo tile, role, org, period,
+// collapsible bullets. Same accordion feel as bharathships.me, with the
+// org logo doing the visual heavy-lifting.
 
+import Image from "next/image";
 import { useState } from "react";
 import { ChevronDown } from "@/components/NeuButton";
 
@@ -10,6 +12,7 @@ export type Exp = {
   role: string;
   org: string;
   period: string;
+  logo?: string;
   points: string[];
 };
 
@@ -26,10 +29,22 @@ function ExpCard({
     <div className="rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-colors">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-4 py-3.5 text-left"
+        className="w-full flex items-center gap-3.5 sm:gap-4 px-3.5 sm:px-4 py-3.5 text-left"
         aria-expanded={open}
       >
-        <div className="min-w-0">
+        {/* org logo tile */}
+        {item.logo && (
+          <span className="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-md overflow-hidden ring-1 ring-black/10 dark:ring-white/15 bg-white">
+            <Image
+              src={item.logo}
+              alt={`${item.org} logo`}
+              width={48}
+              height={48}
+              className="w-full h-full object-contain"
+            />
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80 truncate">
             {item.role}
             <span className="mx-1.5 text-black/30 dark:text-white/30">·</span>
@@ -46,7 +61,7 @@ function ExpCard({
         style={{ gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0 }}
       >
         <div className="overflow-hidden">
-          <ul className="px-4 pb-4 pt-1 border-t border-neutral-200 dark:border-neutral-800 space-y-2.5 text-xs sm:text-sm text-black/60 dark:text-white/60">
+          <ul className="px-4 py-4 pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2.5 text-xs sm:text-sm text-black/60 dark:text-white/60">
             {item.points.map((p) => (
               <li key={p} className="flex gap-2.5">
                 <span className="text-[#006FEE] dark:text-[#4d9fff] shrink-0 mt-[3px]">•</span>
