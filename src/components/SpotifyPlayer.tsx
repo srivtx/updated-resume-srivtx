@@ -2,7 +2,10 @@
 
 // "Last played" — the one-track Spotify card, his signature touch, rebuilt
 // in this site's voice: art (self-hosted) with a hover zoom, the green
-// equalizer while it plays, a play/pause slab, and an expandable seek bar.
+// equalizer while it plays, and a play/pause slab. The seek bar is a
+// SEPARATE strip that slides open UNDER the whole status row — the full
+// combined width of both cards — so the two cards above it stay the exact
+// same size whether it's playing or not.
 // Audio is the official 30-second preview streamed off Spotify's CDN; the
 // song title links to the real track.
 
@@ -18,7 +21,7 @@ function formatTime(t: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export function SpotifyPlayer() {
+export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
   const [playing, setPlaying] = useState(false);
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -89,14 +92,14 @@ export function SpotifyPlayer() {
   const progress = duration > 0 ? (current / duration) * 100 : 0;
 
   return (
-    <div className="w-full group/card">
+    <div className="w-full">
       <audio ref={audioRef} src={lastPlayed.audioSrc} preload="metadata" />
 
-      {/* one card: the row on top, the seek bar slides open INSIDE it, full
-          width — the card grows as a single piece, so the grid never has to
-          stretch the neighbor card to match a detached bar hanging below */}
-      <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
-        <div className="flex items-center gap-3.5 p-3.5 sm:p-4">
+      {/* the status row — this card + whatever sits beside it, stretched
+          to the exact same height. The row never changes when the bar
+          below opens, so both cards stay identical, playing or not */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-stretch">
+        <div className="group/card flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
         {/* album art — zooms on hover like his */}
         <div className="shrink-0 relative w-16 h-16 rounded-lg overflow-hidden shadow-sm ring-1 ring-black/10 dark:ring-white/15">
           <Image
@@ -154,13 +157,19 @@ export function SpotifyPlayer() {
         </button>
         </div>
 
-        {/* seek bar — slides open while playing, like his, inside the card */}
-        <div
-          className="grid transition-all duration-300 ease-in-out"
-          style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
-        >
+        {children}
+      </div>
+
+      {/* seek bar — separate, under the whole row: the full combined
+          length of both cards, like the detached strip before, just
+          row-wide. Slides open while playing, and the cards above never
+          change size */}
+      <div
+        className="grid transition-all duration-300 ease-in-out"
+        style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
+      >
         <div className="overflow-hidden">
-          <div className="mx-3.5 sm:mx-4 mb-3.5 sm:mb-4 pt-2.5 border-t border-dashed border-black/[0.08] dark:border-white/[0.08]">
+          <div className="mt-2.5 pt-2.5 border-t border-dashed border-black/[0.08] dark:border-white/[0.08]">
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-mono text-black/40 dark:text-white/40 w-8 text-right tabular-nums">
                 {formatTime(current)}
@@ -183,7 +192,6 @@ export function SpotifyPlayer() {
               </span>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

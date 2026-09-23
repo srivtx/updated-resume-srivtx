@@ -165,14 +165,14 @@ function Hero() {
       </Reveal>
 
       {/* status strip — last played (the classic card, 30s preview)
-          + now watching, side by side */}
+          + now watching, side by side; the seek bar opens below the
+          row at the cards' full combined width, so both cards stay
+          the exact same size, playing or not */}
       <Reveal delay={0.2}>
-        {/* items-start: the two cards top-align and each keeps its own
-            height — the spotify card grows to fit its seek bar while
-            playing, and the now-watching card never stretches to match */}
-        <div className="sm:px-8 px-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-          <SpotifyPlayer />
-          <NowWatching />
+        <div className="sm:px-8 px-4 mt-4">
+          <SpotifyPlayer>
+            <NowWatching />
+          </SpotifyPlayer>
         </div>
       </Reveal>
     </>
