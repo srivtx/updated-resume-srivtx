@@ -2,8 +2,7 @@
 
 // Live GitHub numbers — fetched client-side from the public API (no
 // token in the page, ever). Fails quietly: if the network or the rate
-// limit says no, the chips simply don't render and the page loses
-// nothing.
+// limit says no, the chips simply don't render.
 
 import { useEffect, useState } from "react";
 
@@ -35,19 +34,22 @@ export function GitHubStats() {
   if (!stats) return null;
 
   const chips: [string, number][] = [
-    ["repos", stats.repos],
+    ["repositories", stats.repos],
     ["stars", stats.stars],
     ["followers", stats.followers],
   ];
 
   return (
-    <p className="mt-6 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-wide2 text-ink-mute">
+    <div className="mt-6 flex flex-wrap items-center gap-2">
       {chips.map(([label, n]) => (
-        <span key={label} className="border border-rule-soft bg-paper/50 px-2 py-1">
-          <span className="text-ink">{n}</span> {label}
+        <span
+          key={label}
+          className="inline-flex items-center rounded-md border border-black/10 dark:border-white/10 text-[11px] font-medium h-6 px-2.5 text-black/50 dark:text-white/50 bg-white dark:bg-white/[0.04]"
+        >
+          <span className="text-black/80 dark:text-white/80 font-semibold mr-1">{n}</span>
+          {label}
         </span>
       ))}
-      <span className="text-ink-faint">· live from github</span>
-    </p>
+    </div>
   );
 }

@@ -57,7 +57,7 @@ export function WanderingAgent() {
             viewBox="0 0 34 26"
             width={34}
             height={26}
-            className="text-ink-mute"
+            className="text-black/40 dark:text-white/50"
             style={{ scaleX: dir }}
             animate={{ rotate: [0, 1.5, -1.5, 0] }}
             transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}

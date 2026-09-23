@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif, Caveat, Saira } from "next/font/google";
+import { Space_Grotesk, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const sans = Inter({
+const grotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["300", "400", "500"],
+  variable: "--font-grotesk",
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -24,25 +24,10 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const hand = Caveat({
-  subsets: ["latin"],
-  variable: "--font-hand",
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-// The name — bold sans-serif, Mitchell-style authority.
-// Saira at 800 weight = the closest free match to Nimbus Sans Extended.
-const display = Saira({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["500", "700", "800"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "Sribatsha Dash — lab journal",
-  description: "engineer, polymath, builds on the bench. ex-goquant.",
+  title: "Sribatsha Dash — srivtx",
+  description:
+    "fullstack developer · ml engineer · builds deriva, deepforge & customs. ex-goquant.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -54,18 +39,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${display.variable}`}
+      className={`${grotesk.variable} ${serif.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>
-        {/* set the theme before first paint — no flash of the wrong paper */}
+        {/* set the theme before first paint — no flash of the wrong page */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}`,
           }}
         />
       </head>
-      <body className="font-serif text-ink">{children}</body>
+      <body className="font-sans bg-white dark:bg-zinc-900 text-black dark:text-white antialiased">
+        {children}
+      </body>
     </html>
   );
 }

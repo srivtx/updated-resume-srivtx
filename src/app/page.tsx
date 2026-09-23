@@ -1,351 +1,538 @@
-// Lab journal 2.0 — same notebook soul, rebuilt like a modern portfolio:
-// sticky nav pill, dark mode, live GitHub numbers, contribution heatmap,
-// stack ticker, scroll reveals, and one wandering agent. Copy stays
-// short. Every line earns its place.
+// srivtx — rebuilt on the bharathships.me skeleton, then pushed
+// further: same ruled margins, same serif italic voice, same tactile
+// buttons — plus live product previews, papers, and blogs.
 
-import { meta, today, bio, contact, feature, supporting, moreOnGithub, upstream, practiceLine, job, school } from "@/lib/data";
-import { Doodle } from "@/components/Doodle";
-import { Logo } from "@/components/Logo";
-import { ChaosBackground } from "@/components/ChaosBackground";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import Image from "next/image";
+import {
+  profile,
+  socials,
+  experience,
+  products,
+  builds,
+  posts,
+  papers,
+  upstream,
+} from "@/lib/data";
+import {
+  NeuIconLink,
+  NeuButton,
+  GithubIcon,
+  XIcon,
+  MailIcon,
+  ArrowUpRight,
+} from "@/components/NeuButton";
+import { Experience } from "@/components/ExpItem";
+import { ProductPreview, BuildPreview } from "@/components/AppPreview";
 import { Reveal } from "@/components/Reveal";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { GitHubStats } from "@/components/GitHubStats";
 import { Contributions } from "@/components/Contributions";
 import { StackMarquee } from "@/components/StackMarquee";
 import { WanderingAgent } from "@/components/WanderingAgent";
 
-const NAV = [
-  { label: "bench", href: "#bench" },
-  { label: "work", href: "#work" },
-  { label: "graph", href: "#graph" },
-  { label: "contact", href: "#contact" },
-];
+/* ---------- small building blocks ---------- */
 
-type SupportingCardData = {
-  name: string;
-  kicker: string;
-  one: string;
-  href: string;
-};
-
-function SupportingCard({ c }: { c: SupportingCardData }) {
+function Rule() {
   return (
-    <article className="group relative col-span-12 sm:col-span-6 border border-rule-soft bg-paper/40 backdrop-blur-md p-5 sm:p-6 pr-16 hover:border-ink-mute hover:-translate-y-0.5 transition-all">
-      <Doodle name={c.name} />
-      <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
-        {c.kicker}
-      </p>
-      <h3 className="font-serif text-[24px] leading-[1.05] tracking-tightest text-ink">
-        <a href={c.href} target="_blank" rel="noreferrer" className="hover:text-graphite">
-          {c.name}
-          <span className="text-ink-faint">.</span>
-        </a>
-      </h3>
-      <p className="mt-1.5 font-serif italic text-[14.5px] text-ink-soft leading-snug">
-        {c.one}
-      </p>
-      <span className="absolute bottom-4 right-4 font-mono text-[12px] text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden>
-        ↗
-      </span>
-    </article>
+    <Reveal>
+      <div className="border-b border-dashed border-black/[0.06] dark:border-white/[0.06] mt-4" />
+    </Reveal>
   );
 }
+
+function Section({
+  title,
+  sub,
+  children,
+}: {
+  title: string;
+  sub?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Reveal>
+      <div className="sm:px-12 py-2">
+        <div className="px-4 mb-4 sm:mb-6 mt-4 sm:mt-6">
+          <h2 className="text-base sm:text-xl opacity-70 font-serif">{title}</h2>
+          {sub && <p className="opacity-20 text-sm sm:text-base mt-1">{sub}</p>}
+        </div>
+        <div className="px-4">{children}</div>
+      </div>
+    </Reveal>
+  );
+}
+
+const CHIP =
+  "inline-flex items-center rounded-md border text-[11px] font-medium h-5 px-2 " +
+  "border-black/10 dark:border-white/10 text-black/50 dark:text-white/50";
+
+/* ---------- hero ---------- */
+
+function Hero() {
+  return (
+    <>
+      {/* banner */}
+      <Reveal>
+        <div className="w-full mb-2 relative">
+          <div className="relative" style={{ height: "auto" }}>
+            <Image
+              alt="pixel landscape banner"
+              src="/pixel-banner.png"
+              width={1344}
+              height={768}
+              priority
+              className="w-full h-[180px] sm:h-[280px] object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center px-4">
+              <p className="text-white text-base sm:text-xl italic font-serif text-center drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]">
+                {profile.bannerQuote}
+              </p>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* pfp + theme toggle */}
+      <Reveal delay={0.05}>
+        <div className="flex-col -mt-10">
+          <div className="flex items-center justify-between mb-4 sm:ml-8 ml-4 sm:mr-8 mr-4">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 relative z-10 rounded-full overflow-hidden shrink-0 ring-2 ring-white dark:ring-zinc-900">
+              <Image
+                alt={profile.name}
+                src="/pfp.jpg"
+                fill
+                priority
+                sizes="112px"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* name, tagline, socials */}
+      <Reveal delay={0.1}>
+        <div className="text-left sm:flex sm:justify-between sm:items-center w-full sm:px-8 px-4 flex-col sm:flex-row">
+          <div className="px-0">
+            <h1 className="font-serif italic text-2xl sm:text-4xl tracking-[0.01em] font-medium mb-0">
+              {profile.first} Dash
+            </h1>
+            <p className="opacity-40 text-xs sm:text-sm">
+              {profile.tagline.join(" • ")}
+            </p>
+          </div>
+          <div className="flex justify-start gap-1 sm:gap-2 mt-3 sm:mt-0 px-0">
+            {socials.map((s) => (
+              <NeuIconLink key={s.name} href={s.href} label={s.name}>
+                {s.icon === "github" && <GithubIcon className="h-4 w-4" />}
+                {s.icon === "x" && <XIcon className="h-4 w-4" />}
+                {s.icon === "mail" && <MailIcon className="h-4 w-4" />}
+              </NeuIconLink>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+
+      {/* live github numbers */}
+      <Reveal delay={0.15}>
+        <div className="sm:px-8 px-4">
+          <GitHubStats />
+        </div>
+      </Reveal>
+    </>
+  );
+}
+
+/* ---------- product cards ---------- */
+
+function FeaturedProductCard() {
+  const p = products[0]; // deriva — the super app
+  return (
+    <div className="dim-item block w-full">
+      <div className="flex flex-col sm:flex-row w-full h-full p-1 bg-white dark:bg-white/10 border border-black/10 dark:border-white/5 rounded-[10px] transition-all duration-300 ease-out hover:border-black/20 dark:hover:border-white/10 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20">
+        <div className="sm:w-[58%]">
+          <ProductPreview kind={p.preview} aspect="wide" />
+        </div>
+        <div className="flex-1 px-3 py-3 sm:pl-4 flex flex-col justify-center gap-1.5">
+          <div className="flex items-start justify-between gap-2">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={p.href}
+              className="inline-flex w-fit max-w-full text-left text-[17px] leading-snug text-black/80 dark:text-white/80 font-medium hover:text-black dark:hover:text-white transition-colors"
+            >
+              <span className="truncate font-medium">{p.name}</span>
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open live site for ${p.name}`}
+              href={p.href}
+              className="shrink-0 mt-0.5 inline-flex rounded-full text-black/30 hover:text-black dark:text-white/30 dark:hover:text-white transition-colors"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+          <p className="text-xs leading-relaxed text-black/50 dark:text-white/30 max-w-[52ch]">
+            {p.one}
+          </p>
+          <p className="text-[11px] text-black/35 dark:text-white/25 leading-relaxed">
+            apps inside apps — learn, observe and pattern-match in one shell.
+          </p>
+          <div className="flex flex-wrap gap-1 pt-1">
+            {p.chips.map((c) => (
+              <span key={c} className={CHIP}>
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductCard({ p }: { p: (typeof products)[number] }) {
+  return (
+    <div className="dim-item block w-full">
+      <div className="flex flex-col w-full h-full p-1 bg-white dark:bg-white/10 border border-black/10 dark:border-white/5 rounded-[10px] transition-all duration-300 ease-out hover:border-black/20 dark:hover:border-white/10 hover:scale-[1.02] hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20">
+        <ProductPreview kind={p.preview} />
+        <div className="w-full px-2 pt-2 pb-1 flex flex-col gap-1">
+          <div className="flex items-start justify-between gap-2">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={p.href}
+              className="inline-flex w-fit max-w-full text-left text-[15px] leading-snug text-black/80 dark:text-white/80 font-medium hover:text-black dark:hover:text-white transition-colors"
+            >
+              <span className="truncate font-medium">{p.name}</span>
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open live site for ${p.name}`}
+              href={p.href}
+              className="shrink-0 mt-0.5 inline-flex rounded-full text-black/30 hover:text-black dark:text-white/30 dark:hover:text-white transition-colors"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+          <p className="text-xs leading-relaxed text-black/50 dark:text-white/30">
+            {p.one}
+          </p>
+          <div className="flex flex-wrap gap-1 pt-1 pb-1">
+            {p.chips.map((c) => (
+              <span key={c} className={CHIP}>
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- open-source build cards ---------- */
+
+function BuildCard({ b }: { b: (typeof builds)[number] }) {
+  return (
+    <div className="dim-item block w-full">
+      <div className="flex flex-col w-full h-full p-1 bg-white dark:bg-white/10 border border-black/10 dark:border-white/5 rounded-[10px] transition-all duration-300 ease-out hover:border-black/20 dark:hover:border-white/10 hover:scale-[1.02] hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20">
+        <BuildPreview tone={b.tone} glyph={b.glyph} />
+        <div className="w-full px-2 pt-2 pb-1 flex flex-col gap-1">
+          <div className="flex items-start justify-between gap-2">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={b.href}
+              className="inline-flex w-fit max-w-full text-left text-[15px] leading-snug text-black/80 dark:text-white/80 font-medium hover:text-black dark:hover:text-white transition-colors"
+            >
+              <span className="truncate font-medium">{b.name}</span>
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open repository for ${b.name}`}
+              href={b.href}
+              className="shrink-0 mt-0.5 inline-flex rounded-full text-black/30 hover:text-black dark:text-white/30 dark:hover:text-white transition-colors"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+          <p className="text-xs leading-relaxed text-black/50 dark:text-white/30">
+            {b.one}
+          </p>
+          <div className="flex flex-wrap gap-1 pt-1 pb-1">
+            {b.chips.map((c) => (
+              <span key={c} className={CHIP}>
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- the page ---------- */
 
 export default function Page() {
   return (
     <>
-      <ChaosBackground />
       <WanderingAgent />
-      <main className="relative mx-auto max-w-[980px] px-6 sm:px-10 lg:px-16 pt-6 sm:pt-8 pb-24">
-        {/* ====== NAV PILL ====== */}
-        <nav className="sticky top-3 z-30 -mx-2 sm:-mx-4 mb-14 sm:mb-16 flex justify-center">
-          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-rule-soft bg-paper/70 backdrop-blur-md px-2 sm:px-3 py-1.5 shadow-[0_1px_8px_rgb(var(--ink)/0.04)]">
-            <a href="/" aria-label="Sribatsha Dash — home" className="group h-7 w-7 flex items-center justify-center rounded-full hover:bg-ink/[0.06] transition-colors">
-              <Logo className="text-ink group-hover:text-graphite transition-colors" size={22} />
-            </a>
-            <span className="w-px h-4 bg-rule-soft" aria-hidden />
-            {NAV.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className="font-mono text-[10px] uppercase tracking-wide2 text-ink-mute hover:text-ink px-2 py-1 rounded-full hover:bg-ink/[0.06] transition-colors"
-              >
-                {n.label}
-              </a>
-            ))}
-            <span className="w-px h-4 bg-rule-soft" aria-hidden />
-            <ThemeToggle />
-          </div>
-        </nav>
+      <div className="relative z-10">
+        <div className="min-h-screen transition-colors duration-300 relative">
+          <div className="relative mx-auto max-w-4xl">
+            {/* the ruled margin strips */}
+            <div className="absolute left-0 w-[60px] h-full overflow-hidden hidden sm:block" style={{ top: 0 }}>
+              <div
+                className="absolute dark:opacity-[0.04] opacity-[0.06] inset-0 w-[60px] h-full border dark:border-[#eee] border-[#000]/70"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(-45deg, transparent, transparent 2px, currentColor 2px, currentColor 3px, transparent 3px, transparent 6px)",
+                }}
+              />
+            </div>
+            <div className="absolute right-0 w-[60px] h-full overflow-hidden hidden sm:block" style={{ top: 0 }}>
+              <div
+                className="absolute dark:opacity-[0.04] opacity-[0.06] inset-0 w-[60px] h-full border dark:border-[#eee] border-[#000]/70"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(-45deg, transparent, transparent 2px, currentColor 2px, currentColor 3px, transparent 3px, transparent 6px)",
+                }}
+              />
+            </div>
 
-        {/* ====== HERO ====== */}
-        <header className="pb-14">
-          <h1 className="flex flex-col font-normal text-ink leading-[0.95]">
-            <span className="block font-display font-extrabold text-[clamp(32px,5vw,56px)] uppercase tracking-[0.04em]">
-              Sribatsha
-            </span>
-            <span className="block font-display font-extrabold text-[clamp(32px,5vw,56px)] uppercase text-ink-soft tracking-[0.04em]">
-              Dash<span className="text-ink-faint">.</span>
-            </span>
-          </h1>
+            {/* fixed theme toggle */}
+            <div className="fixed top-3 right-3 z-40 rounded-full border border-black/10 dark:border-white/10 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-sm">
+              <ThemeToggle className="m-0.5" />
+            </div>
 
-          <p className="mt-6 font-serif text-[17px] sm:text-[19px] text-ink-soft leading-[1.4] max-w-[46ch]">
-            Today:{" "}
-            <span className="pencil-double-underline">{today}</span>
-          </p>
+            <div className="mx-auto sm:w-[calc(100%-120px)] w-full max-w-4xl sm:px-0">
+              <Hero />
 
-          <p className="mt-8 font-serif text-[17px] leading-[1.7] text-ink-soft text-pretty max-w-[52ch]">
-            {bio.map((seg, i) =>
-              typeof seg === "string" ? (
-                <span key={i}>{seg}</span>
-              ) : seg.em ? (
-                <em key={i} className="font-serif">{seg.em}</em>
-              ) : null
-            )}
-          </p>
+              <Rule />
 
-          <GitHubStats />
-        </header>
+              {/* ====== EXPERIENCE ====== */}
+              <Section title="Professional Experience">
+                <Experience items={experience} />
+              </Section>
 
-        {/* ====== PAGE BREAK ====== */}
-        <div id="bench" className="mt-16 sm:mt-20 mb-12 scroll-mt-24">
-          <div className="flex items-center gap-4">
-            <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
-              <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
-            </svg>
-            <span className="font-mono text-[9px] uppercase tracking-broad text-ink-faint">
-              ↳ on the bench · {meta.date.toLowerCase()}
-            </span>
-            <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
-              <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
-            </svg>
+              <Rule />
+
+              {/* ====== PRODUCTS ====== */}
+              <Section title="Proof of Work" sub="products people actually use">
+                <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2 dim-group">
+                  <FeaturedProductCard />
+                  {products.slice(1).map((p) => (
+                    <ProductCard key={p.name} p={p} />
+                  ))}
+                </div>
+              </Section>
+
+              <Rule />
+
+              {/* ====== OPEN SOURCE ====== */}
+              <Section title="Open Source" sub="more builds on the bench">
+                <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2 dim-group">
+                  {builds.map((b) => (
+                    <BuildCard key={b.name} b={b} />
+                  ))}
+                </div>
+
+                {/* merged upstream */}
+                <div className="mt-8">
+                  <p className="text-[11px] uppercase tracking-widest text-black/30 dark:text-white/30 mb-2">
+                    merged upstream
+                  </p>
+                  <ul>
+                    {upstream.map((u) => (
+                      <li
+                        key={u.name}
+                        className="py-2.5 border-b border-neutral-200 dark:border-neutral-800 flex items-baseline justify-between gap-4"
+                      >
+                        <a
+                          href={u.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors min-w-0"
+                        >
+                          <span className="font-medium">{u.name}</span>
+                          <span className="text-black/40 dark:text-white/40"> — {u.what}</span>
+                        </a>
+                        <span className="text-[10px] uppercase tracking-wide text-black/40 dark:text-white/40 whitespace-nowrap flex items-center gap-1.5 shrink-0">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          {u.state} {u.pr}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Section>
+
+              <Rule />
+
+              {/* ====== CONTRIBUTIONS ====== */}
+              <Reveal>
+                <div className="sm:px-12 py-2">
+                  <div className="px-4 mt-4 sm:mt-6">
+                    <Contributions />
+                  </div>
+                </div>
+              </Reveal>
+
+              <Rule />
+
+              {/* ====== STACK ====== */}
+              <Section title="Stack I use" sub="Technologies I work with">
+                <StackMarquee />
+              </Section>
+
+              <Rule />
+
+              {/* ====== TECHNICAL BLOGS ====== */}
+              <Section title="Technical Blogs" sub="engineering notes from building the products">
+                <div className="space-y-0 dim-group">
+                  {posts.map((post) => (
+                    <a
+                      key={post.title}
+                      href={post.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="dim-item block w-full"
+                    >
+                      <article>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-5 sm:py-6 border-b border-neutral-200 dark:border-neutral-800">
+                          <h3 className="text-sm sm:text-[15px] leading-6 sm:leading-7 text-black/80 dark:text-white/80 font-medium">
+                            {post.title}
+                          </h3>
+                          <span className="text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wide shrink-0">
+                            {post.meta}
+                          </span>
+                        </div>
+                      </article>
+                    </a>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-6 sm:mt-8 mb-2">
+                  <NeuButton href="https://deepforge.srivtx.xyz/blog" external>
+                    <span>View All</span>
+                    <span>→</span>
+                  </NeuButton>
+                </div>
+              </Section>
+
+              <Rule />
+
+              {/* ====== RESEARCH PAPERS ====== */}
+              <Section title="Research Papers" sub="inventions from the DeepForge lab">
+                <div className="space-y-0 dim-group">
+                  {papers.map((paper) => (
+                    <a
+                      key={paper.title}
+                      href={paper.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="dim-item block w-full"
+                    >
+                      <article>
+                        <div className="flex items-center justify-between gap-4 py-5 sm:py-6 border-b border-neutral-200 dark:border-neutral-800">
+                          <div className="min-w-0">
+                            <h3 className="text-sm sm:text-[15px] leading-6 text-black/80 dark:text-white/80 font-medium">
+                              {paper.title}
+                            </h3>
+                            <p className="mt-0.5 text-xs text-black/40 dark:text-white/35 leading-relaxed">
+                              {paper.sub}
+                            </p>
+                          </div>
+                          <span className={`${CHIP} shrink-0`}>PDF</span>
+                        </div>
+                      </article>
+                    </a>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-6 sm:mt-8 mb-2">
+                  <NeuButton href="https://deepforge.srivtx.xyz/inventions" external>
+                    <span>View All</span>
+                    <span>→</span>
+                  </NeuButton>
+                </div>
+              </Section>
+
+              <Rule />
+
+              {/* ====== CTA ====== */}
+              <Reveal>
+                <div className="px-4 sm:px-12">
+                  <div className="mt-4 sm:mt-6 pb-6 sm:pb-8 flex flex-col items-center w-full">
+                    <p className="text-neutral-600 dark:text-neutral-400 font-serif italic text-base sm:text-xl mb-4 text-center">
+                      If you&rsquo;ve read this far, you might be interested in what I build.
+                    </p>
+                    <a
+                      href={`mailto:${profile.email}`}
+                      className="group inline-flex touch-manipulation active:opacity-75"
+                      style={{ WebkitTapHighlightColor: "transparent" }}
+                    >
+                      <div className="relative flex w-max items-center justify-center overflow-hidden rounded-2xl border [box-shadow:0_4px_10px_-4px_rgba(15,23,42,0.15)] bg-neutral-50 border-neutral-200 after:border-neutral-100 after:border-t-[2px] after:border-b-[2px] after:border-b-neutral-300 dark:bg-[#212121] dark:border-black/50 dark:after:border-[#2A2A2A] dark:after:border-b-black/50 after:absolute after:inset-0 after:rounded-2xl after:border-r-0 after:content-[''] transition-all duration-150 ease-out hover:[&>div]:translate-y-[1px] hover:after:border-b-0 hover:after:border-t-neutral-300 hover:after:[box-shadow:0_3px_10px_0_rgba(15,23,42,0.12)_inset] dark:hover:after:border-t-black/50 dark:hover:after:[box-shadow:0_5px_15px_0_#00000070_inset]">
+                        <div className="flex items-center justify-center p-0 px-5 py-2.5 text-sm sm:text-base text-neutral-800 dark:text-white/90">
+                          <div className="flex items-center gap-2.5 sm:gap-3">
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden shrink-0 relative">
+                              <Image src="/pfp.jpg" alt="Profile" fill sizes="28px" className="object-cover" />
+                            </div>
+                            <span className="whitespace-nowrap">write to me</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </Reveal>
+
+              <Rule />
+
+              {/* ====== CONNECT + FOOTER ====== */}
+              <Reveal>
+                <div className="mt-4 sm:mt-6">
+                  <div className="sm:px-12 px-4 pb-20 sm:pb-24">
+                    <div className="text-center sm:text-left w-full">
+                      <div className="mb-4 sm:mb-6">
+                        <h2 className="font-serif text-lg sm:text-xl font-medium mb-2 opacity-70">
+                          Let&rsquo;s connect
+                        </h2>
+                        <p className="opacity-20 text-md sm:text-lg">Find me on these platforms</p>
+                      </div>
+                      <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4">
+                        <NeuButton href="https://github.com/srivtx" external className="inline-flex">
+                          <GithubIcon className="h-4 w-4" />
+                          <span className="hidden sm:inline text-sm font-medium">GitHub</span>
+                        </NeuButton>
+                        <NeuButton href="https://x.com/srivtx" external className="inline-flex">
+                          <XIcon className="h-4 w-4" />
+                          <span className="hidden sm:inline text-sm font-medium">X</span>
+                        </NeuButton>
+                        <NeuButton href="https://deepforge.srivtx.xyz" external className="inline-flex">
+                          <span className="text-sm font-medium">DeepForge</span>
+                        </NeuButton>
+                        <NeuButton href="https://deriva.srivtx.xyz" external className="inline-flex">
+                          <span className="text-sm font-medium">Deriva</span>
+                        </NeuButton>
+                      </div>
+
+                      <div className="mt-10 sm:mt-14 text-center sm:text-left">
+                        <p className="text-xs text-black/30 dark:text-white/30">
+                          sribatsha dash · srivtx · {profile.location} · 2026
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
-
-        {/* ====== FEATURE ====== */}
-        <Reveal>
-          <section>
-            <article className="relative bg-paper/40 backdrop-blur-md border border-rule p-6 sm:p-8 pr-20">
-              <Doodle name="customs" />
-              <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
-                ↳ {feature.kicker} · live
-              </p>
-              <h2 className="font-serif text-[44px] sm:text-[60px] leading-[0.95] tracking-tightest text-ink">
-                <a href={feature.href} target="_blank" rel="noreferrer" className="hover:text-graphite">
-                  {feature.name}
-                  <span className="text-ink-faint">.</span>
-                </a>
-              </h2>
-              <p className="mt-3 font-serif italic text-[19px] sm:text-[21px] text-ink-soft leading-snug">
-                {feature.one}
-              </p>
-              <p className="mt-4 font-serif text-[15.5px] leading-[1.65] text-ink-soft text-pretty max-w-[58ch]">
-                {feature.body}
-              </p>
-
-              <p className="mt-6 font-mono text-[10px] uppercase tracking-wide2 text-ink-mute flex flex-wrap gap-x-3 gap-y-1.5">
-                {feature.facts.map((f) => (
-                  <span key={f} className="border border-rule-soft px-2 py-1 bg-paper/50">{f}</span>
-                ))}
-              </p>
-
-              <p className="mt-7 font-serif text-[18px]">
-                <a
-                  href={feature.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-ink hover:text-graphite border-b border-rule hover:border-ink-mute transition-colors"
-                >
-                  customs.srivtx.xyz ↗
-                </a>
-              </p>
-            </article>
-          </section>
-        </Reveal>
-
-        {/* ====== SUPPORTING WORK ====== */}
-        <Reveal>
-          <section id="work" className="mt-14 sm:mt-16 scroll-mt-24">
-            <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
-              ↳ also on the bench
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4">
-              {supporting.map((c) => (
-                <SupportingCard key={c.name} c={c} />
-              ))}
-            </div>
-            <p className="mt-6 font-serif text-[17px] text-ink-soft">
-              + the rest on{" "}
-              <a href={moreOnGithub} target="_blank" rel="noreferrer" className="text-ink hover:text-graphite border-b border-rule hover:border-ink-mute transition-colors">
-                github / srivtx
-              </a>
-              .
-            </p>
-          </section>
-        </Reveal>
-
-        {/* ====== CONTRIBUTION GRAPH ====== */}
-        <Reveal>
-          <section id="graph" className="mt-14 sm:mt-16 scroll-mt-24">
-            <div className="mb-4">
-              <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="w-full h-1.5 text-ink-mute mb-4" aria-hidden>
-                <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
-              </svg>
-            </div>
-            <Contributions />
-          </section>
-        </Reveal>
-
-        {/* ====== STACK TICKER ====== */}
-        <Reveal>
-          <section className="mt-14 sm:mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-              ↳ the stack
-            </p>
-            <StackMarquee />
-            <p className="mt-3 font-serif text-[20px] text-ink leading-[1.3]">
-              {practiceLine}
-            </p>
-          </section>
-        </Reveal>
-
-        {/* ====== UPSTREAM ====== */}
-        <Reveal>
-          <section className="mt-14 sm:mt-16">
-            <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
-              ↳ merged upstream
-            </p>
-            <ul className="space-y-0">
-              {upstream.map((u) => (
-                <li
-                  key={u.name}
-                  className="py-3.5 border-b border-rule-soft grid grid-cols-[1fr_auto] gap-4 items-baseline"
-                >
-                  <div className="min-w-0">
-                    <a
-                      href={u.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-serif text-[18px] sm:text-[20px] text-ink hover:text-graphite"
-                    >
-                      {u.name}
-                      <span className="text-ink-faint">.</span>
-                    </a>
-                    <span className="ml-2 font-serif text-[15px] text-ink-soft italic">
-                      {u.what}
-                    </span>
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wide2 text-ink-mute self-start pt-1.5 whitespace-nowrap flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-moss" />
-                    {u.state} <span className="text-ink-faint">{u.pr}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </Reveal>
-
-        {/* ====== JOB / SCHOOL ====== */}
-        <Reveal>
-          <section className="mt-12 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-1">
-                ↳ the job
-              </p>
-              <p className="font-serif text-[15px] text-ink">
-                {job.role}, <span className="italic">{job.where.toLowerCase()}</span>{" "}
-                <span className="text-ink-mute font-mono text-[12px]">· {job.period}</span>
-              </p>
-              <p className="mt-1.5 font-serif text-[13px] text-ink-soft max-w-[48ch] leading-[1.55]">
-                {job.detail}
-              </p>
-            </div>
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-1">
-                ↳ the school
-              </p>
-              <p className="font-serif text-[15px] text-ink">
-                {school.where}{" "}
-                <span className="text-ink-mute font-mono text-[12px]">· {school.period}</span>
-              </p>
-              <p className="mt-1.5 font-serif text-[13px] text-ink-soft max-w-[48ch] leading-[1.55]">
-                {school.detail}
-              </p>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* ====== CONTACT CTA ====== */}
-        <Reveal>
-          <section id="contact" className="mt-16 sm:mt-20 scroll-mt-24">
-            <div className="border border-rule bg-paper/40 backdrop-blur-md p-6 sm:p-8 text-center">
-              <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-                ↳ let&apos;s build
-              </p>
-              <p className="font-serif italic text-[24px] sm:text-[28px] text-ink leading-snug">
-                got a hard problem at the seam of systems and interfaces?
-              </p>
-              <p className="mt-5 flex flex-wrap justify-center gap-3">
-                <a
-                  href={`mailto:${meta.email}`}
-                  className="font-serif text-[17px] text-ink hover:text-graphite border border-rule-soft hover:border-ink-mute bg-paper/60 px-5 py-2.5 transition-colors"
-                >
-                  write to me ↗
-                </a>
-                {contact.slice(0, 3).map((c) => (
-                  <a
-                    key={c.kind}
-                    href={c.href}
-                    target={c.href.startsWith("http") ? "_blank" : undefined}
-                    rel={c.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="font-mono text-[11px] uppercase tracking-wide2 text-ink-mute hover:text-ink self-center px-2 transition-colors"
-                  >
-                    {c.kind}
-                  </a>
-                ))}
-              </p>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* ====== FOOTER ====== */}
-        <footer className="mt-16 pt-8 border-t border-rule">
-          <div className="flex items-baseline justify-between gap-4 flex-wrap">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
-                ↳ signed
-              </p>
-              <p className="mt-1 font-serif text-[20px] text-ink-soft">
-                sribatsha dash, bhubaneswar
-              </p>
-            </div>
-            <div className="text-right">
-              <svg
-                viewBox="0 0 200 70"
-                width={140}
-                height={49}
-                className="text-ink ml-auto"
-                role="img"
-                aria-label="S.D. — hand-drawn signature"
-                style={{ transform: "rotate(-3deg)" }}
-              >
-                <path
-                  d="M 30 38 C 24 38 18 32 22 24 C 26 18 38 18 44 24 C 48 30 44 38 36 40 C 42 38 50 36 56 32 C 60 28 60 22 56 20 C 52 18 48 22 48 28 C 50 36 60 42 70 40 C 80 38 86 32 86 24 C 86 18 80 14 74 18 C 78 18 84 22 90 24 C 98 28 106 28 112 24 C 118 20 124 18 130 20 C 138 22 144 30 144 38 C 144 46 138 50 132 48 C 126 46 122 40 124 32 C 126 26 132 24 138 28 C 144 32 150 38 156 42 C 162 46 168 46 170 42"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.3}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx={172} cy={42} r={1.3} fill="currentColor" />
-              </svg>
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-broad text-ink-faint">
-                sribatsha dash · {meta.date.toLowerCase()}
-              </p>
-            </div>
-          </div>
-        </footer>
-      </main>
+      </div>
     </>
   );
 }
