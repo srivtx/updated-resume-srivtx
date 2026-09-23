@@ -1,11 +1,9 @@
 // Left-aligned single column, no sidebar. The chaos field sits behind
-// the page as a faint Jungian texture. Logo and nav live in a clean
-// top bar — Mitchell-style restraint, but the voice stays left-ragged.
+// the page as a faint texture. Short copy on purpose — a notebook, not
+// an essay. Every line has to earn its place.
 
-import { meta, bio, contact, feature, supporting, moreOnGithub, upstream, practiceLine, job, school } from "@/lib/data";
-import { NnnSketch, NnnRoughSketch, ImgTo3DSketch, LspSketch } from "@/components/Sketch";
+import { meta, today, bio, contact, feature, supporting, moreOnGithub, upstream, practiceLine, job, school } from "@/lib/data";
 import { Doodle } from "@/components/Doodle";
-import { ProjectArt } from "@/components/ProjectArt";
 import { Logo } from "@/components/Logo";
 import { ChaosBackground } from "@/components/ChaosBackground";
 
@@ -13,32 +11,17 @@ type SupportingCardData = {
   name: string;
   kicker: string;
   one: string;
-  body: string;
   href: string;
-  sketch?: "img-to-3d" | "lsp-server";
-  featured?: boolean;
 };
 
 function SupportingCard({ c }: { c: SupportingCardData }) {
-  const isFeatured = c.featured === true;
-  const hasDiagram = c.sketch === "img-to-3d" || c.sketch === "lsp-server";
   return (
-    <article
-      className={
-        "relative col-span-12 sm:col-span-6 border border-rule-soft bg-paper/40 backdrop-blur-md p-5 sm:p-6 pr-16 hover:border-ink-mute transition-colors " +
-        (isFeatured ? "sm:py-8" : "")
-      }
-    >
+    <article className="relative col-span-12 sm:col-span-6 border border-rule-soft bg-paper/40 backdrop-blur-md p-5 sm:p-6 pr-16 hover:border-ink-mute transition-colors">
       <Doodle name={c.name} />
       <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
         {c.kicker}
       </p>
-      {isFeatured && (
-        <p className="font-serif text-[14px] text-sepia -mt-1 mb-2 italic">
-          live · in the world
-        </p>
-      )}
-      <h3 className="font-serif text-[24px] sm:text-[26px] leading-[1.05] tracking-tightest text-ink">
+      <h3 className="font-serif text-[24px] leading-[1.05] tracking-tightest text-ink">
         <a href={c.href} target="_blank" rel="noreferrer" className="hover:text-graphite">
           {c.name}
           <span className="text-ink-faint">.</span>
@@ -47,12 +30,6 @@ function SupportingCard({ c }: { c: SupportingCardData }) {
       <p className="mt-1.5 font-serif italic text-[14.5px] text-ink-soft leading-snug">
         {c.one}
       </p>
-      <p className="mt-3 font-serif text-[13.5px] leading-[1.65] text-ink-soft text-pretty">
-        {c.body}
-      </p>
-      {!hasDiagram && <ProjectArt name={c.name} />}
-      {c.sketch === "img-to-3d" && <ImgTo3DSketch />}
-      {c.sketch === "lsp-server" && <LspSketch />}
     </article>
   );
 }
@@ -83,7 +60,7 @@ export default function Page() {
         </header>
 
         {/* ====== HERO ====== */}
-        <header className="pb-20">
+        <header className="pb-16">
           <h1 className="flex flex-col font-normal text-ink leading-[0.95]">
             <span className="block font-display font-extrabold text-[clamp(32px,5vw,56px)] uppercase tracking-[0.04em]">
               Sribatsha
@@ -93,14 +70,12 @@ export default function Page() {
             </span>
           </h1>
 
-          <p className="mt-6 font-serif text-[17px] sm:text-[19px] text-ink-soft leading-[1.4] max-w-[42ch]">
+          <p className="mt-6 font-serif text-[17px] sm:text-[19px] text-ink-soft leading-[1.4] max-w-[46ch]">
             Today:{" "}
-            <span className="pencil-double-underline">
-              Building nnn in the mornings. Lockr support tickets in the evenings. Sleep is a hypothesis, not a fact.
-            </span>
+            <span className="pencil-double-underline">{today}</span>
           </p>
 
-          <p className="mt-10 font-serif text-[17px] leading-[1.8] text-ink-soft text-pretty max-w-[65ch] dropcap">
+          <p className="mt-8 font-serif text-[17px] leading-[1.7] text-ink-soft text-pretty max-w-[52ch]">
             {bio.map((seg, i) =>
               typeof seg === "string" ? (
                 <span key={i}>{seg}</span>
@@ -112,11 +87,8 @@ export default function Page() {
         </header>
 
         {/* ====== PAGE BREAK ====== */}
-        <div className="mt-24 sm:mt-32 mb-12">
+        <div className="mt-20 sm:mt-24 mb-12">
           <div className="flex items-center gap-4">
-            {/* preserveAspectRatio="none" lets the squiggle stretch the full
-                flex width — otherwise the 200-unit path stays 200px wide and
-                the rule visibly stops short of the label on both sides. */}
             <svg viewBox="0 0 200 6" preserveAspectRatio="none" className="flex-1 h-1.5 text-ink-mute" aria-hidden>
               <path d="M 2 3 C 30 1 70 2 110 3 C 140 4 170 4 198 3" fill="none" stroke="currentColor" strokeWidth={0.8} strokeLinecap="round" />
             </svg>
@@ -130,11 +102,11 @@ export default function Page() {
         </div>
 
         {/* ====== FEATURE ====== */}
-        <section className="mt-10 sm:mt-12">
+        <section>
           <article className="relative bg-paper/40 backdrop-blur-md border border-rule p-6 sm:p-8 pr-20">
-            <Doodle name="nnn" />
+            <Doodle name="customs" />
             <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-2">
-              ↳ {feature.kicker}
+              ↳ {feature.kicker} · live
             </p>
             <h2 className="font-serif text-[44px] sm:text-[60px] leading-[0.95] tracking-tightest text-ink">
               <a href={feature.href} target="_blank" rel="noreferrer" className="hover:text-graphite">
@@ -145,53 +117,41 @@ export default function Page() {
             <p className="mt-3 font-serif italic text-[19px] sm:text-[21px] text-ink-soft leading-snug">
               {feature.one}
             </p>
-            <div className="mt-6 space-y-4 font-serif text-[15.5px] leading-[1.75] text-ink-soft max-w-[60ch] text-pretty">
-              {feature.body.map((p, i) => <p key={i}>{p}</p>)}
-            </div>
+            <p className="mt-4 font-serif text-[15.5px] leading-[1.65] text-ink-soft text-pretty max-w-[58ch]">
+              {feature.body}
+            </p>
 
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-[1fr_220px] gap-6 md:gap-10 items-start">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-                  ↳ the loop
-                </p>
-                <NnnSketch />
-              </div>
-              <aside className="md:pl-6 md:border-l md:border-rule-soft md:pt-0 pt-2">
-                <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-3">
-                  ↳ on disk
-                </p>
-                <NnnRoughSketch />
-                <p className="mt-4 font-serif text-[17px] text-ink-soft leading-snug">
-                  the agents share a scratch directory. they pass files, not messages. read the readme on github for what each one actually does.
-                </p>
-              </aside>
-            </div>
+            <p className="mt-6 font-mono text-[10px] uppercase tracking-wide2 text-ink-mute flex flex-wrap gap-x-3 gap-y-1.5">
+              {feature.facts.map((f) => (
+                <span key={f} className="border border-rule-soft px-2 py-1 bg-paper/50">{f}</span>
+              ))}
+            </p>
 
-            <p className="mt-6 font-serif text-[18px]">
+            <p className="mt-7 font-serif text-[18px]">
               <a
                 href={feature.href}
                 target="_blank"
                 rel="noreferrer"
                 className="text-ink hover:text-graphite border-b border-rule hover:border-ink-mute transition-colors"
               >
-                github.com/srivtx/nnn ↗
+                customs.srivtx.xyz ↗
               </a>
             </p>
           </article>
         </section>
 
         {/* ====== SUPPORTING WORK ====== */}
-        <section className="mt-20 sm:mt-24">
+        <section className="mt-14 sm:mt-16">
           <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
-            ↳ more on the bench
+            ↳ also on the bench
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4">
             {supporting.map((c) => (
               <SupportingCard key={c.name} c={c} />
             ))}
           </div>
-          <p className="mt-6 font-serif text-[19px] text-ink-soft">
-            + a dozen more repos on{" "}
+          <p className="mt-6 font-serif text-[17px] text-ink-soft">
+            + the rest on{" "}
             <a href={moreOnGithub} target="_blank" rel="noreferrer" className="text-ink hover:text-graphite border-b border-rule hover:border-ink-mute transition-colors">
               github / srivtx
             </a>
@@ -200,7 +160,7 @@ export default function Page() {
         </section>
 
         {/* ====== UPSTREAM ====== */}
-        <section className="mt-20 sm:mt-24">
+        <section className="mt-16 sm:mt-20">
           <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute mb-4">
             ↳ merged upstream
           </p>
@@ -220,12 +180,9 @@ export default function Page() {
                     {u.name}
                     <span className="text-ink-faint">.</span>
                   </a>
-                  <span className="ml-2 font-serif text-[17px] text-ink-soft">
+                  <span className="ml-2 font-serif text-[15px] text-ink-soft italic">
                     {u.what}
                   </span>
-                  <p className="mt-1 font-serif text-[13.5px] text-ink-soft leading-[1.55] max-w-[60ch]">
-                    {u.detail}
-                  </p>
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-wide2 text-ink-mute self-start pt-1.5 whitespace-nowrap flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--moss)" }} />
@@ -274,7 +231,7 @@ export default function Page() {
         </section>
 
         {/* ====== FOOTER ====== */}
-        <footer className="mt-24 pt-8 border-t border-rule">
+        <footer className="mt-20 pt-8 border-t border-rule">
           <div className="flex items-baseline justify-between gap-4 flex-wrap">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-broad text-ink-mute">
@@ -282,9 +239,6 @@ export default function Page() {
               </p>
               <p className="mt-1 font-serif text-[20px] text-ink-soft">
                 sribatsha dash, bhubaneswar
-              </p>
-              <p className="mt-0.5 font-serif text-[15px] text-ink-faint italic">
-                hand-built · <span className="not-italic font-mono text-[10px] tracking-wide2 uppercase">next.js</span> · saira · caveat · instrument serif · inter · jb mono
               </p>
             </div>
             <div className="text-right">

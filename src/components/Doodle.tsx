@@ -300,6 +300,60 @@ function Knot({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: numb
   );
 }
 
+// A coin — wobbly circle with a rupee mark. For customs.
+function Coin({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
+  const s = size;
+  return (
+    <g>
+      <Loop cx={x} cy={y} r={s * 0.42} seed={seed} />
+      {/* rupee: two legs + a crossbar */}
+      <path d={wob([x - s * 0.12, y - s * 0.2], [x + s * 0.12, y - s * 0.2], seed + 1, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x - s * 0.05, y - s * 0.2], [x - s * 0.05, y + s * 0.22], seed + 2, 0.25)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x + s * 0.1, y - s * 0.2], [x + s * 0.02, y + s * 0.22], seed + 3, 0.25)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x - s * 0.14, y - s * 0.02], [x + s * 0.14, y - s * 0.02], seed + 4, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+    </g>
+  );
+}
+
+// A magnifying glass — a loop with a handle. For sortie.
+function Magnifier({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
+  const s = size;
+  return (
+    <g>
+      <Loop cx={x - s * 0.08} cy={y - s * 0.08} r={s * 0.3} seed={seed} />
+      <path d={wob([x + s * 0.14, y + s * 0.14], [x + s * 0.36, y + s * 0.36], seed + 1, 0.3)} fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" />
+    </g>
+  );
+}
+
+// An eye — two arcs and a pupil. For bionic-docs.
+function Eye({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
+  const s = size;
+  return (
+    <g>
+      <path d={wob([x - s * 0.4, y], [x, y - s * 0.26], seed, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x, y - s * 0.26], [x + s * 0.4, y], seed + 1, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x + s * 0.4, y], [x, y + s * 0.26], seed + 2, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <path d={wob([x, y + s * 0.26], [x - s * 0.4, y], seed + 3, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" />
+      <Loop cx={x} cy={y} r={s * 0.11} seed={seed + 4} />
+    </g>
+  );
+}
+
+// A key — a small bow, a shaft, two teeth. For keepsake.
+function Key({ x, y, seed = 1, size = 22 }: { x: number; y: number; seed?: number; size?: number }) {
+  const s = size;
+  return (
+    <g>
+      <Loop cx={x - s * 0.28} cy={y} r={s * 0.18} seed={seed} />
+      <path d={wob([x - s * 0.1, y], [x + s * 0.38, y], seed + 1, 0.2)} fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" />
+      <path d={wob([x + s * 0.22, y], [x + s * 0.22, y + s * 0.16], seed + 2, 0.15)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
+      <path d={wob([x + s * 0.34, y], [x + s * 0.34, y + s * 0.2], seed + 3, 0.15)} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" />
+    </g>
+  );
+}
+
+
 // The Doodle component. Picks a doodle by `name` (matching the project
 // name in the supporting array) and animates it in when the card scrolls
 // into view.
@@ -329,6 +383,10 @@ export function Doodle({ name }: { name: string }) {
             <Cross cx={cx}     cy={cy + 8} seed={105} />
           </>
         )}
+        {name === "customs" && <Coin x={cx} y={cy} seed={121} />}
+        {name === "sortie" && <Magnifier x={cx} y={cy} seed={131} />}
+        {name === "bionic-docs" && <Eye x={cx} y={cy} seed={141} />}
+        {name === "keepsake" && <Key x={cx} y={cy} seed={151} />}
         {name === "img-to-3d" && <Cube3D x={cx} y={cy} seed={201} />}
         {name === "lsp-server" && <Braces x={cx} y={cy} seed={301} />}
         {name === "mycelium" && <MyceliumNet x={cx} y={cy + 4} seed={401} />}
@@ -340,7 +398,7 @@ export function Doodle({ name }: { name: string }) {
         {name === "serve-md" && <Doc x={cx} y={cy} seed={1001} />}
         {name === "neuro-2e" && <Knot x={cx} y={cy} seed={1101} />}
         {/* generic fallback — a small flower, in case a project slips through */}
-        {!["nnn", "img-to-3d", "lsp-server", "mycelium", "lockr", "tdc-matchmaker-2", "shader-labs", "snip", "tomato-css", "serve-md", "neuro-2e"].includes(name) && (
+        {!["nnn", "customs", "sortie", "bionic-docs", "keepsake", "img-to-3d", "lsp-server", "mycelium", "lockr", "tdc-matchmaker-2", "shader-labs", "snip", "tomato-css", "serve-md", "neuro-2e"].includes(name) && (
           <Flower x={cx} y={cy} seed={99001} />
         )}
       </motion.svg>
