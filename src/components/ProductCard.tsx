@@ -44,15 +44,16 @@ export function ProductCard({
         featured ? "aspect-[16/10] sm:aspect-[16/10]" : "aspect-[4/3]"
       } bg-gradient-to-br ${TONES[p.name] ?? "from-neutral-100 to-neutral-50 dark:from-zinc-800 dark:to-zinc-900"} border border-black/5 dark:border-white/5 transition-all duration-300 group-hover/item:border-black/10 dark:group-hover/item:border-white/10`}
     >
-      {/* real screenshot poster */}
+      {/* real screenshot poster — zooms on hover, like the reference */}
       <Image
         src={p.poster}
         alt={`${p.name} — live product screenshot`}
         fill
         sizes="(max-width: 640px) 100vw, 560px"
-        className={`object-cover object-top transition-transform duration-300 group-hover/item:scale-[1.03] ${hovered ? "opacity-0" : "opacity-100"}`}
+        className={`object-cover object-top transition-transform duration-500 ease-out group-hover/item:scale-[1.05] ${hovered ? "opacity-0" : "opacity-100"}`}
       />
-      {/* real screen-recording, plays on hover like his cards */}
+      {/* real screen-recording, plays on hover — and keeps zooming
+          so the bg never snaps back to scale 1 mid-hover */}
       <video
         ref={vidRef}
         src={p.video}
@@ -60,7 +61,7 @@ export function ProductCard({
         loop
         playsInline
         preload="none"
-        className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 h-full w-full object-cover object-top scale-[1.05] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}
       />
       {/* play hint */}
       <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full bg-black/55 dark:bg-black/65 backdrop-blur-sm px-2 py-0.5 text-[9px] font-medium tracking-wide text-white/90 uppercase">

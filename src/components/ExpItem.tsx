@@ -76,7 +76,9 @@ function ExpCard({
 }
 
 export function Experience({ items }: { items: Exp[] }) {
-  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  // all collapsed by default — the page reads as a timeline at a glance,
+  // bullets only on demand
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
   return (
     <div className="space-y-3">
       {items.map((item, i) => (

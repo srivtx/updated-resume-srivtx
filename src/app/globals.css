@@ -19,6 +19,26 @@ body {
   background: rgba(0, 111, 238, 0.22);
 }
 
+/* ---- theme toggle: circular reveal via View Transitions ----
+   the new theme expands out of the button as a growing circle. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2147483646;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
 /* ---- sibling-dim hover (his group trick, plain CSS so Tailwind 3 works) ---- */
 
 .dim-item {
@@ -46,227 +66,25 @@ body {
   to   { transform: translateX(-50%); }
 }
 
-/* =================================================================
-   Animated product previews — choreographed CSS loops.
-   Deriva 10s · DeepForge 10s · Customs 12s · build glyphs 4-6s.
-   ================================================================= */
+/* ---- spotify player: equalizer bars + spinning disc ---- */
 
-/* ---- Deriva: rail icons cycling ---- */
-@keyframes ap-rail {
-  0%   { background: rgba(255,255,255,0.25); }
-  2%   { background: rgba(255,255,255,0.9); transform: scale(1.08); }
-  23%  { background: rgba(255,255,255,0.9); }
-  25%  { background: rgba(255,255,255,0.25); transform: scale(1); }
-  100% { background: rgba(255,255,255,0.25); }
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
 }
-.ap-rail { animation: ap-rail 10s infinite; }
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq-bar 0.9s ease-in-out infinite;
+}
+.eq-bar:nth-child(2) { animation-delay: 0.22s; animation-duration: 0.75s; }
+.eq-bar:nth-child(3) { animation-delay: 0.08s; animation-duration: 1.05s; }
+.eq-bar:nth-child(4) { animation-delay: 0.3s;  animation-duration: 0.85s; }
 
-/* the app tile that "opens" into a nested mini-window */
-@keyframes ap-appcard {
-  0%   { opacity: 0; transform: translateY(7px) scale(0.72); }
-  14%  { opacity: 1; transform: translateY(0) scale(1); }
-  60%  { opacity: 1; transform: translateY(0) scale(1); }
-  70%  { opacity: 0; transform: translateY(7px) scale(0.86); }
-  100% { opacity: 0; transform: translateY(7px) scale(0.72); }
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-.ap-appcard { animation: ap-appcard 10s infinite; }
-
-/* the window bar breathes in */
-@keyframes ap-window {
-  0%   { opacity: 0.4; }
-  12%  { opacity: 1; }
-  100% { opacity: 1; }
-}
-.ap-window { animation: ap-window 10s infinite; }
-
-/* learning-path progress bar */
-@keyframes ap-progress {
-  0%   { width: 6%; opacity: 1; }
-  68%  { width: 96%; opacity: 1; }
-  80%  { width: 96%; opacity: 1; }
-  86%  { width: 96%; opacity: 0; }
-  87%  { width: 6%; opacity: 0; }
-  100% { width: 6%; opacity: 1; }
-}
-.ap-progress { animation: ap-progress 10s infinite; }
-
-/* ---- DeepForge: code typing ---- */
-@keyframes ap-type1 {
-  0%   { transform: scaleX(0); }
-  8%   { transform: scaleX(1); }
-  88%  { transform: scaleX(1); opacity: 1; }
-  96%  { opacity: 0; }
-  100% { transform: scaleX(0); opacity: 0; }
-}
-@keyframes ap-type2 {
-  0%, 10% { transform: scaleX(0); }
-  18%  { transform: scaleX(1); }
-  88%  { transform: scaleX(1); opacity: 1; }
-  96%  { opacity: 0; }
-  100% { transform: scaleX(0); opacity: 0; }
-}
-@keyframes ap-type3 {
-  0%, 20% { transform: scaleX(0); }
-  28%  { transform: scaleX(1); }
-  88%  { transform: scaleX(1); opacity: 1; }
-  96%  { opacity: 0; }
-  100% { transform: scaleX(0); opacity: 0; }
-}
-@keyframes ap-type4 {
-  0%, 30% { transform: scaleX(0); }
-  38%  { transform: scaleX(1); }
-  88%  { transform: scaleX(1); opacity: 1; }
-  96%  { opacity: 0; }
-  100% { transform: scaleX(0); opacity: 0; }
-}
-.ap-code1 { animation: ap-type1 10s infinite; }
-.ap-code2 { animation: ap-type2 10s infinite; }
-.ap-code3 { animation: ap-type3 10s infinite; }
-.ap-code4 { animation: ap-type4 10s infinite; }
-
-/* the green check popping */
-@keyframes ap-pop-check {
-  0%, 40%  { transform: scale(0); opacity: 0; }
-  43%      { transform: scale(1.3); opacity: 1; }
-  45%      { transform: scale(1); }
-  86%      { transform: scale(1); opacity: 1; }
-  94%, 100% { transform: scale(0); opacity: 0; }
-}
-.ap-check, .ap-passed { animation: ap-pop-check 10s infinite; }
-.ap-passed { animation-name: ap-pop-check; }
-
-/* problem tiles lighting up */
-@keyframes ap-tile {
-  0%   { opacity: 0.15; }
-  10%  { opacity: 1; }
-  84%  { opacity: 1; }
-  94%  { opacity: 0.15; }
-  100% { opacity: 0.15; }
-}
-.ap-tile { animation: ap-tile 10s infinite; }
-
-/* the counter chip */
-@keyframes ap-counter {
-  0%, 44%  { transform: scale(0.8); opacity: 0; }
-  47%      { transform: scale(1.12); opacity: 1; }
-  49%      { transform: scale(1); }
-  86%      { opacity: 1; transform: scale(1); }
-  94%, 100% { opacity: 0; }
-}
-.ap-counter { animation: ap-counter 10s infinite; }
-
-/* ---- Customs: mandate → signature → chain ---- */
-@keyframes ap-mandate {
-  0%   { opacity: 0; transform: translateX(-16px); }
-  12%  { opacity: 1; transform: translateX(0); }
-  88%  { opacity: 1; transform: translateX(0); }
-  96%, 100% { opacity: 0; transform: translateX(-8px); }
-}
-.ap-mandate { animation: ap-mandate 12s infinite; }
-
-/* the signature drawing itself (pathLength = 100) */
-@keyframes ap-sign {
-  0%, 12% { stroke-dashoffset: 100; }
-  40%     { stroke-dashoffset: 0; }
-  88%     { stroke-dashoffset: 0; }
-  96%, 100% { stroke-dashoffset: 100; }
-}
-.ap-sign {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: ap-sign 12s infinite;
-}
-
-/* the signed chip */
-@keyframes ap-chip {
-  0%, 44%  { transform: scale(0); opacity: 0; }
-  47%      { transform: scale(1.15); opacity: 1; }
-  49%      { transform: scale(1); }
-  88%      { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; transform: scale(0); }
-}
-.ap-signedchip { animation: ap-chip 12s infinite; }
-
-/* hash blocks stacking */
-@keyframes ap-hash {
-  0%   { opacity: 0.15; transform: translateY(4px); }
-  8%   { opacity: 1; transform: translateY(0); }
-  90%  { opacity: 1; }
-  98%, 100% { opacity: 0.15; transform: translateY(4px); }
-}
-.ap-hash { animation: ap-hash 12s infinite; }
-
-@keyframes ap-link {
-  0%, 8%  { opacity: 0; }
-  16%     { opacity: 1; }
-  90%     { opacity: 1; }
-  98%, 100% { opacity: 0; }
-}
-.ap-chainlink { animation: ap-link 12s infinite; }
-
-@keyframes ap-amount {
-  0%, 52% { opacity: 0; transform: translateY(4px); }
-  56%     { opacity: 1; transform: translateY(0); }
-  90%     { opacity: 1; }
-  97%, 100% { opacity: 0; }
-}
-.ap-amount { animation: ap-amount 12s infinite; }
-
-/* ---- build glyph loops ---- */
-
-@keyframes ap-ping {
-  0%   { transform: scale(0.5); opacity: 0.8; }
-  75%  { transform: scale(1.7); opacity: 0; }
-  100% { transform: scale(1.7); opacity: 0; }
-}
-.ap-ping { animation: ap-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite; }
-
-@keyframes ap-scan {
-  0%   { transform: translateY(0); opacity: 0; }
-  10%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { transform: translateY(18px); opacity: 0; }
-}
-.ap-scan { animation: ap-scan 2.6s ease-in-out infinite; }
-
-@keyframes ap-cell {
-  0%   { opacity: 0.2; }
-  40%  { opacity: 1; }
-  100% { opacity: 0.2; }
-}
-.ap-cell { animation: ap-cell 4.5s ease-in-out infinite; }
-
-@keyframes ap-wave-dash {
-  to { stroke-dashoffset: -48; }
-}
-.ap-wave {
-  stroke-dasharray: 14 34;
-  animation: ap-wave-dash 1.8s linear infinite;
-}
-
-@keyframes ap-bars-in {
-  0%   { opacity: 0; transform: translateX(-6px); }
-  25%  { opacity: 1; transform: translateX(0); }
-  80%  { opacity: 1; }
-  95%  { opacity: 0; }
-  100% { opacity: 0; }
-}
-.ap-bars { animation: ap-bars-in 6s infinite; }
-
-@keyframes ap-shackle {
-  0%, 35%  { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-3px) rotate(-12deg); }
-  70%      { transform: translateY(-3px) rotate(-12deg); }
-  90%, 100% { transform: translateY(0) rotate(0deg); }
-}
-.ap-shackle { animation: ap-shackle 4s ease-in-out infinite; transform-origin: left bottom; }
-
-/* the sheen sweep across build thumbs */
-@keyframes ap-sheen {
-  0%   { transform: translateX(-60px); }
-  100% { transform: translateX(220px); }
-}
-.ap-sheen { animation: ap-sheen 5s ease-in-out infinite; }
+.vinyl-spin { animation: vinyl-spin 6s linear infinite; }
 
 /* ---- motion safety ---- */
 

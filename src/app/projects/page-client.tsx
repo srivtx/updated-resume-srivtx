@@ -9,6 +9,7 @@ import { SubPageShell } from "@/components/SubPageShell";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { ArrowUpRight } from "@/components/NeuButton";
+import { BuildLogo } from "@/components/BuildLogos";
 
 function BuildRow({ b }: { b: (typeof builds)[number] }) {
   return (
@@ -20,10 +21,12 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3 sm:gap-4 py-4 sm:py-5 border-b border-neutral-200 dark:border-neutral-800">
-        {/* small gradient swatch */}
+        {/* project logo — designed glyph on its tone gradient */}
         <span
-          className={`shrink-0 h-8 w-8 sm:h-9 sm:w-9 rounded-md bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10`}
-        />
+          className={`shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10 flex items-center justify-center text-white/95 shadow-sm transition-transform duration-300 group-hover/item:scale-110`}
+        >
+          <BuildLogo name={b.name} />
+        </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80 truncate">
             {b.name}

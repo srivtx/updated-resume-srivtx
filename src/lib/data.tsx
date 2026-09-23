@@ -303,3 +303,14 @@ export const upstream = [
 export const moreOnGithub = "https://github.com/srivtx";
 export const blogIndex = "https://deepforge.srivtx.xyz/blog";
 export const papersIndex = "https://deepforge.srivtx.xyz/inventions";
+
+// "Last played" — the one-track Spotify card, his signature touch. Art is
+// self-hosted; the 30-second preview streams straight off Spotify's CDN,
+// the title links out to the real track.
+export const lastPlayed = {
+  song: "cold/mess",
+  artist: "Prateek Kuhad",
+  trackUrl: "https://open.spotify.com/track/2AoWWiMelowkStJoqPMDed",
+  albumArt: "/images/spotify-art.webp",
+  audioSrc: "https://p.scdn.co/mp3-preview/9185af5adad1324079a6280eee2932eaf3b10bf3",
+};

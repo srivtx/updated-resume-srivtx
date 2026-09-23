@@ -28,8 +28,21 @@ export const metadata: Metadata = {
   title: "Sribatsha Dash — srivtx",
   description:
     "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
-  icons: {
-    icon: "/favicon.svg",
+  openGraph: {
+    title: "Sribatsha Dash — srivtx",
+    description:
+      "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
+    url: "https://srivtx.github.io",
+    siteName: "srivtx",
+    images: [{ url: "/pixel-banner.png", width: 1344, height: 768, alt: "srivtx — pixel landscape" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sribatsha Dash — srivtx",
+    description:
+      "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
+    images: ["/pixel-banner.png"],
   },
 };
 

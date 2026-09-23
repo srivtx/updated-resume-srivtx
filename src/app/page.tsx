@@ -32,6 +32,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { GitHubStats } from "@/components/GitHubStats";
 import { Contributions } from "@/components/Contributions";
 import { StackMarquee } from "@/components/StackMarquee";
+import { SpotifyPlayer } from "@/components/SpotifyPlayer";
+import { CopyEmail } from "@/components/CopyEmail";
+import { BuildLogo } from "@/components/BuildLogos";
 import OnekoCat from "@/components/OnekoCat";
 import Link from "next/link";
 
@@ -137,7 +140,7 @@ function Hero() {
               {profile.tagline.join(" · ")}
             </p>
           </div>
-          <div className="flex justify-start gap-1 sm:gap-2 mt-3 sm:mt-0 px-0">
+          <div className="flex justify-start gap-1 sm:gap-2 mt-3 sm:mt-0 px-0 items-center">
             {socials.map((s) => (
               <NeuIconLink key={s.name} href={s.href} label={s.name}>
                 {s.icon === "github" && <GithubIcon className="h-4 w-4" />}
@@ -146,6 +149,9 @@ function Hero() {
                 {s.icon === "mail" && <MailIcon className="h-4 w-4" />}
               </NeuIconLink>
             ))}
+            {/* theme toggle lives right here, next to the socials —
+                same spot as the reference site */}
+            <ThemeToggle />
           </div>
         </div>
       </Reveal>
@@ -154,6 +160,13 @@ function Hero() {
       <Reveal delay={0.15}>
         <div className="sm:px-8 px-4">
           <GitHubStats />
+        </div>
+      </Reveal>
+
+      {/* last played — the one-track spotify card */}
+      <Reveal delay={0.2}>
+        <div className="sm:px-8 px-4 mt-4">
+          <SpotifyPlayer />
         </div>
       </Reveal>
     </>
@@ -172,9 +185,12 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3 sm:gap-4 py-3.5 border-b border-neutral-200 dark:border-neutral-800">
+        {/* project logo — designed glyph on its tone gradient */}
         <span
-          className={`shrink-0 h-8 w-8 sm:h-9 sm:w-9 rounded-md bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10`}
-        />
+          className={`shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10 flex items-center justify-center text-white/95 shadow-sm transition-transform duration-300 group-hover/item:scale-110`}
+        >
+          <BuildLogo name={b.name} />
+        </span>
         <div className="min-w-0 flex-1">
           <span className="text-sm font-medium text-black/80 dark:text-white/80 truncate block">
             {b.name}
@@ -218,11 +234,6 @@ export default function Page() {
                     "repeating-linear-gradient(-45deg, transparent, transparent 2px, currentColor 2px, currentColor 3px, transparent 3px, transparent 6px)",
                 }}
               />
-            </div>
-
-            {/* fixed theme toggle */}
-            <div className="fixed top-3 right-3 z-40 rounded-full border border-black/10 dark:border-white/10 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-sm">
-              <ThemeToggle className="m-0.5" />
             </div>
 
             <div className="mx-auto sm:w-[calc(100%-120px)] w-full max-w-4xl sm:px-0">
@@ -427,7 +438,7 @@ export default function Page() {
                         </h2>
                         <p className="opacity-20 text-md sm:text-lg">Find me on these platforms</p>
                       </div>
-                      <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4">
+                      <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4 items-center">
                         <NeuButton href="https://github.com/srivtx" external className="inline-flex">
                           <GithubIcon className="h-4 w-4" />
                           <span className="hidden sm:inline text-sm font-medium">GitHub</span>
@@ -440,12 +451,11 @@ export default function Page() {
                           <LinkedInIcon className="h-4 w-4" />
                           <span className="hidden sm:inline text-sm font-medium">LinkedIn</span>
                         </NeuButton>
-                        <NeuButton href="https://deepforge.srivtx.xyz" external className="inline-flex">
-                          <span className="text-sm font-medium">DeepForge</span>
+                        <NeuButton href={`mailto:${profile.email}`} className="inline-flex">
+                          <MailIcon className="h-4 w-4" />
+                          <span className="hidden sm:inline text-sm font-medium">Email</span>
                         </NeuButton>
-                        <NeuButton href="https://deriva.srivtx.xyz" external className="inline-flex">
-                          <span className="text-sm font-medium">Deriva</span>
-                        </NeuButton>
+                        <CopyEmail email={profile.email} />
                       </div>
 
                       <div className="mt-10 sm:mt-14 text-center sm:text-left">

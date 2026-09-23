@@ -60,9 +60,7 @@ function NavPill() {
           </svg>
         </Link>
       </div>
-      <div className="rounded-full border border-black/10 dark:border-white/10 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-sm">
-        <ThemeToggle className="m-0.5" />
-      </div>
+      <ThemeToggle />
     </div>
   );
 }
