@@ -66,7 +66,7 @@ export const experience = [
   },
 ];
 
-// The three live products — with REAL captured media.
+// The products — with REAL captured media, bionic page leading.
 // poster: actual screenshot · video: screen-recorded scroll of the live app.
 export type Product = {
   name: string;
@@ -79,6 +79,15 @@ export type Product = {
 };
 
 export const products: Product[] = [
+  {
+    name: "Bionic Page",
+    one: "turn any web page into a bionic reading page. five modes, per-site rules, fully reversible.",
+    note: "on-device manifest v3 — no upload, no account, no remote code",
+    href: "https://srivtx.github.io/bionic-page",
+    chips: ["Extension", "On-device", "MV3"],
+    poster: "/images/bionic.webp",
+    video: "/videos/bionic.mp4",
+  },
   {
     name: "Deriva",
     one: "A super-app for learning algorithms — apps inside apps: derive, observe, pattern-match.",
@@ -108,14 +117,16 @@ export const products: Product[] = [
   },
 ];
 
-// Open-source builds on the bench. Each carries a generated brand
-// mark (public/logos/builds) so every row reads like a real tool.
+// Open-source builds on the bench. tone = dark-mode gradient tile,
+// toneLight = pastel tile for light mode — glyphs flip dark/light to
+// match, so the marks are visible in BOTH themes.
 export type Build = {
   name: string;
   one: string;
   href: string;
   chips: string[];
-  logo: string; // brand mark, /logos/builds/*.webp
+  tone: string; // dark-mode gradient classes
+  toneLight: string; // light-mode pastel classes
 };
 
 export const builds: Build[] = [
@@ -124,42 +135,48 @@ export const builds: Build[] = [
     one: "a team of agents on one laptop. local 7b, no api keys, no cloud.",
     href: "https://github.com/srivtx/nnn",
     chips: ["Rust", "llama.cpp", "MCP"],
-    logo: "/logos/builds/nnn.webp",
+    tone: "from-cyan-500/80 to-blue-600/80",
+    toneLight: "from-cyan-100 to-blue-200",
   },
   {
     name: "sortie",
     one: "semantic debugger — reads a failed solana tx and says 'slippage exceeded', not 0x1771.",
     href: "https://github.com/srivtx/sortie",
     chips: ["TypeScript", "Solana", "MCP"],
-    logo: "/logos/builds/sortie.webp",
+    tone: "from-sky-500/80 to-indigo-600/80",
+    toneLight: "from-sky-100 to-indigo-200",
   },
   {
     name: "mycelium",
     one: "solana programs in zig. comptime over runtime, visibility over convenience.",
     href: "https://github.com/srivtx/mycelium",
     chips: ["Zig", "Solana", "LLVM"],
-    logo: "/logos/builds/mycelium.webp",
+    tone: "from-lime-500/80 to-emerald-600/80",
+    toneLight: "from-lime-100 to-emerald-200",
   },
   {
     name: "shader-labs",
     one: "modular shader library with a ⌘k palette. copy, paste, done.",
     href: "https://github.com/srivtx/shader-labs",
     chips: ["WebGL", "TypeScript"],
-    logo: "/logos/builds/shader-labs.webp",
+    tone: "from-fuchsia-500/80 to-purple-600/80",
+    toneLight: "from-fuchsia-100 to-purple-200",
   },
   {
     name: "bionic-docs",
     one: "bionic reading for pdf + epub. no upload, no account, no remote code.",
     href: "https://github.com/srivtx/bionic-docs",
     chips: ["Extension", "On-device"],
-    logo: "/logos/builds/bionic-docs.webp",
+    tone: "from-rose-500/80 to-red-600/80",
+    toneLight: "from-rose-100 to-red-200",
   },
   {
     name: "keepsake",
     one: "encrypted, portable ai memory. browser app, cli, and an mcp server.",
     href: "https://github.com/srivtx/keepsake",
     chips: ["Local-first", "Ed25519", "MCP"],
-    logo: "/logos/builds/keepsake.webp",
+    tone: "from-slate-500/80 to-zinc-700/80",
+    toneLight: "from-slate-200 to-zinc-300",
   },
 ];
 
@@ -305,15 +322,15 @@ export const moreOnGithub = "https://github.com/srivtx";
 export const blogIndex = "https://deepforge.srivtx.xyz/blog";
 export const papersIndex = "https://deepforge.srivtx.xyz/inventions";
 
-// "Last played" — the one-track Spotify card, now on the official
-// Spotify embed: signed-in listeners get the FULL song (the 30s ceiling
-// is Spotify's policy for anonymous visitors, not a limitation we can
-// engineer around), and the art streams clean from Spotify's own CDN.
+// "Last played" — the one-track Spotify card. Art is self-hosted
+// (speck cleaned); the 30-second preview streams straight off
+// Spotify's CDN, the title links to the full track.
 export const lastPlayed = {
-  label: "Last played",
   song: "cold/mess",
   artist: "Prateek Kuhad",
   trackUrl: "https://open.spotify.com/track/2AoWWiMelowkStJoqPMDed",
+  albumArt: "/images/spotify-art.webp",
+  audioSrc: "https://p.scdn.co/mp3-preview/9185af5adad1324079a6280eee2932eaf3b10bf3",
 };
 
 // "Now watching" — the other half of the status strip: what's on the

@@ -35,6 +35,7 @@ import { StackMarquee } from "@/components/StackMarquee";
 import { SpotifyPlayer } from "@/components/SpotifyPlayer";
 import { NowWatching } from "@/components/NowWatching";
 import { CopyEmail } from "@/components/CopyEmail";
+import { BuildLogo } from "@/components/BuildLogos";
 import OnekoCat from "@/components/OnekoCat";
 import Link from "next/link";
 
@@ -90,12 +91,12 @@ const CHIP =
 function Hero() {
   return (
     <>
-      {/* banner — pixel portal; zooms on hover like the rest of the site */}
+      {/* banner — pixel dusk landscape; zooms on hover like the rest of the site */}
       <Reveal>
         <div className="w-full mb-2 relative group/banner">
           <div className="relative overflow-hidden" style={{ height: "auto" }}>
             <Image
-              alt="pixel art banner — a green portal drifting in deep space"
+              alt="pixel dusk landscape banner"
               src="/pixel-banner.png"
               width={1344}
               height={768}
@@ -187,14 +188,13 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3 sm:gap-4 py-3.5 border-b border-neutral-200 dark:border-neutral-800">
-        {/* project logo — generated brand mark */}
-        <Image
-          src={b.logo}
-          alt={`${b.name} logo`}
-          width={40}
-          height={40}
-          className="shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md object-cover ring-1 ring-black/10 dark:ring-white/10 shadow-sm transition-transform duration-300 group-hover/item:scale-110"
-        />
+        {/* project mark — pastel tile + dark glyph in light, tone tile +
+            light glyph in dark: visible in BOTH themes */}
+        <span
+          className={`shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br ${b.toneLight} dark:bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10 flex items-center justify-center text-black/70 dark:text-white/95 shadow-sm transition-transform duration-300 group-hover/item:scale-110`}
+        >
+          <BuildLogo name={b.name} />
+        </span>
         <div className="min-w-0 flex-1">
           <span className="text-sm font-medium text-black/80 dark:text-white/80 truncate block">
             {b.name}
@@ -255,13 +255,10 @@ export default function Page() {
               {/* ====== PRODUCTS (real captured media) ====== */}
               <Section title="Proof of Work" sub="the real products — hover a card, watch them run">
                 <div className="dim-group">
-                  <div className="grid grid-cols-1 gap-4 sm:gap-3">
-                    <ProductCard p={products[0]} featured />
-                    <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2">
-                      {products.slice(1).map((p) => (
-                        <ProductCard key={p.name} p={p} />
-                      ))}
-                    </div>
+                  <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2">
+                    {products.map((p) => (
+                      <ProductCard key={p.name} p={p} />
+                    ))}
                   </div>
                   <ViewAll href="/projects" />
                 </div>

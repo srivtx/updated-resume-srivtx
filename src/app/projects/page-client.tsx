@@ -9,7 +9,7 @@ import { SubPageShell } from "@/components/SubPageShell";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { ArrowUpRight } from "@/components/NeuButton";
-import Image from "next/image";
+import { BuildLogo } from "@/components/BuildLogos";
 
 function BuildRow({ b }: { b: (typeof builds)[number] }) {
   return (
@@ -21,14 +21,13 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3 sm:gap-4 py-4 sm:py-5 border-b border-neutral-200 dark:border-neutral-800">
-        {/* project logo — generated brand mark */}
-        <Image
-          src={b.logo}
-          alt={`${b.name} logo`}
-          width={40}
-          height={40}
-          className="shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md object-cover ring-1 ring-black/10 dark:ring-white/10 shadow-sm transition-transform duration-300 group-hover/item:scale-110"
-        />
+        {/* project mark — pastel tile + dark glyph in light, tone tile +
+            light glyph in dark: visible in BOTH themes */}
+        <span
+          className={`shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br ${b.toneLight} dark:bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10 flex items-center justify-center text-black/70 dark:text-white/95 shadow-sm transition-transform duration-300 group-hover/item:scale-110`}
+        >
+          <BuildLogo name={b.name} />
+        </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80 truncate">
             {b.name}
@@ -59,11 +58,8 @@ export function ProjectsPageClient() {
           </p>
         </Reveal>
         <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2">
-          <Reveal className="sm:col-span-2" delay={0.05}>
-            <ProductCard p={products[0]} featured />
-          </Reveal>
-          {products.slice(1).map((p, i) => (
-            <Reveal key={p.name} delay={0.1 + i * 0.05}>
+          {products.map((p, i) => (
+            <Reveal key={p.name} delay={0.05 + i * 0.05}>
               <ProductCard p={p} />
             </Reveal>
           ))}

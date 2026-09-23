@@ -66,6 +66,20 @@ body {
   to   { transform: translateX(-50%); }
 }
 
+/* ---- spotify player: equalizer bars ---- */
+
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq-bar 0.9s ease-in-out infinite;
+}
+.eq-bar:nth-child(2) { animation-delay: 0.22s; animation-duration: 0.75s; }
+.eq-bar:nth-child(3) { animation-delay: 0.08s; animation-duration: 1.05s; }
+.eq-bar:nth-child(4) { animation-delay: 0.3s;  animation-duration: 0.85s; }
+
 /* ---- motion safety ---- */
 
 @media (prefers-reduced-motion: reduce) {

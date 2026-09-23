@@ -1,33 +1,12 @@
 // "Now watching" — the quiet sibling of the Spotify card: what's on the
-// screen this week, in the same card chrome. A little CRT glyph on a
-// dark tile (portal-green tint, to rhyme with the banner), a pulsing
-// dot like a "live" indicator, and a link out to the show. Deliberately
-// plain — a status, not a CTA.
+// screen this week, in the same card chrome. The tile is a generated
+// pixel-art CRT glowing with a green portal (the Rick and Morty bit),
+// a pulsing dot like a "live" indicator, and a link out to the show.
+// Deliberately plain — a status, not a CTA.
 
+import Image from "next/image";
 import { nowWatching } from "@/lib/data";
 import { ArrowUpRight } from "@/components/NeuButton";
-
-function TvGlyph({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      {/* antennas */}
-      <path d="M8.5 3.2 11 6.5M15.5 3.2 13 6.5" />
-      {/* body */}
-      <rect x="3.5" y="6.5" width="17" height="13" rx="2" />
-      {/* play */}
-      <path d="M10.2 10.4l4.4 2.6-4.4 2.6z" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
 
 export function NowWatching() {
   return (
@@ -39,10 +18,15 @@ export function NowWatching() {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3.5 p-3.5 sm:p-4 h-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
-        {/* tv glyph on a dark tile — portal-green wash */}
-        <span className="shrink-0 relative h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden bg-zinc-900 ring-1 ring-black/10 dark:ring-white/15 flex items-center justify-center shadow-sm">
-          <span className="absolute inset-0 bg-gradient-to-br from-[#97CE4C]/30 via-transparent to-transparent" />
-          <TvGlyph className="relative h-6 w-6 sm:h-7 sm:w-7 text-white/90 transition-transform duration-500 group-hover/card:scale-110" />
+        {/* pixel CRT with the portal on its screen */}
+        <span className="shrink-0 relative h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden bg-zinc-900 ring-1 ring-black/10 dark:ring-white/15 shadow-sm">
+          <Image
+            src="/images/now-watching.webp"
+            alt="pixel-art CRT television showing a swirling green portal"
+            fill
+            sizes="56px"
+            className="object-cover transition-transform duration-500 group-hover/card:scale-110"
+          />
         </span>
 
         {/* what's on */}
