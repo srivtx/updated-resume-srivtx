@@ -92,14 +92,18 @@ export function SpotifyPlayer() {
     <div className="w-full group/card">
       <audio ref={audioRef} src={lastPlayed.audioSrc} preload="metadata" />
 
-      <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
+      {/* one card: the row on top, the seek bar slides open INSIDE it, full
+          width — the card grows as a single piece, so the grid never has to
+          stretch the neighbor card to match a detached bar hanging below */}
+      <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
+        <div className="flex items-center gap-3.5 p-3.5 sm:p-4">
         {/* album art — zooms on hover like his */}
-        <div className="shrink-0 relative w-13 h-13 sm:w-15 sm:h-15 rounded-lg overflow-hidden shadow-sm ring-1 ring-black/10 dark:ring-white/15">
+        <div className="shrink-0 relative w-16 h-16 rounded-lg overflow-hidden shadow-sm ring-1 ring-black/10 dark:ring-white/15">
           <Image
             src={lastPlayed.albumArt}
             alt={`${lastPlayed.song} cover art`}
-            width={60}
-            height={60}
+            width={64}
+            height={64}
             className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105"
           />
           {playing && (
@@ -148,15 +152,15 @@ export function SpotifyPlayer() {
             <PlayIcon className="w-3.5 h-3.5 ml-0.5" />
           )}
         </button>
-      </div>
+        </div>
 
-      {/* seek bar — slides open while playing, like his */}
-      <div
-        className="grid transition-all duration-300 ease-in-out"
-        style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
-      >
+        {/* seek bar — slides open while playing, like his, inside the card */}
+        <div
+          className="grid transition-all duration-300 ease-in-out"
+          style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
+        >
         <div className="overflow-hidden">
-          <div className="mt-2.5 pt-2.5 border-t border-dashed border-black/[0.08] dark:border-white/[0.08]">
+          <div className="mx-3.5 sm:mx-4 mb-3.5 sm:mb-4 pt-2.5 border-t border-dashed border-black/[0.08] dark:border-white/[0.08]">
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-mono text-black/40 dark:text-white/40 w-8 text-right tabular-nums">
                 {formatTime(current)}
@@ -179,6 +183,7 @@ export function SpotifyPlayer() {
               </span>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

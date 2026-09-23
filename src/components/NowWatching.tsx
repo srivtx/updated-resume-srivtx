@@ -14,17 +14,18 @@ export function NowWatching() {
       href={nowWatching.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-full group/card block h-full"
+      className="w-full group/card block"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
-      <div className="flex items-center gap-3.5 p-3.5 sm:p-4 h-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
-        {/* pixel CRT with the portal on its screen */}
-        <span className="shrink-0 relative h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden bg-zinc-900 ring-1 ring-black/10 dark:ring-white/15 shadow-sm">
+      <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-shadow duration-300 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/30">
+        {/* pixel CRT with the portal on its screen — sized to match the
+            spotify art tile so both cards sit at the same natural height */}
+        <span className="shrink-0 relative h-16 w-16 rounded-lg overflow-hidden bg-zinc-900 ring-1 ring-black/10 dark:ring-white/15 shadow-sm">
           <Image
             src="/images/now-watching.webp"
             alt="pixel-art CRT television showing a swirling green portal"
             fill
-            sizes="56px"
+            sizes="64px"
             className="object-cover transition-transform duration-500 group-hover/card:scale-110"
           />
         </span>
