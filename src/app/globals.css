@@ -2,40 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Lab journal tokens — graph paper, graphite pencil, working-engineer feel. */
+/* Lab journal tokens — graph paper, graphite pencil, working-engineer feel.
+   Light = the paper journal. Dark = the same journal at night, chalk on
+   a blackboard. Values are RGB triplets so Tailwind alpha modifiers work
+   and .dark can retint everything at once. */
 :root {
-  --paper:        #f1ece1;     /* warm off-white, the page */
-  --paper-soft:   #f7f3e9;     /* a lighter lift for boxed bits */
-  --paper-deep:   #e8e1d1;     /* a slightly deeper tint for the gutter */
-  --grid:         #c8bfa9;     /* the graph-paper grid lines */
-  --grid-faint:   #d8d0bd;     /* lighter sub-grid */
-  --ink:          #2a2620;     /* graphite-tinged ink, not pure black */
-  --ink-soft:     #4a4238;
-  --ink-mute:     #756c5a;
-  --ink-faint:    #9b917d;
-  --rule:         #c2b89f;
-  --rule-soft:    #d4cdb9;
-  --pencil:       #3d3a33;     /* pencil lead color for marks */
-  --correction:   #c8948470;   /* faint pink-coral, correction fluid */
-  --graphite:     #3a4654;     /* accent: dark slate, fountain-pen feel */
-  --sepia:        #8a5a2a;     /* a second accent for warmth */
-  --moss:         #4a5d3a;
-  --rust:         #8a4a2a;
+  --paper:        241 236 225;  /* warm off-white, the page */
+  --paper-soft:   247 243 233;
+  --paper-deep:   232 225 209;
+  --grid:         200 191 169;  /* graph-paper grid lines */
+  --grid-faint:   216 208 189;
+  --ink:          42 38 32;     /* graphite-tinged ink, not pure black */
+  --ink-soft:     74 66 56;
+  --ink-mute:     117 108 90;
+  --ink-faint:    155 145 125;
+  --rule:         194 184 159;
+  --rule-soft:    212 205 185;
+  --pencil:       61 58 51;
+  --graphite:     58 70 84;     /* accent: dark slate, fountain-pen feel */
+  --graphite-soft:90 102 118;
+  --sepia:        138 90 42;
+  --sepia-soft:   160 122 58;
+  --moss:         74 93 58;
+  --rust:         138 74 42;
+  --correction:   #c8948470;    /* full color — correction fluid */
 
   color-scheme: light;
 }
 
+.dark {
+  --paper:        23 20 16;     /* deep warm black */
+  --paper-soft:   30 26 21;
+  --paper-deep:   16 14 11;
+  --grid:         48 42 33;
+  --grid-faint:   36 32 25;
+  --ink:          232 225 209;  /* cream chalk */
+  --ink-soft:     207 198 178;
+  --ink-mute:     168 158 136;
+  --ink-faint:    125 116 95;
+  --rule:         60 53 43;
+  --rule-soft:    46 42 34;
+  --pencil:       220 212 196;
+  --graphite:     143 163 189;  /* lighter slate for dark */
+  --graphite-soft:160 178 200;
+  --sepia:        192 144 80;
+  --sepia-soft:   200 160 100;
+  --moss:         125 148 100;
+  --rust:         192 122 80;
+  --correction:   #c8948470;
+
+  color-scheme: dark;
+}
+
 html {
-  background: var(--paper);
+  background: rgb(var(--paper));
 }
 
 body {
   background: transparent;
-  color: var(--ink);
+  color: rgb(var(--ink));
   font-feature-settings: "ss01", "ss02", "kern", "liga";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* The page keeps a faint graph-paper grid. The chaos field sits above it. */
@@ -46,8 +76,8 @@ body::before {
   pointer-events: none;
   z-index: 1;
   background-image:
-    linear-gradient(to right, var(--grid-faint) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-faint) 1px, transparent 1px);
+    linear-gradient(to right, rgb(var(--grid-faint)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--grid-faint)) 1px, transparent 1px);
   background-size:
     24px 24px,
     24px 24px;
@@ -55,8 +85,6 @@ body::before {
   opacity: 0.38;
 }
 
-/* Faint horizontal "ruled line" baseline that sits underneath the body
-   text, like a notebook line the writing rests on. */
 main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h2, h3, h4, h5, h6 {
   position: relative;
   z-index: 10;
@@ -66,18 +94,6 @@ main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* "Hand" drop cap — slightly off-baseline, never perfectly aligned */
-  .dropcap::first-letter {
-    font-family: var(--font-hand), "Caveat", "Patrick Hand", cursive;
-    font-weight: 400;
-    float: left;
-    font-size: 3.6em;
-    line-height: 0.78;
-    margin: 0.05em 0.06em -0.05em 0;
-    color: var(--ink);
-    transform: rotate(-3deg);
-  }
-
   /* Hand-drawn underline — wavy, not flat */
   .pencil-underline {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='6'><path d='M1 4 Q 11 1.5 22 4 T 43 4' stroke='%238a5a2a' stroke-width='1.1' fill='none' stroke-linecap='round'/></svg>");
@@ -85,6 +101,9 @@ main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h
     background-repeat: repeat-x;
     background-size: 44px 6px;
     padding-bottom: 4px;
+  }
+  .dark .pencil-underline {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='6'><path d='M1 4 Q 11 1.5 22 4 T 43 4' stroke='%23c09050' stroke-width='1.1' fill='none' stroke-linecap='round'/></svg>");
   }
 
   /* Double underline — "this matters" */
@@ -97,42 +116,60 @@ main, header, footer, section, article, nav, aside, blockquote, ul, ol, p, h1, h
     background-size: 40px 8px, 40px 8px;
     padding-bottom: 6px;
   }
+  .dark .pencil-double-underline {
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='8'><path d='M1 3 Q 10 1 20 3 T 39 3' stroke='%23e8e1d1' stroke-width='1' fill='none' stroke-linecap='round'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='8'><path d='M1 6 Q 10 4 20 6 T 39 6' stroke='%23e8e1d1' stroke-width='0.8' fill='none' stroke-linecap='round'/></svg>");
+  }
 
-  /* Crossed-out text — the kind you scribble over in your notebook */
+  /* Crossed-out text */
   .crossed {
-    background-image: linear-gradient(to right, var(--ink) 0%, var(--ink) 100%);
+    background-image: linear-gradient(to right, rgb(var(--ink)) 0%, rgb(var(--ink)) 100%);
     background-size: 100% 1.4px;
     background-position: 0 58%;
     background-repeat: no-repeat;
-    color: var(--ink-mute);
+    color: rgb(var(--ink-mute));
     text-decoration: none;
   }
 
   /* Correction-fluid mark */
   .correction {
     background: var(--correction);
-    color: var(--ink);
+    color: rgb(var(--ink));
     padding: 0 0.15em;
     border-radius: 1px;
   }
 
-  /* Handwritten kicker — used for date stamps, page corners, scrawled labels */
+  /* Handwritten kicker */
   .hand {
     font-family: var(--font-hand), "Caveat", "Patrick Hand", cursive;
   }
 
-  /* A small marginal arrow — the kind you draw to point at a footnote */
   .arrow-right::after {
     content: "→";
     margin-left: 0.3em;
-    color: var(--ink-faint);
+    color: rgb(var(--ink-faint));
   }
 
-  /* Selection — pencil lead swatch feel */
   ::selection {
-    background: rgba(58, 70, 84, 0.22);
-    color: var(--ink);
+    background: rgba(143, 163, 189, 0.28);
+    color: rgb(var(--ink));
   }
+
+  /* Marquee — the stack ticker. Two copies of the row, translated left
+     forever; --marquee-duration controls speed. Pause on hover so you
+     can actually read the tools. */
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 60s) linear infinite;
+  }
+  .marquee-paused:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 html { scroll-behavior: smooth; }

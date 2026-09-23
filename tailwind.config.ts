@@ -9,29 +9,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // RGB triplet vars (see globals.css) so dark mode can retint them
+        // and opacity modifiers like bg-paper/40 keep working.
         paper: {
-          DEFAULT: "#f1ece1",
-          soft:    "#f7f3e9",
-          deep:    "#e8e1d1",
+          DEFAULT: "rgb(var(--paper) / <alpha-value>)",
+          soft:    "rgb(var(--paper-soft) / <alpha-value>)",
+          deep:    "rgb(var(--paper-deep) / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "#2a2620",
-          soft:    "#4a4238",
-          mute:    "#756c5a",
-          faint:   "#9b917d",
+          DEFAULT: "rgb(var(--ink) / <alpha-value>)",
+          soft:    "rgb(var(--ink-soft) / <alpha-value>)",
+          mute:    "rgb(var(--ink-mute) / <alpha-value>)",
+          faint:   "rgb(var(--ink-faint) / <alpha-value>)",
         },
         rule: {
-          DEFAULT: "#c2b89f",
-          soft:    "#d4cdb9",
+          DEFAULT: "rgb(var(--rule) / <alpha-value>)",
+          soft:    "rgb(var(--rule-soft) / <alpha-value>)",
         },
         grid: {
-          DEFAULT: "#c8bfa9",
-          faint:   "#d8d0bd",
+          DEFAULT: "rgb(var(--grid) / <alpha-value>)",
+          faint:   "rgb(var(--grid-faint) / <alpha-value>)",
         },
-        graphite: { DEFAULT: "#3a4654", soft: "#5a6676" },
-        sepia:    { DEFAULT: "#8a5a2a", soft: "#a07a3a" },
-        moss:     "#4a5d3a",
-        rust:     "#8a4a2a",
+        graphite: { DEFAULT: "rgb(var(--graphite) / <alpha-value>)", soft: "rgb(var(--graphite-soft) / <alpha-value>)" },
+        sepia:    { DEFAULT: "rgb(var(--sepia) / <alpha-value>)", soft: "rgb(var(--sepia-soft) / <alpha-value>)" },
+        moss:     "rgb(var(--moss) / <alpha-value>)",
+        rust:     "rgb(var(--rust) / <alpha-value>)",
       },
       fontFamily: {
         // Lab journal stack:

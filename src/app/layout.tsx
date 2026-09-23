@@ -55,7 +55,16 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${sans.variable} ${serif.variable} ${mono.variable} ${hand.variable} ${display.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* set the theme before first paint — no flash of the wrong paper */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="font-serif text-ink">{children}</body>
     </html>
   );
