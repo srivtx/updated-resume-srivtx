@@ -33,8 +33,8 @@ import { GitHubStats } from "@/components/GitHubStats";
 import { Contributions } from "@/components/Contributions";
 import { StackMarquee } from "@/components/StackMarquee";
 import { SpotifyPlayer } from "@/components/SpotifyPlayer";
+import { NowWatching } from "@/components/NowWatching";
 import { CopyEmail } from "@/components/CopyEmail";
-import { BuildLogo } from "@/components/BuildLogos";
 import OnekoCat from "@/components/OnekoCat";
 import Link from "next/link";
 
@@ -90,17 +90,17 @@ const CHIP =
 function Hero() {
   return (
     <>
-      {/* banner */}
+      {/* banner — pixel portal; zooms on hover like the rest of the site */}
       <Reveal>
-        <div className="w-full mb-2 relative">
-          <div className="relative" style={{ height: "auto" }}>
+        <div className="w-full mb-2 relative group/banner">
+          <div className="relative overflow-hidden" style={{ height: "auto" }}>
             <Image
-              alt="pixel landscape banner"
+              alt="pixel art banner — a green portal drifting in deep space"
               src="/pixel-banner.png"
               width={1344}
               height={768}
               priority
-              className="w-full h-[180px] sm:h-[280px] object-cover"
+              className="w-full h-[180px] sm:h-[280px] object-cover transition-transform duration-700 ease-out group-hover/banner:scale-[1.06]"
             />
             <div className="absolute inset-0 flex items-center justify-center px-4">
               <p className="text-white text-base sm:text-xl italic font-serif text-center drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]">
@@ -163,10 +163,12 @@ function Hero() {
         </div>
       </Reveal>
 
-      {/* last played — the one-track spotify card */}
+      {/* status strip — last played (full song via the official embed)
+          + now watching, side by side */}
       <Reveal delay={0.2}>
-        <div className="sm:px-8 px-4 mt-4">
+        <div className="sm:px-8 px-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 items-stretch">
           <SpotifyPlayer />
+          <NowWatching />
         </div>
       </Reveal>
     </>
@@ -185,12 +187,14 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className="flex items-center gap-3 sm:gap-4 py-3.5 border-b border-neutral-200 dark:border-neutral-800">
-        {/* project logo — designed glyph on its tone gradient */}
-        <span
-          className={`shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br ${b.tone} ring-1 ring-black/10 dark:ring-white/10 flex items-center justify-center text-white/95 shadow-sm transition-transform duration-300 group-hover/item:scale-110`}
-        >
-          <BuildLogo name={b.name} />
-        </span>
+        {/* project logo — generated brand mark */}
+        <Image
+          src={b.logo}
+          alt={`${b.name} logo`}
+          width={40}
+          height={40}
+          className="shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-md object-cover ring-1 ring-black/10 dark:ring-white/10 shadow-sm transition-transform duration-300 group-hover/item:scale-110"
+        />
         <div className="min-w-0 flex-1">
           <span className="text-sm font-medium text-black/80 dark:text-white/80 truncate block">
             {b.name}

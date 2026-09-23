@@ -108,13 +108,14 @@ export const products: Product[] = [
   },
 ];
 
-// Open-source builds on the bench.
+// Open-source builds on the bench. Each carries a generated brand
+// mark (public/logos/builds) so every row reads like a real tool.
 export type Build = {
   name: string;
   one: string;
   href: string;
   chips: string[];
-  tone: string; // small gradient swatch classes
+  logo: string; // brand mark, /logos/builds/*.webp
 };
 
 export const builds: Build[] = [
@@ -123,42 +124,42 @@ export const builds: Build[] = [
     one: "a team of agents on one laptop. local 7b, no api keys, no cloud.",
     href: "https://github.com/srivtx/nnn",
     chips: ["Rust", "llama.cpp", "MCP"],
-    tone: "from-cyan-500/80 to-blue-600/80",
+    logo: "/logos/builds/nnn.webp",
   },
   {
     name: "sortie",
     one: "semantic debugger — reads a failed solana tx and says 'slippage exceeded', not 0x1771.",
     href: "https://github.com/srivtx/sortie",
     chips: ["TypeScript", "Solana", "MCP"],
-    tone: "from-sky-500/80 to-indigo-600/80",
+    logo: "/logos/builds/sortie.webp",
   },
   {
     name: "mycelium",
     one: "solana programs in zig. comptime over runtime, visibility over convenience.",
     href: "https://github.com/srivtx/mycelium",
     chips: ["Zig", "Solana", "LLVM"],
-    tone: "from-lime-500/80 to-emerald-600/80",
+    logo: "/logos/builds/mycelium.webp",
   },
   {
     name: "shader-labs",
     one: "modular shader library with a ⌘k palette. copy, paste, done.",
     href: "https://github.com/srivtx/shader-labs",
     chips: ["WebGL", "TypeScript"],
-    tone: "from-fuchsia-500/80 to-purple-600/80",
+    logo: "/logos/builds/shader-labs.webp",
   },
   {
     name: "bionic-docs",
     one: "bionic reading for pdf + epub. no upload, no account, no remote code.",
     href: "https://github.com/srivtx/bionic-docs",
     chips: ["Extension", "On-device"],
-    tone: "from-rose-500/80 to-red-600/80",
+    logo: "/logos/builds/bionic-docs.webp",
   },
   {
     name: "keepsake",
     one: "encrypted, portable ai memory. browser app, cli, and an mcp server.",
     href: "https://github.com/srivtx/keepsake",
     chips: ["Local-first", "Ed25519", "MCP"],
-    tone: "from-slate-500/80 to-zinc-700/80",
+    logo: "/logos/builds/keepsake.webp",
   },
 ];
 
@@ -304,13 +305,22 @@ export const moreOnGithub = "https://github.com/srivtx";
 export const blogIndex = "https://deepforge.srivtx.xyz/blog";
 export const papersIndex = "https://deepforge.srivtx.xyz/inventions";
 
-// "Last played" — the one-track Spotify card, his signature touch. Art is
-// self-hosted; the 30-second preview streams straight off Spotify's CDN,
-// the title links out to the real track.
+// "Last played" — the one-track Spotify card, now on the official
+// Spotify embed: signed-in listeners get the FULL song (the 30s ceiling
+// is Spotify's policy for anonymous visitors, not a limitation we can
+// engineer around), and the art streams clean from Spotify's own CDN.
 export const lastPlayed = {
+  label: "Last played",
   song: "cold/mess",
   artist: "Prateek Kuhad",
   trackUrl: "https://open.spotify.com/track/2AoWWiMelowkStJoqPMDed",
-  albumArt: "/images/spotify-art.webp",
-  audioSrc: "https://p.scdn.co/mp3-preview/9185af5adad1324079a6280eee2932eaf3b10bf3",
+};
+
+// "Now watching" — the other half of the status strip: what's on the
+// screen this week, next to what was on the speakers.
+export const nowWatching = {
+  label: "now watching",
+  show: "Rick and Morty",
+  detail: "season 2",
+  href: "https://www.imdb.com/title/tt2861424/",
 };
