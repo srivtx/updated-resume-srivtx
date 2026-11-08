@@ -12,8 +12,8 @@ import { ArrowUpRight } from "@/components/NeuButton";
 export function InventionsPageClient() {
   return (
     <SubPageShell
-      title="research papers"
-      sub="inventions from the deepforge lab — in brief, here; in full, on deepforge."
+      title="Papers"
+      sub="inventions from the deepforge lab. in brief here, in full on deepforge."
     >
       <div className="dim-group">
         <div className="space-y-4">

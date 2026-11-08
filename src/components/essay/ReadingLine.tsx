@@ -35,7 +35,7 @@ export function ReadingLine() {
     <span
       ref={line}
       aria-hidden
-      className="fixed top-0 left-0 right-0 z-40 h-[2px] origin-left pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-50 h-[2px] origin-left pointer-events-none"
       style={{ background: "var(--ink)", transform: "scaleX(0)" }}
     />
   );

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { InventionsPageClient } from "./page-client";
 
 export const metadata: Metadata = {
-  title: "Research Papers | srivtx",
+  title: "Papers | srivtx",
   description: "Publications from the DeepForge research lab — reproducibility, verification and cache auditing.",
 };
 

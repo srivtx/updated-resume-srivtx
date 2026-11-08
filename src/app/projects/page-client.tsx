@@ -1,8 +1,7 @@
 "use client";
 
-// /projects — "View All" target for the home page. Every product with its
-// real captured media, the open-source bench as honest rows, and merged
-// upstream work. The cat patrols.
+// /projects — "Work" in the header. Every product with its drawn cover,
+// the open-source bench as honest rows, and merged upstream work.
 
 import { products, builds, upstream, moreOnGithub } from "@/lib/data";
 import { SubPageShell } from "@/components/SubPageShell";
@@ -10,6 +9,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { ArrowUpRight } from "@/components/NeuButton";
 import { BuildLogo } from "@/components/BuildLogos";
+import { SectionHead } from "@/components/Site";
 
 function BuildRow({ b }: { b: (typeof builds)[number] }) {
   return (
@@ -47,35 +47,24 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
 export function ProjectsPageClient() {
   return (
     <SubPageShell
-      title="proof of work"
-      sub="the products, live and recorded — hover a card to watch it run."
+      title="Work"
+      sub="everything I've shipped, all live. hover a cover to see what each one does."
     >
-      {/* live products — real screenshots + real recordings */}
+      {/* live products — drawn covers */}
       <div className="dim-group">
-        <Reveal>
-          <p className="text-[11px] uppercase tracking-widest text-black/30 dark:text-white/30 mb-3">
-            live products
-          </p>
-        </Reveal>
-        <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2">
+        <SectionHead title="Products" sub="live and free to use" />
+        <div className="grid grid-cols-1 gap-y-9 sm:gap-x-6 sm:gap-y-10 sm:grid-cols-2">
           {products.map((p, i) => (
             <Reveal key={p.name} delay={0.05 + i * 0.05}>
-              <ProductCard p={p} />
+              <ProductCard p={p} detail />
             </Reveal>
           ))}
         </div>
       </div>
 
       {/* open-source bench */}
-      <div className="mt-10 dim-group">
-        <Reveal>
-          <p className="text-[11px] uppercase tracking-widest text-black/30 dark:text-white/30 mb-1">
-            open source
-          </p>
-          <p className="text-xs text-black/35 dark:text-white/30 mb-3">
-            tools that started as itch-scratches and ended up useful to other people
-          </p>
-        </Reveal>
+      <div id="open-source" className="mt-16 dim-group scroll-mt-20">
+        <SectionHead title="Open source" sub="tools that started as itch-scratches and ended up useful to other people" />
         <Reveal delay={0.05}>
           <div className="group">
             {builds.map((b) => (
@@ -98,12 +87,8 @@ export function ProjectsPageClient() {
       </div>
 
       {/* merged upstream */}
-      <div className="mt-10">
-        <Reveal>
-          <p className="text-[11px] uppercase tracking-widest text-black/30 dark:text-white/30 mb-3">
-            merged upstream
-          </p>
-        </Reveal>
+      <div className="mt-16">
+        <SectionHead title="Merged upstream" sub="fixes accepted into other people's projects" />
         <Reveal delay={0.05}>
           <ul>
             {upstream.map((u) => (

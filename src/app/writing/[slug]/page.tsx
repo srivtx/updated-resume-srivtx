@@ -60,7 +60,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
             <span className="mx-2 text-black/20 dark:text-white/20">·</span>
             {readingTime(e)}
           </p>
-          <h1 className="mt-5 font-serif text-[40px] sm:text-[56px] leading-[1.02] tracking-[-0.01em] text-neutral-900 dark:text-neutral-50">
+          <h1 className="mt-5 font-serif text-[36px] sm:text-[46px] leading-[1.04] tracking-[-0.01em] text-neutral-900 dark:text-neutral-50">
             {e.title}
           </h1>
           <p className="mt-4 font-reading italic text-[18px] sm:text-[21px] leading-snug text-neutral-500 dark:text-neutral-400 max-w-[34em]">

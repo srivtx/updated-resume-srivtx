@@ -13,8 +13,8 @@ import Link from "next/link";
 export function BlogsPageClient() {
   return (
     <SubPageShell
-      title="technical blogs"
-      sub="engineering notes from building the products — the how, not the hype."
+      title="Notes"
+      sub="engineering notes from building the products. the how, not the hype."
     >
       <div className="dim-group">
         <div className="group">
@@ -46,7 +46,7 @@ export function BlogsPageClient() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
+                      <span className="font-mono text-[11px] lowercase text-black/40 dark:text-white/40">
                         {post.meta}
                       </span>
                       <span className="text-black/25 group-hover/item:text-black dark:text-white/25 dark:group-hover/item:text-white transition-colors">
