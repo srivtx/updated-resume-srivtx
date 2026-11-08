@@ -5,6 +5,7 @@ import { essays, formatDate, getEssay, readingTime } from "@/lib/writing";
 import { SubPageShell } from "@/components/SubPageShell";
 import { EssayFigure } from "@/components/essay/Figures";
 import { InkSwitch } from "@/components/essay/InkSwitch";
+import { ReadingLine } from "@/components/essay/ReadingLine";
 import { reading } from "../fonts";
 
 export function generateStaticParams() {
@@ -47,7 +48,8 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
 
   return (
     <SubPageShell>
-      <article className={`${reading.variable} essay`} data-ink="rose">
+      <article className={`${reading.variable} essay`} data-ink="rose" data-motion="once">
+        <ReadingLine />
         <header className="pt-2 sm:pt-4 pb-8 sm:pb-10 border-b border-neutral-200 dark:border-neutral-800">
           <p className="font-mono text-[11px] text-black/40 dark:text-white/40">
             <Link href="/writing" className="hover:text-black dark:hover:text-white transition-colors">
