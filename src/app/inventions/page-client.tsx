@@ -38,7 +38,7 @@ export function InventionsPageClient() {
                   {paper.brief}
                 </p>
 
-                <div className="mt-3.5 flex flex-wrap items-center gap-2">
+                <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-2">
                   <a
                     href={paper.href}
                     target="_blank"
@@ -52,9 +52,10 @@ export function InventionsPageClient() {
                     href={paper.pdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center rounded-md border text-[11px] font-medium h-5 px-2 border-black/10 dark:border-white/10 text-black/50 dark:text-white/50 hover:border-black/25 dark:hover:border-white/25 transition-colors"
+                    className="inline-flex items-center gap-1 font-mono text-[11px] text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
                   >
-                    PDF
+                    pdf
+                    <ArrowUpRight className="h-3 w-3" />
                   </a>
                 </div>
               </article>
