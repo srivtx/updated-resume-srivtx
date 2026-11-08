@@ -6,7 +6,7 @@ import { EssayRow } from "@/components/EssayRow";
 
 export const metadata: Metadata = {
   title: "Writing | srivtx",
-  description: "Essays by Sribatsha Dash: slower thoughts on intelligence, ai and what is left for humans.",
+  description: "Essays by Sribatsha Dash on how things work, the frontier, and the state of thinking.",
 };
 
 export default function WritingPage() {

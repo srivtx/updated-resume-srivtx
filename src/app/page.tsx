@@ -1,6 +1,6 @@
 // srivtx — home, redesigned as an index rather than a long scroll.
 //
-//   intro     who I am, in one sentence that links to the work and the essays
+//   intro     who I am, in two plain sentences that link to the work and the writing
 //   writing   the latest essay, first
 //   work      the products, as drawn covers
 //   experience
@@ -78,19 +78,15 @@ function Intro() {
         </div>
 
         <p className="mt-8 text-[19px] sm:text-[23px] leading-[1.45] tracking-[-0.012em] text-black/70 dark:text-white/70 max-w-[29em]">
-          I build tools for learning and for type —{" "}
-          <a href="https://tuliplabs.srivtx.xyz" target="_blank" rel="noopener noreferrer" className={inline}>
-            Tulip Labs
-          </a>
-          ,{" "}
-          <a href="https://morphotype.srivtx.xyz" target="_blank" rel="noopener noreferrer" className={inline}>
-            Morphotype
-          </a>{" "}
-          — and{" "}
-          <Link href="/writing" className={inline}>
-            write essays
+          I like to understand systems in detail, then{" "}
+          <Link href="/projects" className={inline}>
+            build things
           </Link>{" "}
-          about what is left for people once ai does the pattern matching.
+          with what I learn. I{" "}
+          <Link href="/writing" className={inline}>
+            write
+          </Link>{" "}
+          about how things work, the frontier, and the state of thinking.
         </p>
 
         <div className="mt-7 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-1">
