@@ -39,8 +39,12 @@ export default function OnekoCat() {
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let neko: Pos = { x: 32, y: 32 };
-    let mouse: Pos = { x: 0, y: 0 };
+    // on a phone the header holds the top-left corner, so the cat waits
+    // at the bottom-left instead
+    let neko: Pos = window.innerWidth < 640 ? { x: 24, y: window.innerHeight - 24 } : { x: 32, y: 32 };
+    let mouse: Pos = { ...neko };
+    el.style.left = `${neko.x - 16}px`;
+    el.style.top = `${neko.y - 16}px`;
     let frame = 0;
     let idleTime = 0;
     let idleAnim: string | null = null;
