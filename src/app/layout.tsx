@@ -25,14 +25,15 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.srivtx.xyz"),
   title: "Sribatsha Dash — srivtx",
   description:
-    "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
+    "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
   openGraph: {
     title: "Sribatsha Dash — srivtx",
     description:
-      "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
-    url: "https://srivtx.github.io",
+      "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
+    url: "https://www.srivtx.xyz",
     siteName: "srivtx",
     images: [{ url: "/pixel-banner.png", width: 1344, height: 768, alt: "srivtx — pixel landscape" }],
     type: "website",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sribatsha Dash — srivtx",
     description:
-      "goquant engineer · freelance / ai engineer · builds deriva, deepforge & customs.",
+      "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
     images: ["/pixel-banner.png"],
   },
 };

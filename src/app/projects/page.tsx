@@ -3,7 +3,7 @@ import { ProjectsPageClient } from "./page-client";
 
 export const metadata: Metadata = {
   title: "Proof of Work | srivtx",
-  description: "The live products, open-source builds and merged upstream work of srivtx.",
+  description: "Tulip Labs, Morphotype and the other live products, open-source builds and merged upstream work of srivtx.",
 };
 
 export default function ProjectsPage() {
