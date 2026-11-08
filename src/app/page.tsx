@@ -83,10 +83,6 @@ function ViewAll({ href }: { href: string }) {
   );
 }
 
-const CHIP =
-  "inline-flex items-center rounded-md border text-[11px] font-medium h-5 px-2 " +
-  "border-black/10 dark:border-white/10 text-black/50 dark:text-white/50";
-
 /* ---------- hero ---------- */
 
 function Hero() {
@@ -407,7 +403,7 @@ export default function Page() {
                     <Link
                       key={paper.title}
                       href="/inventions"
-                      className="dim-item block w-full"
+                      className="dim-item group/item block w-full"
                     >
                       <article>
                         <div className="flex items-center justify-between gap-4 py-5 sm:py-6 border-b border-neutral-200 dark:border-neutral-800">
@@ -419,7 +415,10 @@ export default function Page() {
                               {paper.sub}
                             </p>
                           </div>
-                          <span className={`${CHIP} shrink-0`}>brief</span>
+                          <span className="shrink-0 flex items-center gap-2.5 font-mono text-[11px] text-black/35 dark:text-white/30 group-hover/item:text-black dark:group-hover/item:text-white transition-colors">
+                            brief
+                            <span className="sarrow" aria-hidden />
+                          </span>
                         </div>
                       </article>
                     </Link>
