@@ -3,13 +3,12 @@
 // The one frame every page sits in: ruled margin strips, a sticky header
 // with the four places named in words (the current one underlined and
 // marked for screen readers), a skip link, the content, and a footer that
-// repeats the map plus the ways to reach me. The cat patrols all of it.
+// repeats the map plus the ways to reach me.
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import OnekoCat from "@/components/OnekoCat";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CopyEmail } from "@/components/CopyEmail";
 import { profile, socials } from "@/lib/data";
@@ -138,7 +137,7 @@ function SiteFooter() {
         </div>
       </div>
       <p className="mt-10 text-xs text-black/30 dark:text-white/30">
-        sribatsha dash · srivtx · {profile.location} · 2026 · the cat is watching your cursor
+        sribatsha dash · srivtx · {profile.location} · 2026
       </p>
     </footer>
   );
@@ -173,7 +172,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      <OnekoCat />
       <div className="relative z-10 min-h-screen transition-colors duration-300">
         <div className="relative mx-auto max-w-4xl">
           <Strip side="left" />
