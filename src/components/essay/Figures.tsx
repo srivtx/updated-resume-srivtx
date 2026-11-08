@@ -504,7 +504,11 @@ function field(cx: number, cy: number, seed: number, count = 14, r = 50) {
   while (pts.length < count) {
     const t = rnd() * Math.PI * 2;
     const d = Math.sqrt(rnd()) * r;
-    const p: [number, number] = [cx + Math.cos(t) * d * 1.25, cy + Math.sin(t) * d * 0.8];
+    // rounded, so the server and the browser agree to the last digit
+    const p: [number, number] = [
+      Math.round((cx + Math.cos(t) * d * 1.25) * 10) / 10,
+      Math.round((cy + Math.sin(t) * d * 0.8) * 10) / 10,
+    ];
     if (pts.every(([x, y]) => Math.hypot(x - p[0], y - p[1]) > 14)) pts.push(p);
   }
   return pts;
