@@ -8,6 +8,7 @@ import { posts, blogIndex } from "@/lib/data";
 import { SubPageShell } from "@/components/SubPageShell";
 import { Reveal } from "@/components/Reveal";
 import { ArrowUpRight } from "@/components/NeuButton";
+import Link from "next/link";
 
 export function BlogsPageClient() {
   return (
@@ -70,6 +71,13 @@ export function BlogsPageClient() {
               the full engineering archive lives on deepforge →
             </a>
           </div>
+          <p className="mt-3 text-center text-xs text-black/35 dark:text-white/30">
+            essays, in my own words, are under{" "}
+            <Link href="/writing" className="underline decoration-black/20 dark:decoration-white/20 underline-offset-4 hover:text-black dark:hover:text-white transition-colors">
+              writing
+            </Link>
+            .
+          </p>
         </Reveal>
       </div>
     </SubPageShell>
