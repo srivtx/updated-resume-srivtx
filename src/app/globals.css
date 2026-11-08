@@ -324,3 +324,12 @@ body {
   transition: none !important;
   animation: none !important;
 }
+
+/* ---- keyboard focus: a drawn dashed outline, only when tabbing ---- */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 1.5px dashed currentColor;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
