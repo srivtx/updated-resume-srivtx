@@ -64,7 +64,7 @@ function Section({
       <div className="sm:px-12 py-2">
         <div className="px-4 mb-4 sm:mb-6 mt-4 sm:mt-6">
           <h2 className="text-base sm:text-xl opacity-70 font-serif">{title}</h2>
-          {sub && <p className="opacity-20 text-sm sm:text-base mt-1">{sub}</p>}
+          {sub && <p className="text-black/40 dark:text-white/35 text-sm sm:text-base mt-1">{sub}</p>}
         </div>
         <div className="px-4">{children}</div>
       </div>
@@ -468,7 +468,7 @@ export default function Page() {
                         <h2 className="font-serif text-lg sm:text-xl font-medium mb-2 opacity-70">
                           Let&rsquo;s connect
                         </h2>
-                        <p className="opacity-20 text-md sm:text-lg">Find me on these platforms</p>
+                        <p className="text-black/40 dark:text-white/35 text-base sm:text-lg">Find me on these platforms</p>
                       </div>
                       <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4 items-center">
                         <NeuButton href="https://github.com/srivtx" external className="inline-flex">
