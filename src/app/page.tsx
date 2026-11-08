@@ -259,7 +259,7 @@ export default function Page() {
               <Section title="Proof of Work" sub="the real products — hover a card, watch them run">
                 <div className="dim-group">
                   <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2">
-                    {products.map((p) => (
+                    {products.slice(0, 4).map((p) => (
                       <ProductCard key={p.name} p={p} />
                     ))}
                   </div>

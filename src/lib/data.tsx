@@ -66,8 +66,9 @@ export const experience = [
   },
 ];
 
-// The products — with REAL captured media, bionic page leading.
+// The products — with REAL captured media, newest first, Tulip Labs leading.
 // poster: actual screenshot · video: screen-recorded scroll of the live app.
+// The home page shows the first four; /projects shows them all.
 export type Product = {
   name: string;
   one: string;
@@ -79,6 +80,15 @@ export type Product = {
 };
 
 export const products: Product[] = [
+  {
+    name: "Tulip Labs",
+    one: "hard ideas you can poke. computer science, maths and modelling taught as live simulations, then you write the code yourself.",
+    note: "225 chapters in 10 tracks, a design studio, and meadow — an endless map of generated marks",
+    href: "https://tuliplabs.srivtx.xyz",
+    chips: ["Learning", "Simulations", "Free to learn"],
+    poster: "/images/tuliplabs.webp",
+    video: "/videos/tuliplabs.mp4",
+  },
   {
     name: "Bionic Page",
     one: "turn any web page into a bionic reading page. five modes, per-site rules, fully reversible.",

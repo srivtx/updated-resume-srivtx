@@ -11,6 +11,7 @@ import type { Product } from "@/lib/data";
 import { ArrowUpRight } from "@/components/NeuButton";
 
 const TONES: Record<string, string> = {
+  "Tulip Labs": "from-rose-100 via-white to-pink-50 dark:from-rose-950 dark:via-zinc-900 dark:to-pink-950",
   Deriva: "from-indigo-100 via-white to-emerald-50 dark:from-indigo-950 dark:via-zinc-900 dark:to-emerald-950",
   DeepForge: "from-orange-100 via-white to-rose-50 dark:from-orange-950 dark:via-zinc-900 dark:to-rose-950",
   Customs: "from-sky-100 via-white to-violet-50 dark:from-sky-950 dark:via-zinc-900 dark:to-violet-950",
