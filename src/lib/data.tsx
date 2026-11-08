@@ -1,7 +1,7 @@
-// Content model — Bharath-style multi-page portfolio: home + /projects +
-// /blogs + /inventions. Products carry REAL captured media (poster webp +
-// hover mp4 recorded from the live sites). Copy stays short; links go to
-// the real things.
+// Content model — multi-page portfolio: home + /projects + /writing +
+// /blogs + /inventions. Copy stays short; links go to the real things.
+
+import type { CoverId } from "@/components/Covers";
 
 export const profile = {
   name: "Sribatsha Dash",
@@ -66,8 +66,8 @@ export const experience = [
   },
 ];
 
-// The products — with REAL captured media, newest first, Tulip Labs leading.
-// poster: actual screenshot · video: screen-recorded scroll of the live app.
+// The products, newest first, Tulip Labs leading. Each has a drawn cover
+// (src/components/Covers.tsx) whose mark does what the product does.
 // The home page shows the first four; /projects shows them all.
 export type Product = {
   name: string;
@@ -75,64 +75,64 @@ export type Product = {
   note: string;
   href: string;
   chips: string[];
-  poster: string;
-  video: string;
+  cover: CoverId;
+  line: string; // the headline under the cover
 };
 
 export const products: Product[] = [
   {
     name: "Tulip Labs",
-    one: "hard ideas you can poke. computer science, maths and modelling taught as live simulations, then you write the code yourself.",
+    cover: "tulip",
+    line: "Hard ideas you can poke, then code yourself",
+    one: "computer science, maths and modelling taught as live simulations, then you write the code yourself.",
     note: "225 chapters in 10 tracks, a design studio, and meadow — an endless map of generated marks",
     href: "https://tuliplabs.srivtx.xyz",
     chips: ["Learning", "Simulations", "Free to learn"],
-    poster: "/images/tuliplabs.webp",
-    video: "/videos/tuliplabs.mp4",
   },
   {
     name: "Morphotype",
-    one: "a type and logo lab. blend one typeface into another, set lettering in motion, render it as chrome, neon, glass or pixels.",
+    cover: "morphotype",
+    line: "Blend one typeface into another",
+    one: "a type and logo lab. set lettering in motion, render it as chrome, neon, glass or pixels.",
     note: "for macOS, Windows and the web — and it exports a real, installable font",
     href: "https://morphotype.srivtx.xyz",
     chips: ["Type", "Logos", "Motion"],
-    poster: "/images/morphotype.webp",
-    video: "/videos/morphotype.mp4",
   },
   {
     name: "Bionic Page",
-    one: "turn any web page into a bionic reading page. five modes, per-site rules, fully reversible.",
+    cover: "bionic",
+    line: "Any web page, set for bionic reading",
+    one: "five modes, per-site rules, fully reversible.",
     note: "on-device manifest v3 — no upload, no account, no remote code",
     href: "https://srivtx.github.io/bionic-page",
-    chips: ["Extension", "On-device", "MV3"],
-    poster: "/images/bionic.webp",
-    video: "/videos/bionic.mp4",
+    chips: ["Reading", "Browser extension", "On-device"],
   },
   {
     name: "Deriva",
-    one: "A super-app for learning algorithms — apps inside apps: derive, observe, pattern-match.",
+    cover: "deriva",
+    line: "A super-app for learning algorithms",
+    one: "apps inside apps: derive, observe, pattern-match.",
     note: "one shell, many engines — the everything-app of algorithmics",
     href: "https://deriva.srivtx.xyz",
-    chips: ["Next.js", "TypeScript", "Pyodide", "PWA"],
-    poster: "/images/deriva.webp",
-    video: "/videos/deriva.mp4",
+    chips: ["Algorithms", "In the browser", "Installable"],
   },
   {
     name: "DeepForge",
-    one: "Forge ML skills from scratch. 5,730+ problems, real Python in the browser, no account, MIT.",
+    cover: "deepforge",
+    line: "5,730+ ML problems, in real Python",
+    one: "forge ML skills from scratch, in the browser. no account, MIT licensed.",
     note: "offline-first sync, verified corpus, zero signups",
     href: "https://deepforge.srivtx.xyz",
-    chips: ["Next.js", "Python", "Supabase", "Offline-first"],
-    poster: "/images/deepforge.webp",
-    video: "/videos/deepforge.mp4",
+    chips: ["Machine learning", "Python", "Works offline"],
   },
   {
     name: "Customs",
-    one: "Checkout for AI agents — signed mandates, hash-chained ledger, live Razorpay rails.",
+    cover: "customs",
+    line: "Checkout for AI agents, on real rails",
+    one: "signed mandates, a hash-chained ledger, live Razorpay rails.",
     note: "both sides of the agentic counter, on real payment rails",
     href: "https://customs.srivtx.xyz",
-    chips: ["TypeScript", "Ed25519", "Razorpay", "Buildathon"],
-    poster: "/images/customs.webp",
-    video: "/videos/customs.mp4",
+    chips: ["Payments", "AI agents", "Signed ledger"],
   },
 ];
 
