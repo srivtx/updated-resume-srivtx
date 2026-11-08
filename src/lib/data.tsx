@@ -90,6 +90,15 @@ export const products: Product[] = [
     video: "/videos/tuliplabs.mp4",
   },
   {
+    name: "Morphotype",
+    one: "a type and logo lab. blend one typeface into another, set lettering in motion, render it as chrome, neon, glass or pixels.",
+    note: "for macOS, Windows and the web — and it exports a real, installable font",
+    href: "https://morphotype.srivtx.xyz",
+    chips: ["Type", "Logos", "Motion"],
+    poster: "/images/morphotype.webp",
+    video: "/videos/morphotype.mp4",
+  },
+  {
     name: "Bionic Page",
     one: "turn any web page into a bionic reading page. five modes, per-site rules, fully reversible.",
     note: "on-device manifest v3 — no upload, no account, no remote code",
