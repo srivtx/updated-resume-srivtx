@@ -12,7 +12,11 @@ import type { FigureId } from "@/lib/writing";
 /* ---------- shared ---------- */
 
 
-// in view once → after `hold` ms flips to "after". replay() runs it again.
+// Two ways a figure can move, picked on the article (data-motion):
+//  once   — in view → after `hold` ms flips to "after", and stays.
+//  scroll — the figure follows the reader: it changes as it rises past
+//           the middle of the screen and changes back if you scroll up.
+// replay() runs it again either way.
 function useStaged(hold = 1100) {
   const ref = useRef<HTMLElement>(null);
   const [after, setAfter] = useState(false);
@@ -27,18 +31,30 @@ function useStaged(hold = 1100) {
       setAfter(true);
       return;
     }
+    const mode = () => el.closest<HTMLElement>("article")?.dataset.motion ?? "once";
+    let seen = false;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
+        if (e.isIntersecting && !seen && mode() === "once") {
+          seen = true;
           timer.current = window.setTimeout(() => setAfter(true), hold);
-          io.disconnect();
         }
       },
       { threshold: 0.55 },
     );
     io.observe(el);
+    // scroll mode, with a little slack so it never flickers at the line
+    const onScroll = () => {
+      if (mode() !== "scroll") return;
+      const r = el.getBoundingClientRect();
+      const mid = r.top + r.height / 2;
+      if (mid < window.innerHeight * 0.5) setAfter(true);
+      else if (mid > window.innerHeight * 0.72) setAfter(false);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       io.disconnect();
+      window.removeEventListener("scroll", onScroll);
       window.clearTimeout(timer.current);
     };
   }, [hold]);
@@ -123,6 +139,10 @@ const MEASURED = 1;
 
 function Reduction({ n }: { n: number }) {
   const s = useStaged(1300);
+  const [focus, setFocus] = useState<number | null>(null);
+  const shown = s.after ? focus : null; // only meaningful once reduced
+  const counts = PEOPLE.map((g) => g.filter((row) => row[MEASURED]).length);
+  const traits = PEOPLE.map((g) => g.flat().filter(Boolean).length);
   const W = 640;
   const H = 300;
   const T = 12; // tile
@@ -140,7 +160,8 @@ function Reduction({ n }: { n: number }) {
       caption={
         <>
           Seven people, sixteen traits each. We keep the one column we are good at measuring and
-          stack it on a ruler; everything else fades into the other side of the equation.
+          stack it on a ruler; everything else fades into the other side of the equation. Point at
+          anyone to see what their number left out.
         </>
       }
     >
@@ -168,16 +189,39 @@ function Reduction({ n }: { n: number }) {
           textAnchor="end"
           className={`${label} fig-fade-in`}
           fillOpacity="0.45"
-          style={{ transitionDelay: s.after ? "900ms" : "0ms" }}
+          style={{ transitionDelay: s.after && shown === null ? "900ms" : "0ms", opacity: s.after && shown === null ? undefined : 0 }}
         >
           one number each
+        </text>
+        <text
+          x={W - 24}
+          y={top - 22}
+          textAnchor="end"
+          className={label}
+          style={{ opacity: shown === null ? 0 : 1, transition: "opacity 0.3s ease" }}
+        >
+          {shown !== null && (
+            <>
+              <tspan fill="var(--ink)">{counts[shown]} counted</tspan>
+              <tspan fillOpacity="0.5">{`  ·  ${traits[shown] - counts[shown]} left out`}</tspan>
+            </>
+          )}
         </text>
 
         {PEOPLE.map((grid, p) => {
           // the measured tiles drop, bottom first, into a stack on the ruler
           let k = grid.filter((row) => row[MEASURED]).length;
+          const lit = shown === p;
           return (
-            <g key={p}>
+            <g
+              key={p}
+              onMouseEnter={() => setFocus(p)}
+              onMouseLeave={() => setFocus(null)}
+              onClick={() => setFocus(focus === p ? null : p)}
+              style={{ cursor: s.after ? "pointer" : "default" }}
+            >
+              {/* the hit area: the person's column, glyph to ruler */}
+              <rect x={x0 + p * dx - 8} y={top - 10} width={4 * STEP + 13} height={base - top + 34} fill="transparent" />
               {grid.map((row, r) =>
                 row.map((on, c) => {
                   const x = x0 + p * dx + c * STEP;
@@ -211,7 +255,7 @@ function Reduction({ n }: { n: number }) {
                       height={T}
                       fill="currentColor"
                       className="fig-dim"
-                      style={{ opacity: s.after ? 0.08 : 0.72 }}
+                      style={{ opacity: s.after ? (lit ? 0.62 : 0.08) : 0.72 }}
                     />
                   ) : (
                     <rect
@@ -224,7 +268,7 @@ function Reduction({ n }: { n: number }) {
                       stroke="currentColor"
                       strokeWidth="1"
                       className="fig-dim"
-                      style={{ opacity: s.after ? 0.05 : 0.18 }}
+                      style={{ opacity: s.after ? (lit ? 0.22 : 0.05) : 0.18 }}
                     />
                   );
                 }),
@@ -235,9 +279,12 @@ function Reduction({ n }: { n: number }) {
                 y={base + 18}
                 textAnchor="middle"
                 className={`${label} fig-fade-in`}
-                style={{ transitionDelay: s.after ? `${600 + p * 70}ms` : "0ms" }}
+                style={{
+                  fill: lit ? "var(--ink)" : undefined,
+                  transitionDelay: s.after && focus === null ? `${600 + p * 70}ms` : "0ms",
+                }}
               >
-                {grid.filter((row) => row[MEASURED]).length}
+                {counts[p]}
               </text>
             </g>
           );
@@ -259,6 +306,11 @@ const curve = (x1: number, y1: number, x2: number, y2: number) => {
 
 function TwoDirections({ n }: { n: number }) {
   const s = useStaged(500);
+  const [focus, setFocus] = useState<"first" | "second" | null>(null);
+  const dim = (d: "first" | "second") => ({
+    opacity: focus && focus !== d ? 0.22 : 1,
+    transition: "opacity 0.4s ease",
+  });
   const W = 640;
   const H = 320;
   const fork = { x: 176, y: 160 };
@@ -293,7 +345,8 @@ function TwoDirections({ n }: { n: number }) {
       caption={
         <>
           Above, the repetitive work is modelled away and the many small drift into a few very large
-          ones. Below, people are hired to experiment, and every idea branches into more.
+          ones. Below, people are hired to experiment, and every idea branches into more. Point at
+          either to follow it alone.
         </>
       }
     >
@@ -308,7 +361,12 @@ function TwoDirections({ n }: { n: number }) {
         </text>
         <circle cx={fork.x} cy={fork.y} r="3.5" fill="var(--bg-fig)" stroke="currentColor" strokeWidth="1.25" />
 
+        {/* hit areas: top half follows the first direction, bottom half the second */}
+        <rect x={fork.x} y="0" width={W - fork.x} height={fork.y} fill="transparent" onMouseEnter={() => setFocus("first")} onMouseLeave={() => setFocus(null)} />
+        <rect x={fork.x} y={fork.y} width={W - fork.x} height={H - fork.y} fill="transparent" onMouseEnter={() => setFocus("second")} onMouseLeave={() => setFocus(null)} />
+
         {/* first direction */}
+        <g style={dim("first")} pointerEvents="none">
         <path
           d={curve(fork.x, fork.y, 300, 82) + ` L${sink.x - 18} 82`}
           fill="none"
@@ -348,8 +406,10 @@ function TwoDirections({ n }: { n: number }) {
         <text x="300" y="36" className={label} opacity="0.4">
           routine automated, a few grow large
         </text>
+        </g>
 
         {/* second direction */}
+        <g style={dim("second")} pointerEvents="none">
         {links.map((k, i) => (
           <path
             key={i}
@@ -381,6 +441,7 @@ function TwoDirections({ n }: { n: number }) {
         <text x="28" y={H - 12} className={label} opacity="0.4">
           hire to experiment, ideas branch
         </text>
+        </g>
       </svg>
     </Frame>
   );
@@ -516,6 +577,11 @@ function field(cx: number, cy: number, seed: number, count = 14, r = 50) {
 
 function Lateral({ n }: { n: number }) {
   const s = useStaged(500);
+  const [focus, setFocus] = useState<"deep" | "lateral" | null>(null);
+  const dim = (d: "deep" | "lateral") => ({
+    opacity: focus && focus !== d ? 0.2 : 1,
+    transition: "opacity 0.4s ease",
+  });
   const W = 640;
   const H = 300;
   const centres: [number, number][] = [[118, 104], [312, 214], [474, 86], [562, 226]];
@@ -553,6 +619,7 @@ function Lateral({ n }: { n: number }) {
         <>
           Inside each field, ideas sit close together, and a careful path walks from one neighbour to the
           next. A divergent path jumps between fields and connects ideas that were never neighbours.
+          Point at either path to follow it alone.
         </>
       }
     >
@@ -576,16 +643,33 @@ function Lateral({ n }: { n: number }) {
           pts.map(([x, y], i) => <circle key={`${f}-${i}`} cx={x} cy={y} r="2.6" fill="currentColor" opacity="0.4" />),
         )}
 
-        <path d={deepD} fill="none" stroke="currentColor" strokeOpacity="0.7" strokeWidth="1.25" pathLength={1} className="fig-draw" />
+        <g style={dim("deep")}>
+        {/* a wide, invisible stroke to point at */}
+        <path d={deepD} fill="none" stroke="transparent" strokeWidth="16" onMouseEnter={() => setFocus("deep")} onMouseLeave={() => setFocus(null)} />
+        <path d={deepD} fill="none" stroke="currentColor" strokeOpacity="0.7" strokeWidth="1.25" pathLength={1} className="fig-draw" pointerEvents="none" />
         {deep.map(([x, y], i) => (
           <circle key={i} cx={x} cy={y} r="3.2" fill="currentColor" />
         ))}
         <text x={centres[0][0]} y={centres[0][1] + 78} textAnchor="middle" className={label} opacity="0.55">
           deep, inside one field
         </text>
+        </g>
 
+        <g style={dim("lateral")}>
         {hops.slice(1).map((q, i) => (
           <path
+            key={`hit-${i}`}
+            d={arc(hops[i], q)}
+            fill="none"
+            stroke="transparent"
+            strokeWidth="16"
+            onMouseEnter={() => setFocus("lateral")}
+            onMouseLeave={() => setFocus(null)}
+          />
+        ))}
+        {hops.slice(1).map((q, i) => (
+          <path
+            pointerEvents="none"
             key={i}
             d={arc(hops[i], q)}
             fill="none"
@@ -611,6 +695,7 @@ function Lateral({ n }: { n: number }) {
         <text x={W - 24} y={H - 14} textAnchor="end" className={`${label} fig-fade-in`} fillOpacity="0.7" style={{ transitionDelay: s.after ? "2200ms" : "0ms" }}>
           lateral, across fields
         </text>
+        </g>
       </svg>
     </Frame>
   );
