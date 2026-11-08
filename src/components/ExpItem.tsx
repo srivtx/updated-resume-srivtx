@@ -64,7 +64,8 @@ function ExpCard({
           <ul className="px-4 py-4 pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2.5 text-xs sm:text-sm text-black/60 dark:text-white/60">
             {item.points.map((p) => (
               <li key={p} className="flex gap-2.5">
-                <span className="text-[#006FEE] dark:text-[#4d9fff] shrink-0 mt-[3px]">•</span>
+                {/* a pixel, not a bullet */}
+                <span aria-hidden className="shrink-0 mt-[0.6em] h-[5px] w-[5px] bg-[#006FEE] dark:bg-[#4d9fff]" />
                 <span className="leading-relaxed">{p}</span>
               </li>
             ))}
