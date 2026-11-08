@@ -10,4 +10,8 @@ export const reading = Newsreader({
   style: ["normal", "italic"],
   axes: ["opsz"],
   display: "swap",
+  // next/font has no fallback metrics for Newsreader; Georgia is close
+  // enough, and this keeps the build quiet
+  adjustFontFallback: false,
+  fallback: ["Georgia", "serif"],
 });
