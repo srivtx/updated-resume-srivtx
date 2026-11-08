@@ -12,15 +12,34 @@ import { SLAB } from "@/components/NeuButton";
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [dark, setDark] = useState(false);
 
+  // The page starts in the device's theme. Until someone picks one here,
+  // it keeps following the device, even when that changes while open
+  // (say, the phone goes dark at sunset).
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const follow = () => {
+      let saved: string | null = null;
+      try {
+        saved = localStorage.getItem("theme");
+      } catch {}
+      if (saved) return;
+      document.documentElement.classList.toggle("dark", mq.matches);
+      setDark(mq.matches);
+    };
+    mq.addEventListener("change", follow);
+    return () => mq.removeEventListener("change", follow);
   }, []);
 
+  // Picking the same theme as the device forgets the choice, so the page
+  // goes back to following the device; picking the other one remembers it.
   const apply = (next: boolean) => {
     document.documentElement.classList.toggle("dark", next);
     setDark(next);
     try {
-      localStorage.setItem("theme", next ? "dark" : "light");
+      const device = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (next === device) localStorage.removeItem("theme");
+      else localStorage.setItem("theme", next ? "dark" : "light");
     } catch {
       /* private mode — ignore */
     }
