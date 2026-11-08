@@ -45,12 +45,7 @@ body {
   transition: opacity 0.3s ease-out, transform 0.3s ease-out,
     box-shadow 0.3s ease-out, border-color 0.3s ease-out;
 }
-.dim-group:hover .dim-item {
-  opacity: 0.4;
-}
-.dim-group .dim-item:hover {
-  opacity: 1;
-}
+/* (siblings no longer dim on hover — each item answers on its own) */
 
 /* ---- stack marquee ---- */
 
@@ -345,25 +340,26 @@ button:focus-visible {
   transform-box: fill-box;
   transform-origin: center;
 }
-.mk-run .mk-grow { animation: mk-grow 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) both; }
-.mk-run .mk-out { animation: mk-out 1.5s ease-in-out var(--d, 0ms) both; }
-.mk-run .mk-in { animation: mk-in 1.5s ease-in-out var(--d, 0ms) both; }
-.mk-run .mk-bold { animation: mk-bold 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) both; }
-.mk-run .mk-settle { animation: mk-settle 0.5s cubic-bezier(0.3, 0.9, 0.3, 1) var(--d, 0ms) both; }
-.mk-run .mk-edge { animation: mk-edge 0.7s ease-out var(--d, 0ms) both; }
-.mk-run .mk-pop { animation: mk-pop 0.38s cubic-bezier(0.3, 1.4, 0.5, 1) var(--d, 0ms) both; }
-.mk-run .mk-link { transform-origin: left center; animation: mk-link 0.25s ease-out var(--d, 0ms) both; }
-.mk-run .mk-fade { animation: mk-fade 0.5s ease-out var(--d, 0ms) both; }
+.mk-run .mk-grow { animation: mk-grow 1.3s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms) both; }
+.mk-run .mk-out { animation: mk-out 2s cubic-bezier(0.45, 0, 0.55, 1) var(--d, 0ms) both; }
+.mk-run .mk-in { animation: mk-in 2s cubic-bezier(0.45, 0, 0.55, 1) var(--d, 0ms) both; }
+.mk-run .mk-bold { animation: mk-bold 1.2s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms) both; }
+.mk-run .mk-settle { animation: mk-settle 1.4s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms) both; }
+.mk-run .mk-edge { animation: mk-edge 1.2s cubic-bezier(0.45, 0, 0.55, 1) var(--d, 0ms) both; }
+.mk-run .mk-pop { animation: mk-pop 1.2s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms) both; }
+.mk-run .mk-link { transform-origin: left center; animation: mk-link 1.2s cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0ms) both; }
+.mk-run .mk-fade { animation: mk-fade 1.6s cubic-bezier(0.45, 0, 0.55, 1) var(--d, 0ms) both; }
 
-@keyframes mk-grow { from { opacity: 0.12; transform: scale(0.4); } to { opacity: 1; transform: none; } }
-@keyframes mk-out { 0%, 15% { opacity: 1; } 42%, 62% { opacity: 0; } 90%, 100% { opacity: 1; } }
-@keyframes mk-in { 0%, 15% { opacity: 0; } 42%, 62% { opacity: 1; } 90%, 100% { opacity: 0; } }
-@keyframes mk-bold { from { opacity: 0.45; transform: scaleY(0.65); } to { opacity: 1; transform: none; } }
-@keyframes mk-settle { from { transform: translateX(var(--dx)); } to { transform: none; } }
-@keyframes mk-edge { 0% { opacity: 0.06; } 55% { opacity: 1; } 100% { opacity: 0.4; } }
-@keyframes mk-pop { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
-@keyframes mk-link { from { transform: scaleX(0); } to { transform: none; } }
-@keyframes mk-fade { from { opacity: 1; } to { opacity: 0.22; } }
+/* each one: rest → the change → back to rest */
+@keyframes mk-grow { 0% { opacity: 1; transform: none; } 35% { opacity: 0.15; transform: scale(0.55); } 100% { opacity: 1; transform: none; } }
+@keyframes mk-out { 0%, 12% { opacity: 1; } 40%, 60% { opacity: 0; } 88%, 100% { opacity: 1; } }
+@keyframes mk-in { 0%, 12% { opacity: 0; } 40%, 60% { opacity: 1; } 88%, 100% { opacity: 0; } }
+@keyframes mk-bold { 0% { opacity: 1; transform: none; } 35% { opacity: 0.45; transform: scaleY(0.65); } 100% { opacity: 1; transform: none; } }
+@keyframes mk-settle { 0% { transform: none; } 30% { transform: translateX(var(--dx)); } 100% { transform: none; } }
+@keyframes mk-edge { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+@keyframes mk-pop { 0% { opacity: 1; transform: none; } 30% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: none; } }
+@keyframes mk-link { 0% { transform: none; } 30% { transform: scaleX(0); } 100% { transform: none; } }
+@keyframes mk-fade { 0% { opacity: 0.22; } 30% { opacity: 1; } 100% { opacity: 0.22; } }
 
 @media (prefers-reduced-motion: reduce) {
   .mk-run * { animation: none !important; }
