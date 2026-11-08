@@ -38,6 +38,18 @@ function NavPill() {
           </svg>
         </Link>
         <Link
+          href="/writing"
+          aria-label="Writing"
+          title="Writing"
+          className="w-7 h-7 hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-200 rounded-full flex items-center justify-center text-black/75 dark:text-white/80"
+        >
+          {/* a nib: the essays */}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-[13px] w-[13px]" aria-hidden>
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+          </svg>
+        </Link>
+        <Link
           href="/blogs"
           aria-label="Blogs"
           title="Blogs"
@@ -71,8 +83,8 @@ export function SubPageShell({
   children,
   wide = false,
 }: {
-  title: string;
-  sub: string;
+  title?: string;
+  sub?: string;
   children: ReactNode;
   wide?: boolean;
 }) {
@@ -107,12 +119,16 @@ export function SubPageShell({
                 <div className="mb-4 sm:mb-6">
                   <NavPill />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-serif italic font-medium mb-4 text-neutral-900 dark:text-neutral-100 tracking-tight">
-                  {title}
-                </h1>
-                <p className="text-lg text-neutral-500 dark:text-neutral-400 tracking-wide">
-                  {sub}
-                </p>
+                {title && (
+                  <h1 className="text-2xl sm:text-3xl font-serif italic font-medium mb-4 text-neutral-900 dark:text-neutral-100 tracking-tight">
+                    {title}
+                  </h1>
+                )}
+                {sub && (
+                  <p className="text-lg text-neutral-500 dark:text-neutral-400 tracking-wide">
+                    {sub}
+                  </p>
+                )}
               </div>
             </div>
 
