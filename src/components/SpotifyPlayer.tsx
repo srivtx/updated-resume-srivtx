@@ -123,8 +123,8 @@ export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
         {/* song info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <SpotifyIcon className="w-3.5 h-3.5 text-[#1DB954]" />
-            <span className="text-[11px] font-medium tracking-wide text-black/45 dark:text-white/40">
+            <SpotifyIcon className="w-3.5 h-3.5 shrink-0 text-[#1DB954]" />
+            <span className="min-w-0 truncate whitespace-nowrap text-[11px] font-medium tracking-wide text-black/45 dark:text-white/40">
               {playing ? "Now playing" : failed ? "Last played" : "Last played · 30s preview"}
             </span>
           </div>

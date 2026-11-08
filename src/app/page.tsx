@@ -112,7 +112,7 @@ function Hero() {
       {/* pfp + theme toggle */}
       <Reveal delay={0.05}>
         <div className="flex-col -mt-10">
-          <div className="flex items-center justify-between mb-4 sm:ml-8 ml-4 sm:mr-8 mr-4">
+          <div className="flex items-center justify-between mb-4 sm:ml-16 ml-4 sm:mr-16 mr-4">
             <div className="w-24 h-24 sm:w-28 sm:h-28 relative z-10 rounded-full overflow-hidden shrink-0 ring-2 ring-white dark:ring-zinc-900">
               <Image
                 alt={profile.name}
@@ -129,7 +129,7 @@ function Hero() {
 
       {/* name, tagline, socials */}
       <Reveal delay={0.1}>
-        <div className="text-left sm:flex sm:justify-between sm:items-center w-full sm:px-8 px-4 flex-col sm:flex-row">
+        <div className="text-left sm:flex sm:justify-between sm:items-center w-full sm:px-16 px-4 flex-col sm:flex-row">
           <div className="px-0">
             <h1 className="font-serif italic text-2xl sm:text-4xl tracking-[0.01em] font-medium mb-0">
               {profile.first} Dash
@@ -156,7 +156,7 @@ function Hero() {
 
       {/* live github numbers */}
       <Reveal delay={0.15}>
-        <div className="sm:px-8 px-4">
+        <div className="sm:px-16 px-4">
           <GitHubStats />
         </div>
       </Reveal>
@@ -166,7 +166,7 @@ function Hero() {
           row at the cards' full combined width, so both cards stay
           the exact same size, playing or not */}
       <Reveal delay={0.2}>
-        <div className="sm:px-8 px-4 mt-4">
+        <div className="sm:px-16 px-4 mt-4">
           <SpotifyPlayer>
             <NowWatching />
           </SpotifyPlayer>
@@ -461,7 +461,7 @@ export default function Page() {
               {/* ====== CONNECT + FOOTER ====== */}
               <Reveal>
                 <div className="mt-4 sm:mt-6">
-                  <div className="sm:px-12 px-4 pb-20 sm:pb-24">
+                  <div className="sm:px-16 px-4 pb-20 sm:pb-24">
                     <div className="text-center sm:text-left w-full">
                       <div className="mb-4 sm:mb-6">
                         <h2 className="font-serif text-[22px] sm:text-[26px] leading-none tracking-[-0.005em] mb-2 text-black/80 dark:text-white/80">
