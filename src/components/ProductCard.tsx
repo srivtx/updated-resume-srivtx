@@ -114,10 +114,10 @@ export function ProductCard({
               <ArrowUpRight className="h-4 w-4" />
             </span>
           </div>
-          <p className="text-xs leading-relaxed text-black/50 dark:text-white/30 max-w-[52ch]">
+          <p className="text-xs leading-relaxed text-black/55 dark:text-white/55 max-w-[52ch]">
             {p.one}
           </p>
-          <p className="text-[11px] text-black/35 dark:text-white/25 leading-relaxed">
+          <p className="text-[11px] text-black/40 dark:text-white/35 leading-relaxed">
             {p.note}
           </p>
           {/* plain-word tags, set like a byline */}
