@@ -2,7 +2,7 @@
 
 // Live GitHub numbers — fetched client-side from the public API (no
 // token in the page, ever). Fails quietly: if the network or the rate
-// limit says no, the chips simply don't render.
+// limit says no, the line simply stays empty.
 
 import { useEffect, useState } from "react";
 
@@ -31,25 +31,27 @@ export function GitHubStats() {
     };
   }, []);
 
-  if (!stats) return null;
+  const items: [string, number][] = stats
+    ? [
+        ["repositories", stats.repos],
+        ["stars", stats.stars],
+        ["followers", stats.followers],
+      ]
+    : [];
 
-  const chips: [string, number][] = [
-    ["repositories", stats.repos],
-    ["stars", stats.stars],
-    ["followers", stats.followers],
-  ];
-
+  // a plain byline, not a row of boxes; the line keeps its height while
+  // the numbers load, so nothing below it jumps
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-2">
-      {chips.map(([label, n]) => (
-        <span
-          key={label}
-          className="inline-flex items-center rounded-md border border-black/10 dark:border-white/10 text-[11px] font-medium h-6 px-2.5 text-black/50 dark:text-white/50 bg-white dark:bg-white/[0.04]"
-        >
-          <span className="text-black/80 dark:text-white/80 font-semibold mr-1">{n}</span>
-          {label}
+    <p
+      className={`mt-5 h-5 font-mono text-[11px] text-black/40 dark:text-white/35 transition-opacity duration-500 ${stats ? "opacity-100" : "opacity-0"}`}
+      aria-live="polite"
+    >
+      {items.map(([label, n], i) => (
+        <span key={label}>
+          {i > 0 && <span className="mx-2 text-black/20 dark:text-white/20">·</span>}
+          <span className="text-black/75 dark:text-white/75">{n}</span> {label}
         </span>
       ))}
-    </div>
+    </p>
   );
 }
