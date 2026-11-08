@@ -16,6 +16,8 @@ const config: Config = {
         sans:  ['var(--font-grotesk)', "Space Grotesk", "system-ui", "sans-serif"],
         serif: ['var(--font-serif)', "Instrument Serif", "Georgia", "serif"],
         mono:  ['var(--font-mono)', "JetBrains Mono", "ui-monospace", "monospace"],
+        // the essays' reading face (loaded only on /writing)
+        reading: ['var(--font-reading)', "Newsreader", "Georgia", "serif"],
       },
     },
   },
