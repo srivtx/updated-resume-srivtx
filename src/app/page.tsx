@@ -37,6 +37,7 @@ import { NowWatching } from "@/components/NowWatching";
 import { CopyEmail } from "@/components/CopyEmail";
 import { BuildLogo } from "@/components/BuildLogos";
 import OnekoCat from "@/components/OnekoCat";
+import { essays, formatDate, readingTime } from "@/lib/writing";
 import Link from "next/link";
 
 /* ---------- small building blocks ---------- */
@@ -334,6 +335,33 @@ export default function Page() {
               {/* ====== STACK ====== */}
               <Section title="Stack I use" sub="Technologies I work with">
                 <StackMarquee />
+              </Section>
+
+              <Rule />
+
+              {/* ====== WRITING (essays, hosted here) ====== */}
+              <Section title="Writing" sub="essays, slower than the code">
+                <div className="dim-group">
+                  {essays.slice(0, 3).map((e) => (
+                    <Link key={e.slug} href={`/writing/${e.slug}`} className="dim-item group/item block w-full">
+                      <article className="py-5 sm:py-6 border-b border-neutral-200 dark:border-neutral-800">
+                        <div className="flex items-baseline justify-between gap-4">
+                          <h3 className="font-serif text-[22px] sm:text-[26px] leading-[1.15] text-black/85 dark:text-white/85">
+                            {e.title}
+                          </h3>
+                          <span className="sarrow shrink-0 text-black/25 dark:text-white/25 group-hover/item:text-black dark:group-hover/item:text-white" aria-hidden />
+                        </div>
+                        <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-black/45 dark:text-white/40 max-w-[56ch]">
+                          {e.dek}
+                        </p>
+                        <p className="mt-2 font-mono text-[11px] text-black/35 dark:text-white/30">
+                          {formatDate(e.date)} · {readingTime(e)}
+                        </p>
+                      </article>
+                    </Link>
+                  ))}
+                </div>
+                <ViewAll href="/writing" />
               </Section>
 
               <Rule />
