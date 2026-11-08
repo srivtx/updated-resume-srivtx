@@ -27,6 +27,15 @@ export function ProductCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const vidRef = useRef<HTMLVideoElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+
+  // a hairline that draws across the bottom of the clip as it plays
+  const onTime = () => {
+    const v = vidRef.current;
+    if (v && barRef.current && v.duration) {
+      barRef.current.style.transform = `scaleX(${v.currentTime / v.duration})`;
+    }
+  };
 
   const onEnter = () => {
     setHovered(true);
@@ -38,6 +47,7 @@ export function ProductCard({
       vidRef.current.pause();
       vidRef.current.currentTime = 0;
     }
+    if (barRef.current) barRef.current.style.transform = "scaleX(0)";
   };
 
   const media = (
@@ -63,13 +73,21 @@ export function ProductCard({
         loop
         playsInline
         preload="none"
+        onTimeUpdate={onTime}
         className={`absolute inset-0 h-full w-full object-cover object-top scale-[1.05] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}
       />
-      {/* play hint */}
-      <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full bg-black/55 dark:bg-black/65 backdrop-blur-sm px-2 py-0.5 text-[9px] font-medium tracking-wide text-white/90 uppercase">
-        <span className="inline-block h-1 w-1 rounded-full bg-emerald-400" />
-        {hovered ? "live" : "hover to play"}
+      {/* play hint — small and quiet; says "playing" once it runs */}
+      <div className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-[4px] bg-black/50 dark:bg-black/60 backdrop-blur-sm px-1.5 py-[3px] font-mono text-[9.5px] leading-none text-white/85">
+        <span className={`inline-block h-[5px] w-[5px] ${hovered ? "bg-emerald-400 animate-pulse" : "bg-white/70"}`} />
+        {hovered ? "playing" : "hover to play"}
       </div>
+      {/* playback hairline */}
+      <span
+        ref={barRef}
+        aria-hidden
+        className="absolute left-0 right-0 bottom-0 h-[2px] bg-black/60 dark:bg-white/70 origin-left transition-transform duration-300 ease-linear"
+        style={{ transform: "scaleX(0)" }}
+      />
     </div>
   );
 
@@ -102,16 +120,15 @@ export function ProductCard({
           <p className="text-[11px] text-black/35 dark:text-white/25 leading-relaxed">
             {p.note}
           </p>
-          <div className="flex flex-wrap gap-1 pt-0.5">
-            {p.chips.map((c) => (
-              <span
-                key={c}
-                className="inline-flex items-center rounded-md border text-[11px] font-medium h-5 px-2 border-black/10 dark:border-white/10 text-black/50 dark:text-white/50"
-              >
+          {/* plain-word tags, set like a byline */}
+          <p className="pt-1 font-mono text-[10.5px] lowercase text-black/40 dark:text-white/35">
+            {p.chips.map((c, i) => (
+              <span key={c}>
+                {i > 0 && <span className="mx-1.5 text-black/20 dark:text-white/20">·</span>}
                 {c}
               </span>
             ))}
-          </div>
+          </p>
         </div>
       </div>
     </a>
