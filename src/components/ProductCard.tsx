@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import type { Product } from "@/lib/data";
 import { ArrowUpRight } from "@/components/NeuButton";
+import { MorphName, TulipMark } from "@/components/ProductMarks";
 
 const TONES: Record<string, string> = {
   "Tulip Labs": "from-rose-100 via-white to-pink-50 dark:from-rose-950 dark:via-zinc-900 dark:to-pink-950",
@@ -107,8 +108,15 @@ export function ProductCard({
         <div className={featured ? "sm:w-[58%]" : ""}>{media}</div>
         <div className="flex-1 px-3 pt-2.5 pb-2 flex flex-col gap-1.5">
           <div className="flex items-start justify-between gap-2">
-            <span className="text-left text-[16px] sm:text-[17px] leading-snug text-black/80 dark:text-white/80 font-medium truncate">
-              {p.name}
+            <span className="flex items-end gap-1.5 min-w-0 text-left text-[16px] sm:text-[17px] leading-snug text-black/80 dark:text-white/80 font-medium">
+              <span className="truncate">
+                {p.name === "Morphotype" ? <MorphName name={p.name} active={hovered} /> : p.name}
+              </span>
+              {p.name === "Tulip Labs" && (
+                <span className="mb-[5px]">
+                  <TulipMark active={hovered} />
+                </span>
+              )}
             </span>
             <span className="shrink-0 mt-0.5 inline-flex rounded-full text-black/30 group-hover/item:text-black dark:text-white/30 dark:group-hover/item:text-white transition-colors">
               <ArrowUpRight className="h-4 w-4" />
