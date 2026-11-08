@@ -63,8 +63,8 @@ function Section({
     <Reveal>
       <div className="sm:px-12 py-2">
         <div className="px-4 mb-4 sm:mb-6 mt-4 sm:mt-6">
-          <h2 className="text-base sm:text-xl opacity-70 font-serif">{title}</h2>
-          {sub && <p className="text-black/40 dark:text-white/35 text-sm sm:text-base mt-1">{sub}</p>}
+          <h2 className="font-serif text-[22px] sm:text-[26px] leading-none tracking-[-0.005em] text-black/80 dark:text-white/80">{title}</h2>
+          {sub && <p className="text-black/40 dark:text-white/35 text-[13px] sm:text-sm mt-2">{sub}</p>}
         </div>
         <div className="px-4">{children}</div>
       </div>
@@ -464,10 +464,10 @@ export default function Page() {
                   <div className="sm:px-12 px-4 pb-20 sm:pb-24">
                     <div className="text-center sm:text-left w-full">
                       <div className="mb-4 sm:mb-6">
-                        <h2 className="font-serif text-lg sm:text-xl font-medium mb-2 opacity-70">
+                        <h2 className="font-serif text-[22px] sm:text-[26px] leading-none tracking-[-0.005em] mb-2 text-black/80 dark:text-white/80">
                           Let&rsquo;s connect
                         </h2>
-                        <p className="text-black/40 dark:text-white/35 text-base sm:text-lg">Find me on these platforms</p>
+                        <p className="text-black/40 dark:text-white/35 text-[13px] sm:text-sm">Find me on these platforms</p>
                       </div>
                       <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4 items-center">
                         <NeuButton href="https://github.com/srivtx" external className="inline-flex">
