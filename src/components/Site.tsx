@@ -50,12 +50,14 @@ function SiteHeader() {
           href="/"
           aria-label="Sribatsha Dash — home"
           aria-current={path === "/" ? "page" : undefined}
-          className="flex items-center gap-2.5 rounded-full text-black/85 dark:text-white/85 hover:text-black dark:hover:text-white transition-colors"
+          className="group/logo flex items-center gap-2 text-black/85 dark:text-white/85 hover:text-black dark:hover:text-white transition-colors"
         >
-          <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 dark:ring-white/10">
-            <Image src="/pfp.jpg" alt="" fill sizes="28px" className="object-cover" />
+          {/* a pixel: the site's one accent */}
+          <span aria-hidden className="h-[7px] w-[7px] bg-[#006FEE] dark:bg-[#4d9fff] transition-transform duration-300 group-hover/logo:rotate-45" />
+          <span className="text-[14px] font-medium tracking-[-0.01em]">
+            <span className="sm:hidden">srivtx</span>
+            <span className="hidden sm:inline">sribatsha dash</span>
           </span>
-          <span className="hidden sm:inline text-[14px] font-medium tracking-[-0.005em]">sribatsha dash</span>
         </Link>
 
         <div className="flex items-center gap-3 sm:gap-5">
@@ -142,6 +144,26 @@ function SiteFooter() {
   );
 }
 
+// the pixel dusk landscape, as the sign-off at the foot of every page;
+// zooms a little on hover, like it always did
+function Scenery() {
+  return (
+    <div className="relative overflow-hidden group/banner" aria-hidden>
+      <Image
+        alt=""
+        src="/pixel-banner.png"
+        width={1344}
+        height={768}
+        sizes="(max-width: 640px) 100vw, 776px"
+        className="w-full h-[120px] sm:h-[160px] object-cover transition-transform duration-700 ease-out group-hover/banner:scale-[1.06]"
+      />
+      <p className="absolute inset-0 flex items-center justify-center px-4 text-white text-base sm:text-lg italic font-serif text-center drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]">
+        {profile.bannerQuote}
+      </p>
+    </div>
+  );
+}
+
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <>
@@ -162,6 +184,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               {children}
             </main>
             <SiteFooter />
+            <Scenery />
           </div>
         </div>
       </div>
