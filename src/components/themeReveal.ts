@@ -21,7 +21,7 @@ export const FX: Fx[] = ["dusk", "garden", "read", "year", "sky"];
 const CELL = 8; // css px per cell
 const SUB = 4; // dots per cell side on the colour layer: each coloured cell is 3×3 of 4, a 6px square with a 2px gap (the mosaic look)
 const DURATION = 2600; // slow enough to follow
-const FRAMES = 96; // mask frames over the sweep (one reel, drawn ahead)
+const FRAMES = 96; // mask frames over the sweep (one contact sheet, drawn ahead)
 const BAYER = [
   [0, 8, 2, 10],
   [12, 4, 14, 6],
@@ -289,27 +289,55 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
   /* the mask: every frame of the reveal, drawn ahead into one tall strip
      (a film reel), decoded once; during the switch the strip only slides,
      so the browser never waits on a new picture (that wait was the flicker) */
+  /* the mask: every frame of the reveal, drawn ahead into one picture (a
+     contact sheet), decoded once; during the switch it only slides, so the
+     browser never waits on a new picture (that wait was the flicker).
+     Frames sit in a grid, not one long strip: a strip ten thousand pixels
+     tall gets quietly shrunk on phones, and the frames slid out of line
+     (the bottom of the screen showed a later moment, then jumped back).
+     Each frame is also drawn a little bigger than the screen (PAD rows
+     above and below, timed like the nearest edge row): on phones the
+     switch can also cover the strip under the address bar */
+  const PAD = Math.min(24, Math.ceil(Math.max(0, (window.screen?.height || 0) - window.innerHeight) / CELL) + 2);
+  const fw = cols + 2; // two spare columns, so a neighbour never peeks in
+  const fh = rows + PAD * 2;
+  const across = Math.max(1, Math.floor(4096 / fw));
+  const n = Math.max(2, Math.min(FRAMES, across * Math.max(1, Math.floor(4096 / fh))));
+  const down = Math.ceil(n / across);
   const reel = document.createElement("canvas");
-  reel.width = cols;
-  reel.height = rows * FRAMES;
+  reel.width = Math.min(n, across) * fw;
+  reel.height = down * fh;
   const rctx = reel.getContext("2d")!;
-  const rimg = rctx.createImageData(cols, rows * FRAMES);
+  const rimg = rctx.createImageData(reel.width, reel.height);
   const ra = rimg.data;
-  for (let f = 0; f < FRAMES; f++) {
-    const p = ease(f / (FRAMES - 1));
-    const base = f * cols * rows;
-    for (let i = 0; i < when.length; i++) if (when[i] <= p) ra[(base + i) * 4 + 3] = 255;
+  const RW = reel.width;
+  for (let f = 0; f < n; f++) {
+    const p = ease(f / (n - 1));
+    const ox = (f % across) * fw;
+    const oy = Math.floor(f / across) * fh;
+    for (let y = 0; y < fh; y++) {
+      const src = Math.min(rows - 1, Math.max(0, y - PAD)) * cols;
+      const dst = (oy + y) * RW + ox;
+      for (let x = 0; x < fw; x++) if (when[src + Math.min(cols - 1, x)] <= p) ra[(dst + x) * 4 + 3] = 255;
+    }
   }
   rctx.putImageData(rimg, 0, 0);
-  const size = `${cols * CELL}px ${rows * CELL * FRAMES}px`;
-  const frame = (url: string, f: number) => ({
-    maskImage: url,
-    WebkitMaskImage: url,
-    maskSize: size,
-    WebkitMaskSize: size,
-    maskPosition: `0px ${-f * rows * CELL}px`,
-    WebkitMaskPosition: `0px ${-f * rows * CELL}px`,
-  });
+  const size = `${reel.width * CELL}px ${reel.height * CELL}px`;
+  // dy: where the visible page sits inside the area the switch covers
+  // (0 on desktop; the height of a shown address bar on some phones)
+  const frame = (url: string, f: number, dy: number, offset: number) => {
+    const pos = `${-(f % across) * fw * CELL}px ${dy - PAD * CELL - Math.floor(f / across) * fh * CELL}px`;
+    return {
+      offset,
+      easing: "step-end",
+      maskImage: url,
+      WebkitMaskImage: url,
+      maskSize: size,
+      WebkitMaskSize: size,
+      maskPosition: pos,
+      WebkitMaskPosition: pos,
+    };
+  };
 
   /* the colour layer: crisp pixels over a soft halo (the same picture at
      half resolution, smoothed as the browser enlarges it) */
@@ -445,9 +473,19 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
     transition.ready.then(() => {
       // the reel slides one frame at a time; the sweep's easing is already
       // baked into which moment each frame shows
-      document.documentElement.animate([frame(url, 0), frame(url, FRAMES - 1)], {
+      // the colour layer is pinned to the visible page, so its place in
+      // the switch says how far the page sits from the top of it
+      let dy = 0;
+      try {
+        const m = getComputedStyle(document.documentElement, "::view-transition-group(theme-fx)").transform;
+        const t = m && m !== "none" ? new DOMMatrixReadOnly(m).f : 0;
+        if (Number.isFinite(t) && Math.abs(t) < PAD * CELL) dy = Math.round(t);
+      } catch {}
+      // each frame holds for an equal share of the sweep, then cuts to the next
+      const keys = Array.from({ length: n }, (_, f) => frame(url, f, dy, f / n));
+      keys.push(frame(url, n - 1, dy, 1));
+      document.documentElement.animate(keys, {
         duration: DURATION,
-        easing: `steps(${FRAMES - 1}, jump-none)`,
         fill: "both",
         pseudoElement: "::view-transition-new(root)",
       });
