@@ -132,129 +132,69 @@ function Morph({ run }: { run: number }) {
   );
 }
 
-// Bionic Page — lines of words; the start of each word turns bold,
-// in reading order
-const LINES = [
-  [3, 2, 4],
-  [4, 3],
-  [2, 5, 1],
-  [3, 4],
-];
+// The four below share the tulip's 7×7 grid, so the row reads as one family.
+
+// Bionic Page — an eye, reading: the pupil runs along a line, then a blink
+const EYE = [".......", "..###..", ".#...#.", "#..P..#", ".#...#.", "..###..", "......."];
 function Bionic({ run }: { run: number }) {
-  const out: ReactNode[] = [];
-  let order = 0;
-  LINES.forEach((words, row) => {
-    let x = 0;
-    words.forEach((len) => {
-      const bold = Math.ceil(len / 2);
-      for (let k = 0; k < len; k++) {
-        const isBold = k < bold;
-        out.push(
-          <rect
-            key={`${row}-${x}`}
-            x={x + 0.08}
-            y={row * 2 + (isBold ? 0.1 : 0.3)}
-            width={0.84}
-            height={isBold ? 1.15 : 0.75}
-            className={isBold ? "mk-bold" : undefined}
-            style={isBold ? ({ "--d": `${order * 70}ms` } as CSSProperties) : { opacity: 0.45 }}
-          />,
-        );
-        x += 1;
-      }
-      order += 1;
-      x += 1;
-    });
-  });
+  const cs = cells(EYE);
   return (
-    <Svg w={10} h={7.4} run={run}>
-      {out}
+    <Svg w={7} h={7} run={run}>
+      <g className="mk-blink">
+        {cs.map((c, i) => (
+          <Px key={i} c={c} cls={c.ch === "P" ? "mk-glance" : undefined} />
+        ))}
+      </g>
     </Svg>
   );
 }
 
-// Deriva — a shuffled row of bars sorts itself, one bar at a time
-const BARS = [2, 3, 4, 5, 6, 7];
-const SHUFFLED = [3, 0, 5, 1, 4, 2]; // where each sorted bar starts
+// Deriva — apps inside apps: the rings light from the centre out
+const RINGS = ["#######", "#.....#", "#.###.#", "#.#.#.#", "#.###.#", "#.....#", "#######"];
 function Deriva({ run }: { run: number }) {
+  const cs = cells(RINGS);
   return (
-    <Svg w={11} h={7} run={run}>
-      {BARS.map((h, i) => (
-        <rect
-          key={i}
-          x={i * 2}
-          y={7 - h}
-          width={1.2}
-          height={h}
-          className="mk-settle"
-          style={{ "--dx": `${(SHUFFLED[i] - i) * 2}px`, "--d": `${120 + i * 110}ms` } as CSSProperties}
-        />
+    <Svg w={7} h={7} run={run}>
+      {cs.map((c, i) => (
+        <Px key={i} c={c} cls="mk-grow" d={Math.max(Math.abs(3 - c.x), Math.abs(3 - c.y)) * 160 + ((c.x + c.y) % 3) * 20} />
       ))}
     </Svg>
   );
 }
 
-// DeepForge — a small network lights up, layer by layer
-const LAYERS = [
-  { x: 0.5, ys: [1.5, 4, 6.5] },
-  { x: 4, ys: [0.5, 2.8, 5.2, 7.5] },
-  { x: 7.5, ys: [2.5, 5.5] },
-];
+// DeepForge — an anvil; a strike, and the sparks fly
+const ANVIL = ["....S.S", ".....S.", "#######", ".#####.", "..###..", ".#####.", "#######"];
 function DeepForge({ run }: { run: number }) {
-  const edges: ReactNode[] = [];
-  LAYERS.slice(0, -1).forEach((L, li) => {
-    const N = LAYERS[li + 1];
-    L.ys.forEach((y1) =>
-      N.ys.forEach((y2) =>
-        edges.push(
-          <line
-            key={`${li}-${y1}-${y2}`}
-            x1={L.x + 0.5}
-            y1={y1 + 0.5}
-            x2={N.x + 0.5}
-            y2={y2 + 0.5}
-            stroke="white"
-            strokeWidth={0.14}
-            className="mk-edge"
-            style={{ "--d": `${li * 220 + 110}ms` } as CSSProperties}
-          />,
-        ),
-      ),
-    );
-  });
+  const cs = cells(ANVIL);
   return (
-    <Svg w={9} h={9} run={run}>
-      {edges}
-      {LAYERS.map((L, li) =>
-        L.ys.map((y) => <Px key={`${li}-${y}`} c={{ x: L.x, y }} cls="mk-grow" d={li * 220} />),
-      )}
+    <Svg w={7} h={7} run={run}>
+      <g className="mk-strike">
+        {cs
+          .filter((c) => c.ch === "#")
+          .map((c, i) => (
+            <Px key={i} c={c} />
+          ))}
+      </g>
+      {cs
+        .filter((c) => c.ch === "S")
+        .map((c, i) => (
+          <Px key={`s${i}`} c={c} cls="mk-spark" d={220 + i * 70} />
+        ))}
     </Svg>
   );
 }
 
-// Customs — a hash-chained ledger: blocks are signed and linked in
-// order, and the last one gets its check
+// Customs — a check, stamped down like a passport
+const CHECK = ["......#", ".....##", "#...##.", "##.##..", ".###...", "..#....", "......."];
 function Customs({ run }: { run: number }) {
-  const blocks = [0, 4, 8];
+  const cs = cells(CHECK);
   return (
-    <Svg w={10} h={8} run={run}>
-      {blocks.map((x, i) => (
-        <g key={x}>
-          {i > 0 && (
-            <rect x={x - 2} y={3.65} width={2} height={0.7} className="mk-link" style={{ "--d": `${i * 260 - 80}ms` } as CSSProperties} />
-          )}
-          <rect x={x} y={2.5} width={2} height={3} className="mk-pop" style={{ "--d": `${i * 260}ms` } as CSSProperties} />
-        </g>
-      ))}
-      {/* the check, drawn in pixels above the last block */}
-      {[
-        { x: 7.2, y: 0.6 },
-        { x: 7.9, y: 1.3 },
-        { x: 8.6, y: 0.6 },
-        { x: 9.3, y: -0.1 },
-      ].map((c, i) => (
-        <rect key={i} x={c.x} y={c.y} width={0.7} height={0.7} className="mk-pop" style={{ "--d": `${820 + i * 60}ms` } as CSSProperties} />
-      ))}
+    <Svg w={7} h={7} run={run}>
+      <g className="mk-stamp">
+        {cs.map((c, i) => (
+          <Px key={i} c={c} />
+        ))}
+      </g>
     </Svg>
   );
 }
@@ -318,7 +258,7 @@ export function Cover({
       style={{ background: hue.deep }}
     >
       <div className="relative flex w-[42%] shrink-0 items-center justify-center" style={{ background: hue.bright }}>
-        <div className={id === "tulip" ? "h-[37%]" : large ? "h-[36%]" : "h-[40%]"}>
+        <div className={id !== "reduction" ? "h-[37%]" : large ? "h-[36%]" : "h-[40%]"}>
           <Mark run={run} />
         </div>
       </div>
