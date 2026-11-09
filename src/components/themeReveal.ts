@@ -19,7 +19,7 @@ export const FX: Fx[] = ["dusk", "garden", "read", "year", "sky"];
 
 const CELL = 8; // css px per cell
 const DOTS = 2; // map dots per cell side: the browser only enlarges 4×, so cells stay sharp
-const SUB = 2; // dots per cell side on the colour layer (stars are smaller than a cell)
+const SUB = 4; // dots per cell side on the colour layer: each coloured cell is 3×3 of 4, a 6px square with a 2px gap (the mosaic look)
 const DURATION = 2600; // slow enough to follow
 const BAYER = [
   [0, 8, 2, 10],
@@ -319,7 +319,9 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
   halo.width = Math.ceil(cols / 2);
   halo.height = Math.ceil(rows / 2);
   const box = `position:absolute;left:0;top:0;width:${cols * CELL}px;height:${rows * CELL}px;`;
-  halo.style.cssText = box + "opacity:0.7;";
+  // 0.4: the same glow strength as when the halo was shrunk from the
+  // gapped picture (which covered about 56% of each cell)
+  halo.style.cssText = box + "opacity:0.4;";
   crisp.style.cssText = box + "image-rendering:pixelated;";
   layer.append(halo, crisp);
   const cctx = crisp.getContext("2d")!;
@@ -330,13 +332,28 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
   const H = crisp.height;
   const cimg = cctx.createImageData(W, H);
   const px = new Uint32Array(cimg.data.buffer);
-  const dot = (x: number, y: number, c: number) => {
-    if (x >= 0 && y >= 0 && x < W && y < H) px[y * W + x] = c;
-  };
+  // the glow is its own tiny picture (one dot per 2×2 cells), written
+  // alongside, and smoothed by the browser as it is enlarged
+  const HW = halo.width;
+  const HH = halo.height;
+  const himg = hctx.createImageData(HW, HH);
+  const hpx = new Uint32Array(himg.data.buffer);
+  // only the area that changed is cleared and sent each frame
+  let bx0 = cols, by0 = rows, bx1 = -1, by1 = -1; // cells touched this frame
+  let px0 = cols, py0 = rows, px1 = -1, py1 = -1; // cells touched last frame
   const cell = (cx: number, cy: number, c: number) => {
+    if (cx < 0 || cy < 0 || cx >= cols || cy >= rows) return;
+    if (cx < bx0) bx0 = cx;
+    if (cx > bx1) bx1 = cx;
+    if (cy < by0) by0 = cy;
+    if (cy > by1) by1 = cy;
     const x0 = cx * SUB;
     const y0 = cy * SUB;
-    for (let dy = 0; dy < SUB; dy++) for (let dx = 0; dx < SUB; dx++) dot(x0 + dx, y0 + dy, c);
+    for (let dy = 0; dy < SUB - 1; dy++) {
+      const row = (y0 + dy) * W + x0;
+      for (let dx = 0; dx < SUB - 1; dx++) px[row + dx] = c;
+    }
+    hpx[(cy >> 1) * HW + (cx >> 1)] = c;
   };
 
   const stars: [number, number, number][] = [];
@@ -344,7 +361,15 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
     for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) if (isStar(x, y)) stars.push([x, y, when[y * cols + x]]);
 
   const paint = (p: number, now: number) => {
-    px.fill(0);
+    // clear what was drawn last frame
+    if (px1 >= 0) {
+      for (let y = py0 * SUB; y < (py1 + 1) * SUB; y++) px.fill(0, y * W + px0 * SUB, y * W + (px1 + 1) * SUB);
+      hpx.fill(0);
+    }
+    bx0 = cols;
+    by0 = rows;
+    bx1 = -1;
+    by1 = -1;
     // the moving edge
     for (let i = 0; i < when.length; i++) {
       const k = kind[i];
@@ -380,9 +405,17 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
           for (let x = Math.floor(cx - r); x <= cx + r; x++) if (Math.hypot(x - cx, y - cy) <= r) cell(x, y, sun);
       }
     }
-    cctx.putImageData(cimg, 0, 0);
-    hctx.clearRect(0, 0, halo.width, halo.height);
-    hctx.drawImage(crisp, 0, 0, halo.width, halo.height);
+    // send only the region drawn this frame or last
+    const ux0 = Math.min(bx0, px0), uy0 = Math.min(by0, py0);
+    const ux1 = Math.max(bx1, px1), uy1 = Math.max(by1, py1);
+    if (ux1 >= 0) {
+      cctx.putImageData(cimg, 0, 0, ux0 * SUB, uy0 * SUB, (ux1 - ux0 + 1) * SUB, (uy1 - uy0 + 1) * SUB);
+      hctx.putImageData(himg, 0, 0);
+    }
+    px0 = bx0;
+    py0 = by0;
+    px1 = bx1;
+    py1 = by1;
   };
 
   let done = () => {};
@@ -437,11 +470,45 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
   });
 }
 
-// which effect runs: dusk, unless the comparison switcher picked another
-export function currentFx(): Fx {
+// Which effect runs next. The owner's mix: garden for two rounds, then
+// year, read and sky for one round each; a round is a night and the
+// morning after (two switches). The first loop keeps that order; every
+// loop after is the same mix in a shuffled order. The place in the loop
+// is kept in this browser, so it carries on across pages and visits.
+// The ?variants switcher can pin one effect instead ("mix" = the loop).
+const ROUND: Fx[] = ["garden", "garden", "year", "read", "sky"];
+const KEY = "theme-fx-loop";
+
+const shuffle = (list: Fx[]) => {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
+export function nextFx(): Fx {
   try {
-    const v = localStorage.getItem("theme-fx") as Fx | null;
-    if (v && FX.includes(v)) return v;
-  } catch {}
-  return "dusk";
+    const pinned = localStorage.getItem("theme-fx") as Fx | "mix" | null;
+    if (pinned && pinned !== "mix" && FX.includes(pinned)) return pinned;
+    let state: { queue: Fx[]; pos: number; loops: number } | null = null;
+    try {
+      state = JSON.parse(localStorage.getItem(KEY) || "null");
+    } catch {}
+    if (!state || !Array.isArray(state.queue) || state.pos >= state.queue.length) {
+      const loops = state ? state.loops + 1 : 0;
+      let order = loops === 0 ? ROUND : shuffle(ROUND);
+      // a new loop never starts with the effect the last one ended on
+      const last = state?.queue[state.queue.length - 1];
+      for (let tries = 0; loops > 0 && order[0] === last && tries < 8; tries++) order = shuffle(ROUND);
+      state = { queue: order.flatMap((f) => [f, f]), pos: 0, loops };
+    }
+    const fx = state.queue[state.pos];
+    state.pos += 1;
+    localStorage.setItem(KEY, JSON.stringify(state));
+    return fx;
+  } catch {
+    return "garden";
+  }
 }

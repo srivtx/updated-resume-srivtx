@@ -3,15 +3,15 @@
 // Theme toggle — a pixel tulip that closes at night and opens by day, the
 // way real tulips do. Switching reveals the new theme cell by cell through
 // the View Transitions API (the old page is a still picture, the new one
-// shows through a mask; see themeReveal.ts). Default is DUSK: night falls
-// from the top in an ordered (Bayer) dither, morning rises from the bottom.
-// Other effects can be compared with ?variants. Without view transitions, or with reduced
+// shows through a mask; see themeReveal.ts). The effects take turns in the
+// owner's loop (garden, garden, year, read, sky, then shuffled); one can be
+// pinned with ?variants. Without view transitions, or with reduced
 // motion, the theme simply switches. Initial state is set inline in
 // layout, so no flash.
 
 import { useEffect, useRef, useState } from "react";
 import { SLAB } from "@/components/NeuButton";
-import { runReveal, currentFx, prefetchYear } from "@/components/themeReveal";
+import { runReveal, nextFx, prefetchYear } from "@/components/themeReveal";
 
 // While the theme flips, every colour transition on the page is switched
 // off, so the page's own colour fades never run inside the reveal.
@@ -78,7 +78,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       setDark(mq.matches);
     };
     mq.addEventListener("change", follow);
-    if (currentFx() === "year") prefetchYear();
+    prefetchYear(); // the year is part of the loop; fetch it ahead (cached)
     return () => mq.removeEventListener("change", follow);
   }, []);
 
@@ -109,7 +109,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       return;
     }
     runReveal(
-      currentFx(),
+      nextFx(),
       next,
       e.currentTarget.getBoundingClientRect(),
       (cb) => doc.startViewTransition!(cb),

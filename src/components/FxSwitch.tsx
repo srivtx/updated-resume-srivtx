@@ -10,12 +10,12 @@ import { FX, prefetchYear } from "@/components/themeReveal";
 
 export function FxSwitch() {
   const [show, setShow] = useState(false);
-  const [fx, setFx] = useState<string>("dusk");
+  const [fx, setFx] = useState<string>("mix");
 
   useEffect(() => {
     setShow(new URLSearchParams(window.location.search).has("variants"));
     try {
-      setFx(localStorage.getItem("theme-fx") || "dusk");
+      setFx(localStorage.getItem("theme-fx") || "mix");
     } catch {}
   }, []);
 
@@ -31,7 +31,7 @@ export function FxSwitch() {
   return (
     <div className="fixed bottom-4 right-4 z-50 font-mono text-[11px] leading-6 text-black/60 dark:text-white/60 bg-white/90 dark:bg-zinc-900/90 backdrop-blur px-3 py-1.5 border border-black/10 dark:border-white/10">
       theme switch:
-      {FX.map((v) => (
+      {["mix", ...FX].map((v) => (
         <button
           key={v}
           type="button"
