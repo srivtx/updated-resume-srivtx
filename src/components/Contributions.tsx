@@ -1,45 +1,21 @@
-"use client";
+// The contribution heatmap — @srivtx's last year of git, in neutral ink
+// cells. The data comes from the server (src/lib/github.ts, refreshed
+// hourly). If it could not be fetched, a quiet empty grid stands in.
 
-// The contribution heatmap — @srivtx's last year of git, in neutral
-// ink cells. Data from the public jogruber mirror of the GitHub
-// calendar (no token). If the fetch fails, the frame renders with a
-// quiet skeleton — the graph says "offline", not "broken".
-
-import { useEffect, useMemo, useState } from "react";
-
-type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
+import type { Day } from "@/lib/github";
 
 const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
 // neutral ink density — light mode black, dark mode white
 const LEVEL_OPACITY = [0.06, 0.2, 0.4, 0.62, 0.9];
 
-export function Contributions() {
-  const [days, setDays] = useState<Day[] | null>(null);
-  const [offline, setOffline] = useState(false);
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("https://github-contributions-api.jogruber.de/v4/srivtx?y=last");
-        if (!res.ok) throw new Error("bad status");
-        const data = await res.json();
-        if (cancelled || !Array.isArray(data?.contributions)) throw new Error("bad shape");
-        setDays(data.contributions as Day[]);
-        setTotal(data.total ?? 0);
-      } catch {
-        if (!cancelled) setOffline(true);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+export function Contributions({ data }: { data: { days: Day[]; total: number } | null }) {
+  const days = data?.days ?? null;
+  const total = data?.total ?? 0;
+  const offline = !data;
 
   // Build 53 columns × 7 rows, ordered by week.
-  const weeks = useMemo(() => {
+  const weeks = (() => {
     if (!days) return [];
     const cols: (Day | null)[][] = [];
     let col: (Day | null)[] = [];
@@ -56,18 +32,18 @@ export function Contributions() {
     }
     if (col.length) cols.push(col);
     return cols;
-  }, [days]);
+  })();
 
   return (
     <div className="rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] p-4 sm:p-5">
       <div className="flex items-baseline justify-between gap-4 mb-4">
         <h2 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80">
           GitHub Contributions
-          <span className="text-black/40 dark:text-white/40"> · @srivtx</span>
+          <span className="text-black/55 dark:text-white/50"> · @srivtx</span>
         </h2>
-        <p className="text-xs text-black/40 dark:text-white/40">
+        <p className="text-xs text-black/55 dark:text-white/50">
           {offline ? (
-            <span className="text-black/30 dark:text-white/30">graph loads live in your browser</span>
+            <span className="text-black/55 dark:text-white/50">github is resting; back within the hour</span>
           ) : (
             total > 0 && (
               <>
@@ -108,10 +84,10 @@ export function Contributions() {
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4">
-        <p className="text-[10px] uppercase tracking-wide text-black/30 dark:text-white/30">
+        <p className="text-[10px] uppercase tracking-wide text-black/55 dark:text-white/50">
           {days && days.length > 0 && `${MONTHS[new Date(days[0].date + "T00:00:00Z").getUTCMonth()]} → ${MONTHS[new Date(days[days.length - 1].date + "T00:00:00Z").getUTCMonth()]}`}
         </p>
-        <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-black/30 dark:text-white/30">
+        <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-black/55 dark:text-white/50">
           less
           {LEVEL_OPACITY.map((o) => (
             <span key={o} className="h-[8px] w-[8px] rounded-[2px] bg-black dark:bg-white" style={{ opacity: o }} />

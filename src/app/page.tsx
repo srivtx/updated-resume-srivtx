@@ -26,6 +26,7 @@ import { EssayRow } from "@/components/EssayRow";
 import { SiteShell, SectionHead } from "@/components/Site";
 import { COL } from "@/lib/layout";
 import { essays } from "@/lib/writing";
+import { getStats, getContributions, type Stats } from "@/lib/github";
 
 /* ---------- small building blocks ---------- */
 
@@ -63,7 +64,7 @@ const inline =
 
 /* ---------- intro ---------- */
 
-function Intro() {
+function Intro({ stats }: { stats: Stats | null }) {
   return (
     <Reveal>
       <section className={`${COL} pt-12 sm:pt-16 pb-10 sm:pb-12`}>
@@ -73,7 +74,7 @@ function Intro() {
           </div>
           <div className="min-w-0">
             <h1 className="font-serif italic text-[30px] sm:text-[36px] leading-none tracking-[0.005em]">{profile.name}</h1>
-            <p className="mt-2 text-[13px] sm:text-sm text-black/50 dark:text-white/45">{profile.tagline.join(" · ")}</p>
+            <p className="mt-2 text-[13px] sm:text-sm text-black/55 dark:text-white/50">{profile.tagline.join(" · ")}</p>
           </div>
         </div>
 
@@ -101,7 +102,7 @@ function Intro() {
             ))}
           </div>
           <div className="sm:-mt-5">
-            <GitHubStats />
+            <GitHubStats stats={stats} />
           </div>
         </div>
       </section>
@@ -120,7 +121,7 @@ function IndexList({ title, href, items }: { title: string; href: string; items:
         <h3 className="text-[14px] font-medium text-black/85 dark:text-white/85">{title}</h3>
         <Link
           href={href}
-          className="group/more inline-flex items-center gap-2 font-mono text-[11px] text-black/45 dark:text-white/45 hover:text-black dark:hover:text-white transition-colors"
+          className="group/more inline-flex items-center gap-2 font-mono text-[11px] text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
         >
           all
           <span className="sarrow" aria-hidden />
@@ -131,7 +132,7 @@ function IndexList({ title, href, items }: { title: string; href: string; items:
           const inner = (
             <>
               <span className="text-[13.5px] leading-snug text-black/80 dark:text-white/80 line-clamp-2">{it.title}</span>
-              <span className="mt-1 text-[12px] leading-snug text-black/45 dark:text-white/40 line-clamp-2">{it.meta}</span>
+              <span className="mt-1 text-[12px] leading-snug text-black/55 dark:text-white/50 line-clamp-2">{it.meta}</span>
             </>
           );
           const cls = "dim-item block py-3 border-b border-neutral-200 dark:border-neutral-800";
@@ -156,7 +157,8 @@ function IndexList({ title, href, items }: { title: string; href: string; items:
 
 /* ---------- the page ---------- */
 
-export default function Page() {
+export default async function Page() {
+  const [stats, contributions] = await Promise.all([getStats(), getContributions()]);
   const openSource: Item[] = builds.slice(0, 4).map((b) => ({ title: b.name, meta: b.one, href: b.href, external: true }));
   const paperItems: Item[] = papers.slice(0, 4).map((p) => ({ title: p.title, meta: p.sub, href: "/inventions" }));
   const noteItems: Item[] = posts.slice(0, 4).map((p) => ({
@@ -168,7 +170,7 @@ export default function Page() {
 
   return (
     <SiteShell>
-      <Intro />
+      <Intro stats={stats} />
       <Rule />
 
       <Section title="Writing" sub="essays, slower than the code" href="/writing" more="all writing">
@@ -212,10 +214,10 @@ export default function Page() {
           <NowWatching />
         </SpotifyPlayer>
         <div className="mt-10">
-          <Contributions />
+          <Contributions data={contributions} />
         </div>
         <div className="mt-10">
-          <p className="mb-3 font-mono text-[11px] text-black/40 dark:text-white/35">what I build with</p>
+          <p className="mb-3 font-mono text-[11px] text-black/55 dark:text-white/50">what I build with</p>
           <StackMarquee />
         </div>
       </Section>
