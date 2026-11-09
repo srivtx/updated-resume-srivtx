@@ -24,7 +24,7 @@ export function ProductCard({ p, detail = false }: { p: Product; detail?: boolea
       <div className="transition-transform duration-300 ease-out group-hover/item:-translate-y-[2px]">
         <Cover id={p.cover} title={p.name} run={run} corner={<ArrowUpRight className="h-4 w-4" />} />
       </div>
-      <p className="mt-3 font-mono text-[11px] lowercase text-black/45 dark:text-white/40">
+      <p className="mt-3 font-mono text-[11px] lowercase text-black/55 dark:text-white/50">
         {p.chips.map((c, i) => (
           <span key={c}>
             {i > 0 && <span className="mx-1.5 text-black/20 dark:text-white/20">·</span>}
@@ -37,8 +37,8 @@ export function ProductCard({ p, detail = false }: { p: Product; detail?: boolea
       </h3>
       {detail && (
         <>
-          <p className="mt-1.5 text-xs leading-relaxed text-black/50 dark:text-white/50 max-w-[52ch]">{p.one}</p>
-          <p className="mt-1 text-[11px] leading-relaxed text-black/35 dark:text-white/35">{p.note}</p>
+          <p className="mt-1.5 text-xs leading-relaxed text-black/55 dark:text-white/50 max-w-[52ch]">{p.one}</p>
+          <p className="mt-1 text-[11px] leading-relaxed text-black/55 dark:text-white/50">{p.note}</p>
         </>
       )}
     </a>

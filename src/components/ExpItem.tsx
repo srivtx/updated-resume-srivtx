@@ -47,13 +47,13 @@ function ExpCard({
         <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80 truncate">
             {item.role}
-            <span className="mx-1.5 text-black/30 dark:text-white/30">·</span>
+            <span className="mx-1.5 text-black/55 dark:text-white/50">·</span>
             <span className="font-normal">{item.org}</span>
           </h3>
-          <p className="mt-0.5 text-xs text-black/40 dark:text-white/40">{item.period}</p>
+          <p className="mt-0.5 text-xs text-black/55 dark:text-white/50">{item.period}</p>
         </div>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-black/40 dark:text-white/40 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-4 w-4 shrink-0 text-black/55 dark:text-white/50 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
       <div

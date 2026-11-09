@@ -32,7 +32,7 @@ function BuildRow({ b }: { b: (typeof builds)[number] }) {
           <h3 className="text-sm sm:text-[15px] font-medium text-black/80 dark:text-white/80 truncate">
             {b.name}
           </h3>
-          <p className="mt-0.5 text-xs text-black/45 dark:text-white/35 leading-relaxed line-clamp-2">
+          <p className="mt-0.5 text-xs text-black/55 dark:text-white/50 leading-relaxed line-clamp-2">
             {b.one}
           </p>
         </div>
@@ -78,7 +78,7 @@ export function ProjectsPageClient() {
               href={moreOnGithub}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+              className="text-xs text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
             >
               everything else lives on github →
             </a>
@@ -103,9 +103,9 @@ export function ProjectsPageClient() {
                   className="text-sm text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors min-w-0"
                 >
                   <span className="font-medium">{u.name}</span>
-                  <span className="text-black/40 dark:text-white/40"> — {u.what}</span>
+                  <span className="text-black/55 dark:text-white/50"> — {u.what}</span>
                 </a>
-                <span className="text-[10px] uppercase tracking-wide text-black/40 dark:text-white/40 whitespace-nowrap flex items-center gap-1.5 shrink-0">
+                <span className="text-[10px] uppercase tracking-wide text-black/55 dark:text-white/50 whitespace-nowrap flex items-center gap-1.5 shrink-0">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   {u.state} {u.pr}
                 </span>

@@ -124,7 +124,7 @@ export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <SpotifyIcon className="w-3.5 h-3.5 shrink-0 text-[#1DB954]" />
-            <span className="min-w-0 truncate whitespace-nowrap text-[11px] font-medium tracking-wide text-black/45 dark:text-white/40">
+            <span className="min-w-0 truncate whitespace-nowrap text-[11px] font-medium tracking-wide text-black/55 dark:text-white/50">
               {playing ? "Now playing" : "Last played"}
             </span>
           </div>
@@ -136,7 +136,7 @@ export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
           >
             {lastPlayed.song}
           </a>
-          <p className="truncate text-xs text-black/45 dark:text-white/40">
+          <p className="truncate text-xs text-black/55 dark:text-white/50">
             {lastPlayed.artist}
           </p>
         </div>
@@ -171,7 +171,7 @@ export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
         <div className="overflow-hidden">
           <div className="mt-2.5 pt-2.5 border-t border-dashed border-black/[0.08] dark:border-white/[0.08]">
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-black/40 dark:text-white/40 w-8 text-right tabular-nums">
+              <span className="text-[10px] font-mono text-black/55 dark:text-white/50 w-8 text-right tabular-nums">
                 {formatTime(current)}
               </span>
               <div
@@ -187,7 +187,7 @@ export function SpotifyPlayer({ children }: { children?: React.ReactNode }) {
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <span className="text-[10px] font-mono text-black/40 dark:text-white/40 w-8 tabular-nums">
+              <span className="text-[10px] font-mono text-black/55 dark:text-white/50 w-8 tabular-nums">
                 {formatTime(duration)}
               </span>
             </div>

@@ -48,7 +48,7 @@ export function InkSwitch() {
       ref={ref}
       className={
         show
-          ? "fixed bottom-4 left-4 z-50 font-mono text-[11px] leading-6 text-black/50 dark:text-white/50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur px-3 py-1.5 border border-black/10 dark:border-white/10"
+          ? "fixed bottom-4 left-4 z-50 font-mono text-[11px] leading-6 text-black/55 dark:text-white/50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur px-3 py-1.5 border border-black/10 dark:border-white/10"
           : "hidden"
       }
     >

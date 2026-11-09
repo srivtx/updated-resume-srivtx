@@ -224,11 +224,15 @@ body {
 }
 .essay-fig-n {
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink);
+  /* the ink, deepened just enough to read at this size */
+  color: color-mix(in srgb, var(--ink) 72%, black);
   white-space: nowrap;
+}
+.dark .essay-fig-n {
+  color: color-mix(in srgb, var(--ink) 72%, white);
 }
 .essay-fig-text {
   font-family: var(--font-reading), Georgia, serif;
@@ -251,15 +255,15 @@ body {
   grid-column: 2;
   justify-self: start;
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  color: rgb(0 0 0 / 0.35);
+  font-size: 11px;
+  color: rgb(0 0 0 / 0.55);
   text-decoration: underline;
   text-decoration-color: rgb(0 0 0 / 0.15);
   text-underline-offset: 3px;
   transition: color 0.2s ease;
 }
 .dark .essay-fig-replay {
-  color: rgb(255 255 255 / 0.35);
+  color: rgb(255 255 255 / 0.5);
   text-decoration-color: rgb(255 255 255 / 0.15);
 }
 .essay-fig-replay:hover {

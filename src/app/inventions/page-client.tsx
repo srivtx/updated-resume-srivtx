@@ -25,11 +25,11 @@ export function InventionsPageClient() {
                     <h3 className="text-[15px] sm:text-base font-medium text-black/80 dark:text-white/80">
                       {paper.title}
                     </h3>
-                    <p className="mt-0.5 text-xs text-black/45 dark:text-white/40 leading-relaxed">
+                    <p className="mt-0.5 text-xs text-black/55 dark:text-white/50 leading-relaxed">
                       {paper.sub}
                     </p>
                   </div>
-                  <span className="shrink-0 text-[10px] text-black/30 dark:text-white/30 uppercase tracking-wide mt-1">
+                  <span className="shrink-0 text-[10px] text-black/55 dark:text-white/50 uppercase tracking-wide mt-1">
                     {paper.when}
                   </span>
                 </div>
@@ -52,7 +52,7 @@ export function InventionsPageClient() {
                     href={paper.pdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-mono text-[11px] text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1 font-mono text-[11px] text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
                   >
                     pdf
                     <ArrowUpRight className="h-3 w-3" />
@@ -69,7 +69,7 @@ export function InventionsPageClient() {
               href={papersIndex}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+              className="text-xs text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
             >
               full publication archive on deepforge →
             </a>

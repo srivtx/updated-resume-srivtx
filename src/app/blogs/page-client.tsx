@@ -34,11 +34,11 @@ export function BlogsPageClient() {
                         {post.title}
                       </h3>
                       <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
-                        <span className="text-black/35 dark:text-white/30">{post.when}</span>
+                        <span className="text-black/55 dark:text-white/50">{post.when}</span>
                         {post.tags.map((t) => (
                           <span
                             key={t}
-                            className="text-black/35 dark:text-white/30 before:content-['#']"
+                            className="text-black/55 dark:text-white/50 before:content-['#']"
                           >
                             {t}
                           </span>
@@ -46,7 +46,7 @@ export function BlogsPageClient() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="font-mono text-[11px] lowercase text-black/40 dark:text-white/40">
+                      <span className="font-mono text-[11px] lowercase text-black/55 dark:text-white/50">
                         {post.meta}
                       </span>
                       <span className="text-black/25 group-hover/item:text-black dark:text-white/25 dark:group-hover/item:text-white transition-colors">
@@ -66,12 +66,12 @@ export function BlogsPageClient() {
               href={blogIndex}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+              className="text-xs text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
             >
               the full engineering archive lives on deepforge →
             </a>
           </div>
-          <p className="mt-3 text-center text-xs text-black/35 dark:text-white/30">
+          <p className="mt-3 text-center text-xs text-black/55 dark:text-white/50">
             essays, in my own words, are under{" "}
             <Link href="/writing" className="underline decoration-black/20 dark:decoration-white/20 underline-offset-4 hover:text-black dark:hover:text-white transition-colors">
               writing

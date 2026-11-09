@@ -38,14 +38,14 @@ export function NowWatching() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#97CE4C] opacity-60" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#97CE4C]" />
             </span>
-            <span className="text-[11px] font-medium tracking-wide text-black/45 dark:text-white/40">
+            <span className="text-[11px] font-medium tracking-wide text-black/55 dark:text-white/50">
               {nowWatching.label}
             </span>
           </div>
           <p className="truncate text-sm font-semibold text-black/85 dark:text-white/85">
             {nowWatching.show}
           </p>
-          <p className="truncate text-xs text-black/45 dark:text-white/40">
+          <p className="truncate text-xs text-black/55 dark:text-white/50">
             {nowWatching.detail}
           </p>
         </div>

@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <SiteShell>
       <section className={`${COL} pt-16 sm:pt-24 pb-16`}>
-        <p className="font-mono text-[11px] text-black/40 dark:text-white/40">404</p>
+        <p className="font-mono text-[11px] text-black/55 dark:text-white/50">404</p>
         <h1 className="mt-3 text-[28px] sm:text-[34px] leading-[1.1] font-medium tracking-[-0.02em]">
           Nothing lives at this address.
         </h1>
