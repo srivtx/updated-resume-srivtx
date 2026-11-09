@@ -78,6 +78,24 @@ body {
   image-rendering: pixelated;
 }
 
+/* the reveal's colour layer: its own transition group, so the mask over
+   the page never clips it, and it sits above both pictures */
+.theme-fx-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  view-transition-name: theme-fx;
+}
+::view-transition-group(theme-fx),
+::view-transition-old(theme-fx),
+::view-transition-new(theme-fx) {
+  animation: none;
+}
+::view-transition-group(theme-fx) {
+  z-index: 2147483647;
+}
+
 /* the tulip button closing for the night / opening for the day */
 .tl-in { animation: tl-in 0.45s cubic-bezier(0.45, 0, 0.2, 1) both; }
 .tl-out { animation: tl-out 0.45s cubic-bezier(0.45, 0, 0.2, 1) both; }
