@@ -58,8 +58,8 @@ body {
   transition: none !important;
 }
 
-/* ---- theme toggle: circular reveal via View Transitions ----
-   the new theme expands out of the button as a growing circle. */
+/* ---- theme toggle: dithered dusk via View Transitions ----
+   the new theme is revealed through a sweeping Bayer-dither mask. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -70,6 +70,20 @@ body {
 }
 ::view-transition-new(root) {
   z-index: 2147483646;
+  /* the dithered dusk mask is drawn at viewport size (ThemeToggle) */
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* the tulip button closing for the night / opening for the day */
+.tl-in { animation: tl-in 0.45s cubic-bezier(0.45, 0, 0.2, 1) both; }
+.tl-out { animation: tl-out 0.45s cubic-bezier(0.45, 0, 0.2, 1) both; }
+@keyframes tl-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tl-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .tl-in, .tl-out { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),

@@ -1,17 +1,19 @@
 "use client";
 
-// Theme toggle — sits in the hero social row like the reference site, and
-// flips the theme with a CIRCULAR REVEAL: the new theme expands out of the
-// button via the View Transitions API (clip-path circle). Browsers without
-// it fall back to the plain class flip. Initial state is set inline in
-// layout so there is no flash.
+// Theme toggle — a pixel tulip that closes at night and opens by day, the
+// way real tulips do. Switching runs a DITHERED DUSK: night falls from
+// the top of the screen in an ordered (Bayer) dither pattern, and morning
+// rises from the bottom. It uses the View Transitions API: the old page is
+// a still picture, the new one is revealed through a mask that sweeps the
+// screen as 16 pixel patterns, one per dither level, so it stays crisp at
+// any size. Without view transitions, or with reduced motion, the theme
+// simply switches. Initial state is set inline in layout, so no flash.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SLAB } from "@/components/NeuButton";
 
 // While the theme flips, every colour transition on the page is switched
-// off. Otherwise the page's own 0.3s colour fades run inside the circle
-// reveal, and the new theme flashes through the old one (the flicker).
+// off, so the page's own colour fades never run inside the reveal.
 function quietly(flip: () => void) {
   const root = document.documentElement;
   root.classList.add("theme-switching");
@@ -20,12 +22,90 @@ function quietly(flip: () => void) {
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
 }
 
+/* ---------- the dither ---------- */
+
+const CELL = 8; // css px per dither pixel
+const BAYER = [
+  [0, 8, 2, 10],
+  [12, 4, 14, 6],
+  [3, 11, 1, 9],
+  [15, 7, 13, 5],
+];
+const DURATION = 1050;
+const FRAMES = 32;
+const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+
+// One mask image per frame. A cell is revealed once the sweep has passed
+// its row, nudged by its Bayer level, which is what makes the edge dither.
+function duskMasks(w: number, h: number, fromTop: boolean): string[] {
+  const tile = CELL * 4;
+  let defs = "";
+  for (let k = 0; k < 16; k++) {
+    let cells = "";
+    BAYER.forEach((row, y) =>
+      row.forEach((v, x) => {
+        if (v === k) cells += `<rect x="${x * CELL}" y="${y * CELL}" width="${CELL}" height="${CELL}"/>`;
+      }),
+    );
+    defs += `<pattern id="d${k}" width="${tile}" height="${tile}" patternUnits="userSpaceOnUse">${cells}</pattern>`;
+  }
+  const frames: string[] = [];
+  for (let i = 0; i < FRAMES; i++) {
+    const p = ease(i / (FRAMES - 1));
+    let rects = "";
+    for (let k = 0; k < 16; k++) {
+      const reach = Math.min(1, Math.max(0, (p - k / 64) / 0.75));
+      const hk = Math.min(h, Math.ceil((reach * h) / CELL) * CELL);
+      if (hk <= 0) continue;
+      rects += `<rect x="0" y="${fromTop ? 0 : h - hk}" width="${w}" height="${hk}" fill="url(#d${k})"/>`;
+    }
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges"><defs>${defs}</defs>${rects}</svg>`;
+    frames.push(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+  }
+  return frames;
+}
+
+/* ---------- the tulip ---------- */
+
+const OPEN = [".#.#.#.", "###.###", "##...##", ".##.##.", "#..#..#", "##.#.##", ".#####."]; // Tulip Labs' own
+// the same flower with its petals folded shut
+const BUD = ["..###..", ".#####.", ".#####.", "..###..", "#..#..#", "##.#.##", ".#####."];
+
+function Tulip({ dark, moved }: { dark: boolean; moved: boolean }) {
+  const cells: { x: number; y: number; open: boolean; bud: boolean }[] = [];
+  for (let y = 0; y < 7; y++)
+    for (let x = 0; x < 7; x++) {
+      const open = OPEN[y][x] === "#";
+      const bud = BUD[y][x] === "#";
+      if (open || bud) cells.push({ x, y, open, bud });
+    }
+  return (
+    <svg key={String(dark)} viewBox="0 0 7 7" width={14} height={14} shapeRendering="crispEdges" fill="currentColor" aria-hidden>
+      {cells.map((c) => {
+        const on = dark ? c.bud : c.open;
+        const changed = c.open !== c.bud;
+        return (
+          <rect
+            key={`${c.x}-${c.y}`}
+            x={c.x}
+            y={c.y}
+            width={1.02}
+            height={1.02}
+            className={moved && changed ? (on ? "tl-in" : "tl-out") : undefined}
+            style={{ opacity: on ? 1 : 0, animationDelay: `${(dark ? c.y : 3 - c.y) * 45}ms` }}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [dark, setDark] = useState(false);
+  const moved = useRef(false);
 
   // The page starts in the device's theme. Until someone picks one here,
-  // it keeps following the device, even when that changes while open
-  // (say, the phone goes dark at sunset).
+  // it keeps following the device, even when that changes while open.
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -36,6 +116,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       } catch {}
       if (saved) return;
       quietly(() => document.documentElement.classList.toggle("dark", mq.matches))();
+      moved.current = true;
       setDark(mq.matches);
     };
     mq.addEventListener("change", follow);
@@ -46,6 +127,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   // goes back to following the device; picking the other one remembers it.
   const apply = (next: boolean) => {
     document.documentElement.classList.toggle("dark", next);
+    moved.current = true;
     setDark(next);
     try {
       const device = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -56,14 +138,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     }
   };
 
-  const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const toggle = () => {
     const next = !dark;
-
     const doc = document as Document & {
-      startViewTransition?: (cb: () => void) => {
-        ready: Promise<void>;
-        finished: Promise<void>;
-      };
+      startViewTransition?: (cb: () => void) => { ready: Promise<void>; finished: Promise<void> };
     };
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -72,14 +150,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       return;
     }
 
-    // circle origin = the button itself, so the new theme pours out of it
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const end = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
+    // night falls from the top; morning rises from the bottom
+    const masks = duskMasks(window.innerWidth, window.innerHeight, next);
 
     let done = () => {};
     const transition = doc.startViewTransition(() => {
@@ -88,19 +160,12 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     transition.finished.then(() => done(), () => done());
 
     transition.ready.then(() => {
-      document.documentElement.animate(
-        {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${end}px at ${x}px ${y}px)`,
-          ],
-        },
-        {
-          duration: 550,
-          easing: "ease-in-out",
-          pseudoElement: "::view-transition-new(root)",
-        }
-      );
+      document.documentElement.animate({ maskImage: masks, WebkitMaskImage: masks } as unknown as PropertyIndexedKeyframes, {
+        duration: DURATION,
+        easing: "linear",
+        fill: "both",
+        pseudoElement: "::view-transition-new(root)",
+      });
     });
   };
 
@@ -108,32 +173,14 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       onClick={toggle}
       aria-label={dark ? "switch to light" : "switch to dark"}
-      title={dark ? "lights on" : "lights off"}
+      title={dark ? "morning" : "night"}
       type="button"
       className={`touch-manipulation active:opacity-75 flex items-center justify-center w-8 h-8 shrink-0 ${className}`}
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
       <div className={SLAB}>
         <div className="p-0 flex items-center justify-center w-8 h-8 rounded-full text-black/75 dark:text-white/80">
-          <svg
-            viewBox="0 0 24 24"
-            width={15}
-            height={15}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            aria-hidden
-          >
-            {dark ? (
-              <path d="M20 13.5A8 8 0 1 1 10.5 4a6.5 6.5 0 0 0 9.5 9.5Z" />
-            ) : (
-              <>
-                <circle cx="12" cy="12" r="4.2" />
-                <path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18" />
-              </>
-            )}
-          </svg>
+          <Tulip dark={dark} moved={moved.current} />
         </div>
       </div>
     </button>
