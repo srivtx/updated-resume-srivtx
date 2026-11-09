@@ -72,7 +72,7 @@ function SiteHeader() {
                       className={`transition-colors ${
                         on
                           ? "text-black dark:text-white font-medium"
-                          : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                          : "text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white"
                       }`}
                     >
                       {n.label}
@@ -91,7 +91,7 @@ function SiteHeader() {
 }
 
 function SiteFooter() {
-  const label = "font-mono text-[11px] text-black/35 dark:text-white/35 mb-3";
+  const label = "font-mono text-[11px] text-black/55 dark:text-white/50 mb-3";
   const link =
     "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors";
   return (
@@ -122,7 +122,7 @@ function SiteFooter() {
               .map((s) => (
                 <li key={s.name}>
                   <a href={s.href} target="_blank" rel="noopener noreferrer" className={link}>
-                    {s.name} <span aria-hidden className="text-black/30 dark:text-white/30">↗</span>
+                    {s.name} <span aria-hidden className="text-black/55 dark:text-white/50">↗</span>
                   </a>
                 </li>
               ))}
@@ -132,11 +132,11 @@ function SiteFooter() {
           <p className={label}>write to me</p>
           <CopyEmail email={profile.email} />
           <a href={`mailto:${profile.email}`} className={`${link} mt-3 block`}>
-            open in mail <span aria-hidden className="text-black/30 dark:text-white/30">↗</span>
+            open in mail <span aria-hidden className="text-black/55 dark:text-white/50">↗</span>
           </a>
         </div>
       </div>
-      <p className="mt-10 text-xs text-black/30 dark:text-white/30">
+      <p className="mt-10 text-xs text-black/55 dark:text-white/50">
         sribatsha dash · srivtx · {profile.location} · 2026
       </p>
     </footer>
@@ -168,7 +168,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
     <>
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-black focus:px-3 focus:py-2 focus:text-sm focus:text-white"
+        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-3 focus-visible:z-[60] focus-visible:rounded-md focus-visible:bg-black focus-visible:px-3 focus-visible:py-2 focus-visible:text-sm focus-visible:text-white"
       >
         Skip to content
       </a>
@@ -209,12 +209,12 @@ export function SectionHead({
     <div className="mb-5 sm:mb-6 flex items-end justify-between gap-4">
       <div className="min-w-0">
         <H className="text-[15px] sm:text-base font-medium tracking-[-0.005em] text-black/85 dark:text-white/85">{title}</H>
-        {sub && <p className="mt-1 text-[13px] text-black/45 dark:text-white/40">{sub}</p>}
+        {sub && <p className="mt-1 text-[13px] text-black/55 dark:text-white/50">{sub}</p>}
       </div>
       {href && (
         <Link
           href={href}
-          className="group/more shrink-0 inline-flex items-center gap-2 pb-0.5 font-mono text-[11.5px] text-black/45 dark:text-white/45 hover:text-black dark:hover:text-white transition-colors"
+          className="group/more shrink-0 inline-flex items-center gap-2 pb-0.5 font-mono text-[11.5px] text-black/55 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
         >
           {more}
           <span className="sarrow" aria-hidden />
