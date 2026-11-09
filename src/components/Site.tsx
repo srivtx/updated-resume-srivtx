@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CopyEmail } from "@/components/CopyEmail";
+import { FxSwitch } from "@/components/FxSwitch";
 import { profile, socials } from "@/lib/data";
 import { COL } from "@/lib/layout";
 
@@ -183,6 +184,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             </main>
             <SiteFooter />
             <Scenery />
+            <FxSwitch />
           </div>
         </div>
       </div>

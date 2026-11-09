@@ -70,11 +70,12 @@ body {
 }
 ::view-transition-new(root) {
   z-index: 2147483646;
-  /* the dithered dusk mask is drawn at viewport size (ThemeToggle) */
-  mask-size: 100% 100%;
+  /* the reveal mask is a tiny pixel map, scaled up with crisp cells */
   mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
+  mask-position: 0 0;
+  -webkit-mask-position: 0 0;
+  image-rendering: pixelated;
 }
 
 /* the tulip button closing for the night / opening for the day */
