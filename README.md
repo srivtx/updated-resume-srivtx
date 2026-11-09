@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+ ░█░█░█░
+ ███░███        srivtx.xyz
+ ██░░░██        the home of Sribatsha Dash
+ ░██░██░
+ █░░█░░█        understand systems in detail,
+ ██░█░██        build things with what you learn,
+ ░█████░        write about the frontier.
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# srivtx.xyz
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A personal site that behaves like a small instrument. Every product has a
+drawn cover whose pixel mark does what the product does. Essays get their
+own figures, drawn in code. And the light switch is a tulip.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**[www.srivtx.xyz](https://www.srivtx.xyz)**
 
-## Learn More
+## What lives here
 
-To learn more about Next.js, take a look at the following resources:
+| page | what |
+| --- | --- |
+| `/` | the index: who, writing, work, experience, and what's on lately |
+| `/projects` | **Work**: Tulip Labs, Morphotype, Bionic Page, Deriva, DeepForge, Customs |
+| `/writing` | **Writing**: essays, with figures that answer the reader |
+| `/blogs` | **Notes**: engineering notes from building the products |
+| `/inventions` | **Papers**: research from the DeepForge lab, in brief |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Also: an RSS feed at `/writing/rss.xml`, drawn share cards, and a sitemap.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## The tulip
 
-## Deploy on Vercel
+The button in the corner is the Tulip Labs pixel tulip. It closes at night
+and opens by day, as real tulips do.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Pressing it doesn't flip a class. It turns the page over, cell by 8px cell,
+through the View Transitions API. The order follows a loop: two rounds of
+**garden**, then one each of **year**, **read** and **sky**. After that the
+same mix comes back in a shuffled order. A round is a night and the morning
+after.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **garden**: pixel tulips sprout in petal colours and grow until they cover the page
+- **year**: the real GitHub year paints the page in contribution greens, busiest day first
+- **read**: a sky-blue highlighter reads the words on screen, line by line
+- **sky**: twilight, stars, a shooting star; by morning, a pixel sun
+
+Every frame of the mask is drawn ahead of time as a single reel, so nothing
+flickers. If someone prefers reduced motion, the theme simply switches.
+Add `?variants` to any page to pin one effect.
+
+## Run it
+
+```bash
+npm install
+npm run dev        # http://localhost:3200
+```
+
+Next 14 (app router) · Tailwind · Instrument Serif, Newsreader, Space Grotesk, JetBrains Mono.
+
+## Where things are
+
+```
+src/components/themeReveal.ts   the tulip's reveals (one function per effect)
+src/components/Covers.tsx       the product covers and their 7×7 marks
+src/components/essay/           essay figures
+src/lib/writing.ts              the essays
+src/lib/data.tsx                products, experience, notes, papers
+```
+
+---
+
+<sub>ship what you wish existed.</sub>
