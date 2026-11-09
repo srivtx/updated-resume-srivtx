@@ -54,32 +54,30 @@ export function Contributions({ data }: { data: { days: Day[]; total: number } |
         </p>
       </div>
 
-      <div className="overflow-x-auto pb-1">
-        <div className="flex gap-[3px] w-max min-w-full">
-          {weeks.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px]">
+      {/* the whole year fits the card on wider screens; on a phone it
+          scrolls sideways, with no scrollbar, starting at this week
+          (the rtl wrapper puts the scroll position at the right end) */}
+      <div className="no-scrollbar overflow-x-auto [direction:rtl]">
+        <div
+          className="[direction:ltr] grid gap-[3px] w-max sm:w-full"
+          style={{ gridTemplateColumns: `repeat(${weeks.length || 53}, minmax(8px, 1fr))` }}
+        >
+          {(weeks.length ? weeks : Array.from({ length: 53 }, () => [] as (Day | null)[])).map((week, wi) => (
+            <div key={wi} className="grid gap-[3px]">
               {Array.from({ length: 7 }, (_, di) => {
                 const d = week[di] ?? null;
-                const op = d ? LEVEL_OPACITY[d.level] : 0;
+                const op = weeks.length ? (d ? LEVEL_OPACITY[d.level] : 0) : 0.05;
                 return (
                   <div
                     key={di}
                     title={d ? `${d.count} contribution${d.count === 1 ? "" : "s"} · ${d.date}` : undefined}
-                    className="h-[10px] w-[10px] rounded-[2px] bg-black dark:bg-white"
+                    className="aspect-square w-full rounded-[2px] bg-black dark:bg-white"
                     style={{ opacity: op }}
                   />
                 );
               })}
             </div>
           ))}
-          {weeks.length === 0 &&
-            Array.from({ length: 26 }, (_, wi) => (
-              <div key={wi} className="flex flex-col gap-[3px]">
-                {Array.from({ length: 7 }, (_, di) => (
-                  <div key={di} className="h-[10px] w-[10px] rounded-[2px] bg-black dark:bg-white opacity-[0.05]" />
-                ))}
-              </div>
-            ))}
         </div>
       </div>
 

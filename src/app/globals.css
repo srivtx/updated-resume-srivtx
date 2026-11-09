@@ -373,3 +373,11 @@ button:focus-visible {
 .group\/more:hover .sarrow {
   width: 30px;
 }
+
+/* scrolls, but draws no scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
