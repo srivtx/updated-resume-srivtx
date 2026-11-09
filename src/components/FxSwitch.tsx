@@ -5,8 +5,8 @@
 // browser (localStorage "theme-fx"). Remove once one is chosen.
 
 import { useEffect, useState } from "react";
+import { FX, prefetchYear } from "@/components/themeReveal";
 
-const FX = ["dusk", "wave", "burn"] as const;
 
 export function FxSwitch() {
   const [show, setShow] = useState(false);
@@ -22,6 +22,7 @@ export function FxSwitch() {
   if (!show) return null;
   const pick = (v: string) => {
     setFx(v);
+    if (v === "year") prefetchYear();
     try {
       localStorage.setItem("theme-fx", v);
     } catch {}
