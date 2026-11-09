@@ -78,6 +78,13 @@ body {
   image-rendering: pixelated;
 }
 
+/* while a reveal runs, the new page starts fully hidden; the script's
+   masks take over frame by frame (themeReveal.ts) */
+:root.fx-running::view-transition-new(root) {
+  mask-image: linear-gradient(transparent, transparent);
+  -webkit-mask-image: linear-gradient(transparent, transparent);
+}
+
 /* the reveal's colour layer: its own transition group, so the mask over
    the page never clips it, and it sits above both pictures */
 .theme-fx-layer {

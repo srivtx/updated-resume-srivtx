@@ -1,7 +1,8 @@
 // The theme-switch reveal. The View Transitions API holds the old page as
 // a still picture and shows the new one through a mask. Every frame, a
-// small pixel map (2×2 dots per 8px cell of the screen) says which cells
+// small pixel map (one dot per 8px cell of the screen) says which cells
 // already show the new theme; the browser scales it up with crisp edges.
+// All the maps are drawn before the switch starts, as one tall reel.
 //
 // On top, on a layer of its own that the mask never clips, the moving
 // edge is painted: each cell glows in its effect's colours for a moment
@@ -18,9 +19,9 @@ export type Fx = "dusk" | "garden" | "read" | "year" | "sky";
 export const FX: Fx[] = ["dusk", "garden", "read", "year", "sky"];
 
 const CELL = 8; // css px per cell
-const DOTS = 2; // map dots per cell side: the browser only enlarges 4×, so cells stay sharp
 const SUB = 4; // dots per cell side on the colour layer: each coloured cell is 3×3 of 4, a 6px square with a 2px gap (the mosaic look)
 const DURATION = 2600; // slow enough to follow
+const FRAMES = 96; // mask frames over the sweep (one reel, drawn ahead)
 const BAYER = [
   [0, 8, 2, 10],
   [12, 4, 14, 6],
@@ -177,7 +178,7 @@ function read(g: Grid): Plan {
     const y1 = Math.min(rows - 1, Math.floor((r.bottom - 1) / CELL));
     for (let y = y0; y <= y1; y++)
       for (let x = x0; x <= x1; x++) {
-        const v = ((li + (x - x0) / Math.max(1, x1 - x0 + 1)) / n) * 0.6;
+        const v = ((li + (x - x0) / Math.max(1, x1 - x0 + 1)) / n) * 0.5;
         const i = y * cols + x;
         if (when[i] < 0 || v < when[i]) {
           when[i] = v;
@@ -188,7 +189,8 @@ function read(g: Grid): Plan {
   for (let y = 0; y < rows; y++)
     for (let x = 0; x < cols; x++) {
       const i = y * cols + x;
-      if (when[i] < 0) when[i] = 0.62 + (y / rows) * 0.26 + bayer(x, y) * 0.12;
+      // the rest of the page settles slowly in a long dither, not a final rush
+      if (when[i] < 0) when[i] = 0.3 + (y / rows) * 0.46 + bayer(x, y) * 0.24;
     }
   return {
     when,
@@ -279,33 +281,35 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
   };
   // read the words while the old page is still the live one
   const { when, kind, palettes, window: glow } = plan(fx, g, toDark);
+  // every cell has turned by 90% of the sweep; the last 10% only lets the
+  // colours fade, so the ending glides instead of snapping
+  for (let i = 0; i < when.length; i++) when[i] *= 0.9;
   const steps = palettes[0].length;
 
-  /* the mask */
-  const mask = document.createElement("canvas");
-  mask.width = cols * DOTS;
-  mask.height = rows * DOTS;
-  const mctx = mask.getContext("2d")!;
-  const img = mctx.createImageData(cols * DOTS, rows * DOTS);
-  const stride = cols * DOTS;
-  const size = `${cols * CELL}px ${rows * CELL}px`;
-  const keyframe = (url: string) => ({ maskImage: url, WebkitMaskImage: url, maskSize: size, WebkitMaskSize: size });
-  // draws the map; returns how many cells have turned, so frames where
-  // nothing changed can skip encoding a new mask
-  const draw = (p: number) => {
-    const d = img.data;
-    let n = 0;
-    for (let i = 0; i < when.length; i++) {
-      const on = when[i] <= p;
-      const a = on ? 255 : 0;
-      if (on) n++;
-      const x0 = (i % cols) * DOTS;
-      const y0 = Math.floor(i / cols) * DOTS;
-      for (let dy = 0; dy < DOTS; dy++) for (let dx = 0; dx < DOTS; dx++) d[((y0 + dy) * stride + x0 + dx) * 4 + 3] = a;
-    }
-    mctx.putImageData(img, 0, 0);
-    return n;
-  };
+  /* the mask: every frame of the reveal, drawn ahead into one tall strip
+     (a film reel), decoded once; during the switch the strip only slides,
+     so the browser never waits on a new picture (that wait was the flicker) */
+  const reel = document.createElement("canvas");
+  reel.width = cols;
+  reel.height = rows * FRAMES;
+  const rctx = reel.getContext("2d")!;
+  const rimg = rctx.createImageData(cols, rows * FRAMES);
+  const ra = rimg.data;
+  for (let f = 0; f < FRAMES; f++) {
+    const p = ease(f / (FRAMES - 1));
+    const base = f * cols * rows;
+    for (let i = 0; i < when.length; i++) if (when[i] <= p) ra[(base + i) * 4 + 3] = 255;
+  }
+  rctx.putImageData(rimg, 0, 0);
+  const size = `${cols * CELL}px ${rows * CELL * FRAMES}px`;
+  const frame = (url: string, f: number) => ({
+    maskImage: url,
+    WebkitMaskImage: url,
+    maskSize: size,
+    WebkitMaskSize: size,
+    maskPosition: `0px ${-f * rows * CELL}px`,
+    WebkitMaskPosition: `0px ${-f * rows * CELL}px`,
+  });
 
   /* the colour layer: crisp pixels over a soft halo (the same picture at
      half resolution, smoothed as the browser enlarges it) */
@@ -412,61 +416,60 @@ export function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: S
       cctx.putImageData(cimg, 0, 0, ux0 * SUB, uy0 * SUB, (ux1 - ux0 + 1) * SUB, (uy1 - uy0 + 1) * SUB);
       hctx.putImageData(himg, 0, 0);
     }
+    // the colour layer fades out over the last 10%, so it is already gone
+    // by the time the switch ends and the layer is removed
+    layer.style.opacity = p > 0.9 ? String(Math.max(0, (1 - p) / 0.1)) : "1";
     px0 = bx0;
     py0 = by0;
     px1 = bx1;
     py1 = by1;
   };
 
-  let done = () => {};
-  const transition = startView(() => {
-    done = flip();
-    document.body.appendChild(layer);
-  });
-  let lastUrl = "";
-  const end = () => {
-    done();
-    layer.remove();
-    if (lastUrl) URL.revokeObjectURL(lastUrl);
-  };
-  transition.finished.then(end, end);
-
-  transition.ready.then(() => {
-    draw(0);
-    const first = keyframe(`url(${mask.toDataURL()})`);
-    const anim = document.documentElement.animate([first, first], {
-      duration: DURATION,
-      fill: "both",
-      pseudoElement: "::view-transition-new(root)",
+  const go = (url: string) => {
+    let done = () => {};
+    // until the reel is in place, a CSS rule hides the new page entirely
+    // (globals.css), so it can never flash in all at once
+    document.documentElement.classList.add("fx-running");
+    const transition = startView(() => {
+      done = flip();
+      document.body.appendChild(layer);
     });
-    const t0 = performance.now();
-    let shown = 0;
-    let busy = false;
-    const step = (now: number) => {
-      const p = ease(Math.min(1, (now - t0) / DURATION));
-      // the mask image is encoded off the main thread; while one is on its
-      // way the next waits, and frames with no new cells are skipped
-      if (!busy) {
-        const n = draw(p);
-        if (n !== shown || p >= 1) {
-          shown = n;
-          busy = true;
-          mask.toBlob((blob) => {
-            busy = false;
-            if (!blob) return;
-            const url = URL.createObjectURL(blob);
-            const f = keyframe(`url(${url})`);
-            (anim.effect as KeyframeEffect).setKeyframes([f, f]);
-            const old = lastUrl;
-            lastUrl = url;
-            if (old) setTimeout(() => URL.revokeObjectURL(old), 200);
-          });
-        }
-      }
-      paint(p, now);
-      if (p < 1) requestAnimationFrame(step);
+    const end = () => {
+      done();
+      document.documentElement.classList.remove("fx-running");
+      layer.remove();
+      URL.revokeObjectURL(url);
     };
-    requestAnimationFrame(step);
+    transition.finished.then(end, end);
+
+    transition.ready.then(() => {
+      // the reel slides one frame at a time; the sweep's easing is already
+      // baked into which moment each frame shows
+      document.documentElement.animate([frame(url, 0), frame(url, FRAMES - 1)], {
+        duration: DURATION,
+        easing: `steps(${FRAMES - 1}, jump-none)`,
+        fill: "both",
+        pseudoElement: "::view-transition-new(root)",
+      });
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const p = ease(Math.min(1, (now - t0) / DURATION));
+        paint(p, now);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  };
+
+  reel.toBlob((blob) => {
+    if (!blob) return go("none");
+    const url = URL.createObjectURL(blob);
+    const pic = new Image();
+    pic.src = url;
+    pic.decode().then(
+      () => go(`url(${url})`),
+      () => go(`url(${url})`),
+    );
   });
 }
 
