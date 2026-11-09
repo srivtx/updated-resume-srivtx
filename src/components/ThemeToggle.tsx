@@ -24,13 +24,14 @@ function quietly(flip: () => void) {
 
 /* ---------- the reveal ---------- */
 
-// Every frame, a tiny pixel map (one dot per 10px cell of the screen) says
+// Every frame, a small pixel map (2×2 dots per 8px cell of the screen) says
 // which cells already show the new theme; the browser scales it up with
 // crisp edges and uses it as the mask over the new page. Each effect is
 // only a different order in which the cells turn over.
 export type Fx = "dusk" | "wave" | "burn";
 const FX: Fx[] = ["dusk", "wave", "burn"];
-const CELL = 10;
+const CELL = 8; // the first dusk's pixel size
+const DOTS = 2; // map dots per cell side: the browser only enlarges 4×, so cells stay sharp even where it smooths
 const DURATION = 1900; // slow enough to watch
 const BAYER = [
   [0, 8, 2, 10],
@@ -86,10 +87,11 @@ function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: (cb: () 
   const when = schedule(fx, cols, rows, toDark, bx, by);
 
   const mask = document.createElement("canvas");
-  mask.width = cols;
-  mask.height = rows;
+  mask.width = cols * DOTS;
+  mask.height = rows * DOTS;
   const mctx = mask.getContext("2d")!;
-  const img = mctx.createImageData(cols, rows);
+  const img = mctx.createImageData(cols * DOTS, rows * DOTS);
+  const stride = cols * DOTS;
   const size = `${cols * CELL}px ${rows * CELL}px`;
   const keyframe = (url: string) => ({ maskImage: url, WebkitMaskImage: url, maskSize: size, WebkitMaskSize: size });
   // draws the map; returns how many cells have turned, so frames where
@@ -99,8 +101,12 @@ function runReveal(fx: Fx, toDark: boolean, button: DOMRect, startView: (cb: () 
     let n = 0;
     for (let i = 0; i < when.length; i++) {
       const on = when[i] <= p;
-      d[i * 4 + 3] = on ? 255 : 0;
+      const a = on ? 255 : 0;
       if (on) n++;
+      const x0 = (i % cols) * DOTS;
+      const y0 = Math.floor(i / cols) * DOTS;
+      for (let dy = 0; dy < DOTS; dy++)
+        for (let dx = 0; dx < DOTS; dx++) d[((y0 + dy) * stride + x0 + dx) * 4 + 3] = a;
     }
     mctx.putImageData(img, 0, 0);
     return n;
