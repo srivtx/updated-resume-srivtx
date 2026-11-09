@@ -32,7 +32,7 @@ const BAYER = [
   [15, 7, 13, 5],
 ];
 const DURATION = 1050;
-const FRAMES = 32;
+const FRAMES = 64; // one mask per screen refresh (~60 a second), so the sweep glides
 const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 
 // One mask image per frame. A cell is revealed once the sweep has passed
