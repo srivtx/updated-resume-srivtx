@@ -15,8 +15,47 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* selecting text paints it in a cover's colour pair: sky blue by
+   default, green in every other home section (data-sel) */
 ::selection {
-  background: rgba(0, 111, 238, 0.22);
+  background: #1f8fe0;
+  color: #ffffff;
+}
+[data-sel="green"] ::selection,
+[data-sel="green"]::selection {
+  background: #3cad4f;
+  color: #0f3017;
+}
+/* the intro answers a selection in a news-card colour pair (EmberText) */
+.ember-text::selection,
+.ember-text *::selection {
+  background: var(--sel-bg, #ff6fb5);
+  color: var(--sel-fg, #3a0f25);
+  text-decoration-color: currentColor;
+}
+
+/* scroll reveal (Reveal.tsx): only hidden once scripts are known to run */
+.reveal {
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.js .reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal:not(.is-in) { transform: none; }
+}
+
+/* the browser's own parts (scrollbars, form controls) follow the theme */
+:root { color-scheme: light; }
+:root.dark { color-scheme: dark; }
+
+/* no colour fades while the theme flips (see ThemeToggle) */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
 }
 
 /* ---- theme toggle: circular reveal via View Transitions ----
