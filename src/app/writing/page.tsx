@@ -3,11 +3,13 @@ import Link from "next/link";
 import { essays } from "@/lib/writing";
 import { SubPageShell } from "@/components/SubPageShell";
 import { EssayRow } from "@/components/EssayRow";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Writing | srivtx",
-  description: "Essays by Sribatsha Dash on how things work, the frontier, and the state of thinking.",
-};
+export const metadata: Metadata = pageMeta(
+  "/writing",
+  "Writing",
+  "Essays by Sribatsha Dash on how things work, the frontier, and the state of thinking.",
+);
 
 export default function WritingPage() {
   return (

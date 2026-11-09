@@ -7,6 +7,7 @@ import { EssayFigure } from "@/components/essay/Figures";
 import { InkSwitch } from "@/components/essay/InkSwitch";
 import { ReadingLine } from "@/components/essay/ReadingLine";
 import { reading } from "../fonts";
+import { pageMeta, JsonLd, essayLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return essays.map((e) => ({ slug: e.slug }));
@@ -15,12 +16,8 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const e = getEssay(params.slug);
   if (!e) return {};
-  return {
-    title: `${e.title} | srivtx`,
-    description: e.dek,
-    openGraph: { title: e.title, description: e.dek, type: "article", publishedTime: e.date },
-    twitter: { card: "summary_large_image", title: e.title, description: e.dek },
-  };
+  const m = pageMeta(`/writing/${e.slug}`, e.title, e.dek, "article");
+  return { ...m, openGraph: { ...m.openGraph, type: "article", publishedTime: e.date, authors: ["Sribatsha Dash"] } };
 }
 
 // ==phrase== → the author's own highlight, drawn in as a soft underline
@@ -48,6 +45,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
 
   return (
     <SubPageShell>
+      <JsonLd data={essayLd(e)} />
       <article className={`${reading.variable} essay`} data-ink="rose" data-motion="once">
         <ReadingLine />
         <header className="pt-2 sm:pt-4 pb-8 sm:pb-10 border-b border-neutral-200 dark:border-neutral-800">

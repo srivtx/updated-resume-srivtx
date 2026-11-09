@@ -23,10 +23,12 @@ import { StackMarquee } from "@/components/StackMarquee";
 import { SpotifyPlayer } from "@/components/SpotifyPlayer";
 import { NowWatching } from "@/components/NowWatching";
 import { EssayRow } from "@/components/EssayRow";
+import { EmberText } from "@/components/EmberText";
 import { SiteShell, SectionHead } from "@/components/Site";
 import { COL } from "@/lib/layout";
 import { essays } from "@/lib/writing";
 import { getStats, getContributions, type Stats } from "@/lib/github";
+import { JsonLd, homeLd } from "@/lib/seo";
 
 /* ---------- small building blocks ---------- */
 
@@ -40,6 +42,7 @@ function Section({
   href,
   more,
   id,
+  sel = "blue",
   children,
 }: {
   title: string;
@@ -47,11 +50,12 @@ function Section({
   href?: string;
   more?: string;
   id?: string;
+  sel?: "blue" | "green";
   children: React.ReactNode;
 }) {
   return (
     <Reveal>
-      <section id={id} className={`${COL} py-10 sm:py-12 scroll-mt-14`}>
+      <section id={id} data-sel={sel} className={`${COL} py-10 sm:py-12 scroll-mt-14`}>
         <SectionHead title={title} sub={sub} href={href} more={more} />
         {children}
       </section>
@@ -66,8 +70,7 @@ const inline =
 
 function Intro({ stats }: { stats: Stats | null }) {
   return (
-    <Reveal>
-      <section className={`${COL} pt-12 sm:pt-16 pb-10 sm:pb-12`}>
+    <section className={`${COL} pt-12 sm:pt-16 pb-10 sm:pb-12`}>
         <div className="flex items-center gap-4">
           <div className="relative h-16 w-16 sm:h-[72px] sm:w-[72px] shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 dark:ring-white/10">
             <Image alt={profile.name} src="/pfp.jpg" fill priority sizes="72px" className="object-cover" />
@@ -78,7 +81,7 @@ function Intro({ stats }: { stats: Stats | null }) {
           </div>
         </div>
 
-        <p className="mt-8 text-[19px] sm:text-[23px] leading-[1.45] tracking-[-0.012em] text-black/70 dark:text-white/70 max-w-[29em]">
+        <EmberText className="mt-8 text-[19px] sm:text-[23px] leading-[1.45] tracking-[-0.012em] text-black/70 dark:text-white/70 max-w-[29em]">
           I like to understand systems in detail, then{" "}
           <Link href="/projects" className={inline}>
             build things
@@ -88,7 +91,7 @@ function Intro({ stats }: { stats: Stats | null }) {
             write
           </Link>{" "}
           about how things work, the frontier, and the state of thinking.
-        </p>
+        </EmberText>
 
         <div className="mt-7 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-1">
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -105,8 +108,7 @@ function Intro({ stats }: { stats: Stats | null }) {
             <GitHubStats stats={stats} />
           </div>
         </div>
-      </section>
-    </Reveal>
+    </section>
   );
 }
 
@@ -170,6 +172,7 @@ export default async function Page() {
 
   return (
     <SiteShell>
+      <JsonLd data={homeLd} />
       <Intro stats={stats} />
       <Rule />
 
@@ -183,7 +186,7 @@ export default async function Page() {
 
       <Rule />
 
-      <Section id="work" title="Work" sub="live and free to use — hover a cover to see what each one does" href="/projects" more="all work">
+      <Section id="work" sel="green" title="Work" sub="live and free to use — hover a cover to see what each one does" href="/projects" more="all work">
         <div className="dim-group grid grid-cols-1 gap-y-9 sm:gap-x-6 sm:gap-y-10 sm:grid-cols-2">
           {products.slice(0, 4).map((p) => (
             <ProductCard key={p.name} p={p} />
@@ -199,7 +202,7 @@ export default async function Page() {
 
       <Rule />
 
-      <Section title="Also" sub="smaller tools, research papers, and engineering notes">
+      <Section sel="green" title="Also" sub="smaller tools, research papers, and engineering notes">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-10">
           <IndexList title="Open source" href="/projects#open-source" items={openSource} />
           <IndexList title="Papers" href="/inventions" items={paperItems} />

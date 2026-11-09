@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { pageMeta, SITE_DESCRIPTION } from "@/lib/seo";
 
 const grotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -26,24 +27,7 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srivtx.xyz"),
-  alternates: { types: { "application/rss+xml": "/writing/rss.xml" } },
-  title: "Sribatsha Dash — srivtx",
-  description:
-    "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
-  openGraph: {
-    title: "Sribatsha Dash — srivtx",
-    description:
-      "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
-    url: "https://www.srivtx.xyz",
-    siteName: "srivtx",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sribatsha Dash — srivtx",
-    description:
-      "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
-  },
+  ...pageMeta("/", null, SITE_DESCRIPTION),
 };
 
 export default function RootLayout({
@@ -59,7 +43,7 @@ export default function RootLayout({
         {/* set the theme before first paint — no flash of the wrong page */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}`,
+            __html: `document.documentElement.classList.add("js");try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}`,
           }}
         />
       </head>
