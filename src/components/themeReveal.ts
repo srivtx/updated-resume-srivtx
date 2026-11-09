@@ -490,7 +490,8 @@ const shuffle = (list: Fx[]) => {
 
 export function nextFx(): Fx {
   try {
-    const pinned = localStorage.getItem("theme-fx") as Fx | "mix" | null;
+    localStorage.removeItem("theme-fx"); // a pick saved by the first comparison box
+    const pinned = localStorage.getItem("theme-fx-pin") as Fx | "mix" | null;
     if (pinned && pinned !== "mix" && FX.includes(pinned)) return pinned;
     let state: { queue: Fx[]; pos: number; loops: number } | null = null;
     try {

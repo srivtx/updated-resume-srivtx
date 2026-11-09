@@ -2,7 +2,7 @@
 
 // Temporary: compare the theme-switch effects on the real site.
 // Shows only with ?variants in the url; the pick is remembered in this
-// browser (localStorage "theme-fx"). Remove once one is chosen.
+// browser (localStorage "theme-fx-pin"). Remove once one is chosen.
 
 import { useEffect, useState } from "react";
 import { FX, prefetchYear } from "@/components/themeReveal";
@@ -15,7 +15,7 @@ export function FxSwitch() {
   useEffect(() => {
     setShow(new URLSearchParams(window.location.search).has("variants"));
     try {
-      setFx(localStorage.getItem("theme-fx") || "mix");
+      setFx(localStorage.getItem("theme-fx-pin") || "mix");
     } catch {}
   }, []);
 
@@ -24,7 +24,7 @@ export function FxSwitch() {
     setFx(v);
     if (v === "year") prefetchYear();
     try {
-      localStorage.setItem("theme-fx", v);
+      localStorage.setItem("theme-fx-pin", v);
     } catch {}
   };
 
