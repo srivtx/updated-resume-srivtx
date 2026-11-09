@@ -18,7 +18,7 @@ export type CoverId =
   | "reduction";
 
 export const HUES: Record<CoverId, { bright: string; deep: string }> = {
-  tulip: { bright: "#ff6fae", deep: "#3a1024" },
+  tulip: { bright: "#ff6fb5", deep: "#3a0f25" }, // tulip labs' own pair
   morphotype: { bright: "#5b22ff", deep: "#21145c" },
   bionic: { bright: "#e6a21c", deep: "#523406" },
   deriva: { bright: "#3cad4f", deep: "#15401e" },
@@ -94,26 +94,16 @@ function Svg({ w, h, run, children }: { w: number; h: number; run: number; child
 
 /* ---------- the marks ---------- */
 
-// Tulip Labs — a tulip that grows again from the stem up
-const TULIP = [
-  ".P.P.P.",
-  ".PPPPP.",
-  "PPPPPPP",
-  "PPPPPPP",
-  ".PPPPP.",
-  "..PPP..",
-  "...S...",
-  "...S.LL",
-  ".L.SLL.",
-  ".LLS...",
-  "...S...",
-];
+// Tulip Labs — the lab's own pixel tulip, the exact 7×7 glyph from its
+// news cards (tuliplabs/learn/news.js). On hover it grows again, row by
+// row from the bottom, the way a finished chapter grows a flower.
+const TULIP = [".#.#.#.", "###.###", "##...##", ".##.##.", "#..#..#", "##.#.##", ".#####."];
 function Tulip({ run }: { run: number }) {
   const cs = cells(TULIP);
   return (
-    <Svg w={7} h={11} run={run}>
+    <Svg w={7} h={7} run={run}>
       {cs.map((c, i) => (
-        <Px key={i} c={c} cls="mk-grow" d={(10 - c.y) * 65 + Math.abs(3 - c.x) * 22} />
+        <Px key={i} c={c} cls="mk-grow" d={(6 - c.y) * 90 + Math.abs(3 - c.x) * 25} />
       ))}
     </Svg>
   );
@@ -328,7 +318,7 @@ export function Cover({
       style={{ background: hue.deep }}
     >
       <div className="relative flex w-[42%] shrink-0 items-center justify-center" style={{ background: hue.bright }}>
-        <div className={large ? "h-[36%]" : "h-[40%]"}>
+        <div className={id === "tulip" ? "h-[37%]" : large ? "h-[36%]" : "h-[40%]"}>
           <Mark run={run} />
         </div>
       </div>
