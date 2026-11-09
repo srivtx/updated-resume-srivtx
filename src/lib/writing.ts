@@ -14,6 +14,8 @@ export type Essay = {
   title: string;
   date: string; // ISO day
   dek: string;
+  // one plain word for what it is about (thinking, frontier, civilisation…)
+  topic: string;
   original?: string;
   signature?: string;
   blocks: Block[];
@@ -25,6 +27,7 @@ export const essays: Essay[] = [
     title: "the state of reduction",
     date: "2026-11-09",
     dek: "what we lose when we keep only what we can measure, and what is left for humans once ai does the pattern matching.",
+    topic: "thinking",
     original: "https://app.notion.com/p/the-state-of-reduction-412095ce6be88064aaa5f5da65b0b9b3",
     signature: "sribatsha dash …",
     blocks: [

@@ -29,9 +29,9 @@ export function EssayRow({ e }: { e: Essay }) {
           </h3>
           <span className="sarrow shrink-0 text-black/25 dark:text-white/25 group-hover/item:text-black dark:group-hover/item:text-white" aria-hidden />
         </div>
-        <p className="mt-1 text-[13px] leading-relaxed text-black/50 dark:text-white/45 max-w-[60ch]">{e.dek}</p>
-        <p className="mt-1.5 font-mono text-[11px] text-black/35 dark:text-white/35">
-          <time dateTime={e.date}>{formatDate(e.date)}</time> · {readingTime(e)}
+        <p className="mt-1 text-[13px] leading-relaxed text-black/55 dark:text-white/50 max-w-[60ch]">{e.dek}</p>
+        <p className="mt-1.5 font-mono text-[11px] text-black/55 dark:text-white/50">
+          {e.topic} · <time dateTime={e.date}>{formatDate(e.date)}</time> · {readingTime(e)}
           {figures > 0 && <> · {figures} figures</>}
         </p>
       </div>

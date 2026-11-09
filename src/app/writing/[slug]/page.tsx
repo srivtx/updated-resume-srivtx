@@ -51,11 +51,13 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
       <article className={`${reading.variable} essay`} data-ink="rose" data-motion="once">
         <ReadingLine />
         <header className="pt-2 sm:pt-4 pb-8 sm:pb-10 border-b border-neutral-200 dark:border-neutral-800">
-          <p className="font-mono text-[11px] text-black/40 dark:text-white/40">
+          <p className="font-mono text-[11px] text-black/55 dark:text-white/50">
             <Link href="/writing" className="hover:text-black dark:hover:text-white transition-colors">
               writing
             </Link>
             <span className="mx-2 text-black/20 dark:text-white/20">/</span>
+            {e.topic}
+            <span className="mx-2 text-black/20 dark:text-white/20">·</span>
             <time dateTime={e.date}>{formatDate(e.date)}</time>
             <span className="mx-2 text-black/20 dark:text-white/20">·</span>
             {readingTime(e)}
@@ -82,7 +84,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
           {e.signature && <p className="essay-signature">{e.signature}</p>}
         </div>
 
-        <footer className="mt-12 pt-5 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 font-mono text-[11px] text-black/40 dark:text-white/40">
+        <footer className="mt-12 pt-5 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 font-mono text-[11px] text-black/55 dark:text-white/50">
           <Link href="/writing" className="hover:text-black dark:hover:text-white transition-colors">
             ← all writing
           </Link>

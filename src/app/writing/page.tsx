@@ -17,8 +17,12 @@ export default function WritingPage() {
           <EssayRow key={e.slug} e={e} />
         ))}
       </div>
-      <p className="mt-8 text-xs text-black/40 dark:text-white/40">
-        engineering notes from the products are under{" "}
+      <p className="mt-8 text-xs text-black/55 dark:text-white/50">
+        follow new essays with the{" "}
+        <a href="/writing/rss.xml" className="underline decoration-black/20 dark:decoration-white/20 underline-offset-4 hover:text-black dark:hover:text-white transition-colors">
+          rss feed
+        </a>
+        . engineering notes from the products are under{" "}
         <Link href="/blogs" className="underline decoration-black/20 dark:decoration-white/20 underline-offset-4 hover:text-black dark:hover:text-white transition-colors">
           notes
         </Link>

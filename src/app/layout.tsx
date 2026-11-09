@@ -26,6 +26,7 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srivtx.xyz"),
+  alternates: { types: { "application/rss+xml": "/writing/rss.xml" } },
   title: "Sribatsha Dash — srivtx",
   description:
     "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
@@ -35,7 +36,6 @@ export const metadata: Metadata = {
       "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
     url: "https://www.srivtx.xyz",
     siteName: "srivtx",
-    images: [{ url: "/pixel-banner.png", width: 1344, height: 768, alt: "srivtx — pixel landscape" }],
     type: "website",
   },
   twitter: {
@@ -43,7 +43,6 @@ export const metadata: Metadata = {
     title: "Sribatsha Dash — srivtx",
     description:
       "goquant engineer · freelance / ai engineer · builds tulip labs, morphotype, deriva & deepforge.",
-    images: ["/pixel-banner.png"],
   },
 };
 
