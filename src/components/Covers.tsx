@@ -7,6 +7,7 @@
 // view on a touch screen), always coming to rest on the same picture.
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { TULIP, A_SANS, A_SERIF, EYE, RINGS, ANVIL, CHECK } from "@/lib/glyphs";
 
 export type CoverId =
   | "tulip"
@@ -97,7 +98,6 @@ function Svg({ w, h, run, children }: { w: number; h: number; run: number; child
 // Tulip Labs — the lab's own pixel tulip, the exact 7×7 glyph from its
 // news cards (tuliplabs/learn/news.js). On hover it grows again, row by
 // row from the bottom, the way a finished chapter grows a flower.
-const TULIP = [".#.#.#.", "###.###", "##...##", ".##.##.", "#..#..#", "##.#.##", ".#####."];
 function Tulip({ run }: { run: number }) {
   const cs = cells(TULIP);
   return (
@@ -111,8 +111,6 @@ function Tulip({ run }: { run: number }) {
 
 // Morphotype — a bold sans A blends into a thin serif A and back,
 // in a wave from the top-left corner
-const A_SANS = ["..PPP..", ".PP.PP.", "PP...PP", "PP...PP", "PPPPPPP", "PP...PP", "PP...PP"];
-const A_SERIF = ["...P...", "..P.P..", "..P.P..", ".P...P.", ".PPPPP.", ".P...P.", "PPP.PPP"];
 function Morph({ run }: { run: number }) {
   const on = (rows: string[], x: number, y: number) => rows[y][x] !== ".";
   const out: ReactNode[] = [];
@@ -135,7 +133,6 @@ function Morph({ run }: { run: number }) {
 // The four below share the tulip's 7×7 grid, so the row reads as one family.
 
 // Bionic Page — an eye, reading: the pupil runs along a line, then a blink
-const EYE = [".......", "..###..", ".#...#.", "#..P..#", ".#...#.", "..###..", "......."];
 function Bionic({ run }: { run: number }) {
   const cs = cells(EYE);
   return (
@@ -150,7 +147,6 @@ function Bionic({ run }: { run: number }) {
 }
 
 // Deriva — apps inside apps: the rings light from the centre out
-const RINGS = ["#######", "#.....#", "#.###.#", "#.#.#.#", "#.###.#", "#.....#", "#######"];
 function Deriva({ run }: { run: number }) {
   const cs = cells(RINGS);
   return (
@@ -163,7 +159,6 @@ function Deriva({ run }: { run: number }) {
 }
 
 // DeepForge — an anvil; a strike, and the sparks fly
-const ANVIL = ["....S.S", ".....S.", "#######", ".#####.", "..###..", ".#####.", "#######"];
 function DeepForge({ run }: { run: number }) {
   const cs = cells(ANVIL);
   return (
@@ -185,7 +180,6 @@ function DeepForge({ run }: { run: number }) {
 }
 
 // Customs — a check, stamped down like a passport
-const CHECK = ["......#", ".....##", "#...##.", "##.##..", ".###...", "..#....", "......."];
 function Customs({ run }: { run: number }) {
   const cs = cells(CHECK);
   return (
