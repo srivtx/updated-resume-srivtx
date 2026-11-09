@@ -9,6 +9,17 @@
 import { useEffect, useState } from "react";
 import { SLAB } from "@/components/NeuButton";
 
+// While the theme flips, every colour transition on the page is switched
+// off. Otherwise the page's own 0.3s colour fades run inside the circle
+// reveal, and the new theme flashes through the old one (the flicker).
+function quietly(flip: () => void) {
+  const root = document.documentElement;
+  root.classList.add("theme-switching");
+  flip();
+  return () =>
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
+}
+
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [dark, setDark] = useState(false);
 
@@ -24,7 +35,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         saved = localStorage.getItem("theme");
       } catch {}
       if (saved) return;
-      document.documentElement.classList.toggle("dark", mq.matches);
+      quietly(() => document.documentElement.classList.toggle("dark", mq.matches))();
       setDark(mq.matches);
     };
     mq.addEventListener("change", follow);
@@ -51,12 +62,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const doc = document as Document & {
       startViewTransition?: (cb: () => void) => {
         ready: Promise<void>;
+        finished: Promise<void>;
       };
     };
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (!doc.startViewTransition || reduced) {
-      apply(next);
+      quietly(() => apply(next))();
       return;
     }
 
@@ -69,9 +81,11 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       Math.max(y, window.innerHeight - y)
     );
 
+    let done = () => {};
     const transition = doc.startViewTransition(() => {
-      apply(next);
+      done = quietly(() => apply(next));
     });
+    transition.finished.then(() => done(), () => done());
 
     transition.ready.then(() => {
       document.documentElement.animate(
