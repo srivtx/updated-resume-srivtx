@@ -38,7 +38,9 @@ export async function getContributions(): Promise<{ days: Day[]; total: number }
     if (!res.ok) return null;
     const data = await res.json();
     if (!Array.isArray(data?.contributions)) return null;
-    return { days: data.contributions as Day[], total: data.total ?? 0 };
+    const days = data.contributions as Day[];
+    // the service reports totals per year as an object; add the days up instead
+    return { days, total: days.reduce((n, d) => n + d.count, 0) };
   } catch {
     return null;
   }
